@@ -35,7 +35,7 @@
                 <img class="img" :src="require('@/assets/images/login/wechat.png' )" @click="show2 = true" >
               <Modal
                   v-model="show2"
-                  draggable="true"
+
                   title="微信"
                   @on-ok="ok"
                   ok-text="登录"
@@ -47,12 +47,12 @@
 							<img class="img" :src="require('@/assets/images/login/ding.png')" @click="show3 = true">
               <Modal
                   v-model="show3"
-                  draggable="true"
-                  title="钉钉"
+
+                  title="钉钉扫码登录"
                   @on-ok="ok"
                   ok-text="登录"
                   @on-cancel="cancel">
-                <p>Content of dialog</p>
+                <div id="dingLogin" style="text-align: center;"><img src="" alt="" style="text-align:center;"></div>
               </Modal>
 
 						</div>
@@ -143,6 +143,31 @@ import { login } from "@/api/login";
           style: "",
           href: ""// 网络css样式
         });
+        var dingAppid = 'dingoazz7latsua0kyw7qi';
+        var redirect_url = encodeURIComponent('http://localhost:8081/api/user/callBackDingDing');
+        var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+dingAppid+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+redirect_url)
+        var obj = DDLogin({
+          id:"dingLogin",//这里需要你在自己的页面定义一个HTML标签并设置id，例如<div id="login_container"></div>或<span id="login_container"></span>
+          goto: goto, //请参考注释里的方式
+          style: "border:none;background-color:#FFFFFF;width:100px;height:100px;",
+          width : "365",
+          height: "400"
+        });
+
+
+        var handleMessage = function (event) {
+          var origin = event.origin;
+          if( origin == "https://login.dingtalk.com" ) { //判断是否来自ddLogin扫码事件。
+            var loginTmpCode = event.data;
+            window.location.href =  "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid="+ dingAppid +"&response_type=code&scope=snsapi_login&state=STATE&redirect_uri="+redirect_url+"&loginTmpCode=" +
+                loginTmpCode;
+          }
+        };
+        if (typeof window.addEventListener != 'undefined') {
+          window.addEventListener('message', handleMessage, false);
+        } else if (typeof window.attachEvent != 'undefined') {
+          window.attachEvent('onmessage', handleMessage);
+        }
       },
       watch: {
         $router: {

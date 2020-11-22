@@ -451,9 +451,9 @@
 									<span class="mr8">发起人</span>
 									<span>张新城</span>
 								</Rate>
-								<Progress :percent="6/8*100" :stroke-width="8">
-									<span>6/8</span>
-								</Progress>
+<!--								<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--									<span>6/8</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels redbtn pd15">10月10号截止</div>
 									<div class="sbtn pd15 uels mlr">周文杰</div>
@@ -475,9 +475,9 @@
 									<span class="mr8">发起人</span>
 									<span>张新城</span>
 								</Rate>
-								<Progress :percent="6/8*100" :stroke-width="8">
-									<span>6/8</span>
-								</Progress>
+<!--								<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--									<span>6/8</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels redbtn pd15">10月10号截止</div>
 									<div class="sbtn pd15 uels mlr">周文杰</div>

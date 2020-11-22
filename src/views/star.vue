@@ -388,11 +388,11 @@
             <!--星标任务：发起人-->
 						<span>{{item.creator}}</span>
 					</Rate>
-					<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">
+<!--					<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
 
-               <!--星标任务：进度-->
-						<span>{{item.progress}}</span>
-					</Progress>
+<!--               &lt;!&ndash;星标任务：进度&ndash;&gt;-->
+<!--						<span>{{item.progress}}</span>-->
+<!--					</Progress>-->
 					<div class="mflex mt5">
 
             <!--星标任务：截至时间-->
@@ -618,9 +618,9 @@
 									<span class="mr8">发起人</span>
 									<span>张新城</span>
 								</Rate>
-								<Progress :percent="6/8*100" :stroke-width="8">
-									<span>6/8</span>
-								</Progress>
+<!--								<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--									<span>6/8</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels redbtn pd15">10月10号截止</div>
 									<div class="sbtn pd15 uels mlr">周文杰</div>
@@ -642,9 +642,9 @@
 									<span class="mr8">发起人</span>
 									<span>张新城</span>
 								</Rate>
-								<Progress :percent="6/8*100" :stroke-width="8">
-									<span>6/8</span>
-								</Progress>
+<!--								<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--									<span>6/8</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels redbtn pd15">10月10号截止</div>
 									<div class="sbtn pd15 uels mlr">周文杰</div>

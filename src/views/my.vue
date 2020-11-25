@@ -123,9 +123,9 @@
 									<span>{{item.creator}}</span>
 								</Rate>
 								<!-- <Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate> -->
-								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">
-									<span>{{item.progress}}</span>
-								</Progress>
+<!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
+<!--									<span>{{item.progress}}</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels">{{item.date}}截止</div>
 									<div class="sbtn pd15 uels">{{item.optman}}</div>
@@ -172,9 +172,9 @@
 									<span>{{item.creator}}</span>
 								</Rate>
 								<!-- <Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate> -->
-								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">
-									<span>{{item.progress}}</span>
-								</Progress>
+<!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
+<!--									<span>{{item.progress}}</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels">{{item.date}}截止</div>
 									<div class="sbtn pd15 uels">{{item.optman}}</div>
@@ -220,9 +220,9 @@
 									<span class="mr8">发起人</span>
 									<span>{{item.creator}}</span>
 								</Rate>
-								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">
-									<span>{{item.progress}}</span>
-								</Progress>
+<!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
+<!--									<span>{{item.progress}}</span>-->
+<!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels">{{item.date}}截止</div>
 									<div class="sbtn pd15 uels">{{item.optman}}</div>
@@ -249,9 +249,9 @@
 								<span class="mr8">发起人</span>
 								<span>{{item.creator}}</span>
 							</Rate>
-							<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">
-								<span>{{item.progress}}</span>
-							</Progress>
+<!--							<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
+<!--								<span>{{item.progress}}</span>-->
+<!--							</Progress>-->
 							<div class="flex mt5">
 								<div class="obtn uels">{{item.date}}截止</div>
 								<div class="sbtn pd15 uels">{{item.optman}}</div>
@@ -380,9 +380,9 @@
 						
 					</div>
 					<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-					<Progress :percent="6/8*100" :stroke-width="8">
-						<span>6/8</span>
-					</Progress>
+<!--					<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--						<span>6/8</span>-->
+<!--					</Progress>-->
 					<div class="mflex mt5">
 						<div class="obtn uels">10月10号截止</div>
 						<div class="sbtn pd15 uels">沈达一</div>
@@ -401,9 +401,9 @@
 						
 					</div>
 					<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-					<Progress :percent="6/8*100" :stroke-width="8">
-						<span>6/8</span>
-					</Progress>
+<!--					<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--						<span>6/8</span>-->
+<!--					</Progress>-->
 					<div class="mflex mt5">
 						<div class="obtn uels">10月10号截止</div>
 						<div class="sbtn pd15 uels">沈达一</div>

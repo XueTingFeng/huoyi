@@ -150,8 +150,8 @@
 					<div class="textr">
 
             <!--星标人员：判断组长-->
-						<span v-if="item.isLeader" class="group">组长</span>
-						<img class="img" @click.stop="cancel(item.userId)" :src="require('@/assets/images/home/Collection.png')">
+						<span v-if="item.isLeader==1" class="group">组长</span>
+						<img class="img" @click.stop="cancel(item.taskId)" :src="require('@/assets/images/home/Collection.png')">
 					</div>
 				</div>
 
@@ -486,7 +486,8 @@
 										<div><!--项目99-->{{task.taskName}}</div>
 										<img class="img" :src="require('@/assets/images/home/Collection.png')">
 									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+                  <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
 									<div class="flex mt5">
 										<div class="obtn uels"><!--10月10号截止-->{{task.endTime}}</div>
 										<div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>

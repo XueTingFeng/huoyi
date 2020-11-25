@@ -11,7 +11,7 @@ export function getStarPro() {
     url: '/api/user/findUserStarProjects'
   })
 }
-
+//请求星标人员
 export function getStarPerson() {
   return request({
     url: 'api/user/findUserStarPeopleByUserId',

@@ -4,21 +4,21 @@
 			<div class="rfloat">
 				<FormItem label="团队">
 					<Select v-model="formItem.dept" style="width: 150px;">
-						<Option value="硬件部">硬件部</Option>
-						<Option value="软件部">软件部</Option>
+						<Option value="软件部" v-for="(item,index) in team">{{item.teamName}}</Option>
+<!--						<Option value="软件部">软件部</Option>-->
 					</Select>
 				</FormItem>
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-						<Option value="台州 椒江">台州 椒江</Option>
-						<Option value="台州 黄岩">台州 黄岩</Option>
-						<Option value="台州 路桥">台州 路桥</Option>
-						<Option value="台州 临海">台州 临海</Option>
-						<Option value="台州 温岭">台州 温岭</Option>
-						<Option value="台州 玉环">台州 玉环</Option>
-						<Option value="台州 天台">台州 天台</Option>
-						<Option value="台州 仙居">台州 仙居</Option>
-						<Option value="台州 三门">台州 三门</Option>
+						<Option value="台州 椒江" v-for="(reg,index) in region">{{reg.placeName}}</Option>
+<!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
+<!--						<Option value="台州 路桥">台州 路桥</Option>-->
+<!--						<Option value="台州 临海">台州 临海</Option>-->
+<!--						<Option value="台州 温岭">台州 温岭</Option>-->
+<!--						<Option value="台州 玉环">台州 玉环</Option>-->
+<!--						<Option value="台州 天台">台州 天台</Option>-->
+<!--						<Option value="台州 仙居">台州 仙居</Option>-->
+<!--						<Option value="台州 三门">台州 三门</Option>-->
 					</Select>
 				</FormItem>
 				<FormItem label="优先级">
@@ -839,50 +839,44 @@
 					</div>
 				</div>
 				<div class="grid">
-					<div class="col3">
+					<div class="col3" v-for="(tasks,index) in userTasks">
 						<perfect-scrollbar>
-							<div class="ucard flex red-bd">
+							<div class="ucard flex red-bd" v-for="(task,value) in userTasks[index]">
 								<div class="lfbox">
 									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">进行中</div>
+									<div class="state">{{ (task.status==0)?("未接收"):((task.status==1)?("未开始"):("进行中"))}}</div>
 								</div>
 								<div class="flex1">
 									<div class="uflex">
-										<div>项目99</div>
+										<div><!--项目99-->{{task.taskName}}</div>
 										<img class="img" :src="require('@/assets/images/home/Collection.png')">
 									</div>
 									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
 									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
+										<div class="obtn uels"><!--10月10号截止-->{{task.endTime}}</div>
+										<div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>
 									</div>
 								</div>
 								
 							</div>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">进行中</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">进行中</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
 						</perfect-scrollbar>
 					</div>
 <!--					<div class="col3">-->
@@ -1098,8 +1092,11 @@
 	import { getPage } from "@/api/data";
   import {getusername} from "@/utils/rquser";
   import {getStarPerson} from "@/utils/reqper";
-  import {request} from "@/utils/request";
-	export default {
+  import {getUserTasks} from "@/utils/reqtasks";
+  import {getTeam} from "@/utils/reqteam";
+  import {getRegion} from "@/utils/reqregion";
+
+  export default {
 		data() {
 			return {
         username: [],
@@ -1116,9 +1113,11 @@
 				starPro:[],
 				starTask:[],
 				starPerson:[],
+        userTasks:[],
+        team:[],
+        region:[],
 				proInfo:{},
-				
-				
+
 				
 				valueText:3,
 				modal: false,
@@ -1136,10 +1135,21 @@
       getusername().then(res => {
         this.username = res
       })
-
-      getStarPerson().then(res =>{
+      //axios获取星标人员
+      getStarPerson().then(res => {
         this.starPerson=res.data
-        console.log(this.starPerson)
+      })
+      //axios获取成员任务
+      getUserTasks().then(res => {
+        this.userTasks=res.data
+      })
+      //获取团队
+      getTeam().then(res => {
+        this.team=res.data
+      })
+      //获取地区
+      getRegion().then(res => {
+        this.region=res.data
       })
 		},
 		methods: {
@@ -1291,7 +1301,7 @@
 						]:[])
 				]);
 			}
-		}
+		},
 	}
 </script>
 

@@ -507,9 +507,7 @@
 
 <script>
 	import { getPage } from "@/api/data";
-
-  import  {getStarTask ,getStarPro,getStarPerson} from "../utils/rq-star";
-
+  import  {getStarTask ,getStarPro,getStarPerson,getUserTasks,getRegion,getTeam} from "../utils/rq-star";
   export default {
 		data() {
 			return {

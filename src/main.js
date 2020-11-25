@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 // step1: 引入 ViewUI
 import ViewUI from 'view-design'
 // step2: 引入 css 
@@ -12,7 +13,7 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import '@/assets/styles/index.scss' // global css
 
-//二维码qrcode插件
+
 
 
 
@@ -39,6 +40,7 @@ const json = type=>{
 Vue.prototype.$mock = json //测试接口
 Vue.prototype.parseTime = parseTime
 Vue.config.productionTip = false
+
 
 new Vue({
   router,

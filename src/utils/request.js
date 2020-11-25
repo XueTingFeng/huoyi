@@ -7,7 +7,7 @@ export function request(config){
 	//创建axios实例
 	const service = axios.create({
 	// axios中请求配置有baseURL选项，表示请求URL公共部分
-	baseURL: process.env.VUE_APP_BASE_API,
+	baseURL: 'https://huoyi.pblog.top',
 	withCredentials: true, // 开启跨域
 	timeout: 5000, // 请求超时时间
 	headers: {
@@ -33,7 +33,7 @@ export function request(config){
 			if (code !== 200) {
 				Modal.error({
 					title: '提示',
-					content: msg
+					content: 'msg'
 				});
 				return Promise.reject('error')
 			} else {
@@ -52,10 +52,13 @@ export function request(config){
 			}
 			Modal.error({
 				title: '提示',
-				content: msg
+				content: 'msg'
 			});
 			return Promise.reject(error)
 		}
-	)}
+
+	)
+	return service(config)
+}
 
 

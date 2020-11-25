@@ -52,17 +52,17 @@ module.exports = {
     devServer: {
     	open: true, //配置自动启动浏览器
     	host: 'localhost', //IP
-    	port: 8080, //端口号
+    	port: 8081, //端口号
     	https: false,
     	hotOnly: false,
     	proxy: { // 配置跨域，打包后无效
-    		[process.env.VUE_APP_BASE_API]: {
-    			target: 'http://localhost:8080',
+    		"/api": {
+    			target: 'http://huoyi.pblog.top',
     			changeOrigin: true, //是否允许跨越
     			ws: true, //是否代理websockets
-    			pathRewrite: {
-    				['^' + process.env.VUE_APP_BASE_API]: '' //重写,
-    			}
+              pathRewrite: {
+                '^/api': '' //重写接口
+              }
     		}
     	}, // 配置跨域处理
     	disableHostCheck: true,

@@ -7,14 +7,16 @@ export function request(config){
 	//创建axios实例
 	const service = axios.create({
 	// axios中请求配置有baseURL选项，表示请求URL公共部分
-	baseURL: process.env.VUE_APP_BASE_API,
+	// baseURL: process.env.VUE_APP_BASE_API,
+	baseURL:'https://huoyi.pblog.top/',
 	withCredentials: true, // 开启跨域
 	timeout: 5000, // 请求超时时间
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8'
-	}
+	},
 
 })
+
 // request拦截器
 	service.interceptors.request.use(config => {
 		// 是否需要设置 token
@@ -55,7 +57,9 @@ export function request(config){
 				content: msg
 			});
 			return Promise.reject(error)
-		}
-	)}
+		},
+	)
+	return service(config)
+}
 
 

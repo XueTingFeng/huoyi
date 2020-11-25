@@ -409,46 +409,46 @@
 			<div class="ucard pointer" @click="open" v-for="(item,index) in starPerson" :key="index">
 
         <!--星标人员：判断外出-->
-				<div v-if="item.out" class="abs">
+				<div v-if="item.status" class="abs">
 					<Icon type="ios-briefcase-outline" size="22"/>
 					<span>外出中...</span>
 				</div>
 				<div class="uflex baseline">
 
           <!--星标人员：忙碌度-->
-					<Rate class="rates" v-model="item.star" disabled icon="ios-square" />
+					<Rate class="rates" v-model="item.saturation" disabled icon="ios-square" />
 					<div class="mt10">
 						<Badge>
 
               <!--星标人员：头像-->
-							<Avatar shape="square" :src="item.head" size="54" />
+							<Avatar shape="square" :src="item.avatar" size="54" />
 							<div class="round" slot="count">
 								<div class="ins"></div>
 							</div>
 						</Badge>
 
             <!--星标人员：姓名-->
-						<div class="text">{{item.name}}</div>
+						<div class="text">{{item.userName}}</div>
 					</div>
 					<div class="textr">
 
             <!--星标人员：判断组长-->
 						<span v-if="item.isLeader" class="group">组长</span>
-						<img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">
+						<img class="img" @click.stop="cancel(item.userId)" :src="require('@/assets/images/home/Collection.png')">
 					</div>
 				</div>
 
         <!--星标人员：参与的项目-->
-				<div class="flex">
-					<div class="w50 uels">项目1</div>
-					<div class="flex1 uels">调整产能参数结构</div>
-					<div>截至10.11 12:00</div>
+				<div class="flex" v-for="(value,index) in item.project">
+					<div class="w50 uels"><!--项目1-->{{value.name}}</div>
+					<div class="flex1 uels"><!--调整产能参数结构-->{{value.taskName}}</div>
+					<div><!--截至10.11 12:00-->{{value.taskEndTime}}</div>
 				</div>
-				<div class="flex">
-					<div class="w50 uels">项目2</div>
-					<div class="flex1 uels">新能企业走访调查</div>
-					<div>截至10.11 12:00</div>
-				</div>
+<!--				<div class="flex">-->
+<!--					<div class="w50 uels">项目2</div>-->
+<!--					<div class="flex1 uels">新能企业走访调查</div>-->
+<!--					<div>截至10.11 12:00</div>-->
+<!--				</div>-->
 			</div>
 			<!-- <div class="ucard pointer" @click="open">
 				<div class="uflex baseline">
@@ -885,208 +885,208 @@
 							</div>
 						</perfect-scrollbar>
 					</div>
-					<div class="col3">
-						<perfect-scrollbar>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-								
-						</perfect-scrollbar>
-					</div>
-					<div class="col3">
-						<perfect-scrollbar>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目99</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-							<div class="ucard flex blu-bd">
-								<div class="lfbox">
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<div class="state">未开始</div>
-								</div>
-								<div class="flex1">
-									<div class="uflex">
-										<div>项目98</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
-									</div>
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-									<Progress :percent="6/8*100" :stroke-width="8">
-										<span>6/8</span>
-									</Progress>
-									<div class="flex mt5">
-										<div class="obtn uels">10月10号截止</div>
-										<div class="sbtn pd15 uels">周文杰</div>
-									</div>
-								</div>
-								
-							</div>
-								
-						</perfect-scrollbar>
-					</div>
+<!--					<div class="col3">-->
+<!--						<perfect-scrollbar>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--								-->
+<!--						</perfect-scrollbar>-->
+<!--					</div>-->
+<!--					<div class="col3">-->
+<!--						<perfect-scrollbar>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目99</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--							<div class="ucard flex blu-bd">-->
+<!--								<div class="lfbox">-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<div class="state">未开始</div>-->
+<!--								</div>-->
+<!--								<div class="flex1">-->
+<!--									<div class="uflex">-->
+<!--										<div>项目98</div>-->
+<!--										<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
+<!--									</div>-->
+<!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+<!--									<Progress :percent="6/8*100" :stroke-width="8">-->
+<!--										<span>6/8</span>-->
+<!--									</Progress>-->
+<!--									<div class="flex mt5">-->
+<!--										<div class="obtn uels">10月10号截止</div>-->
+<!--										<div class="sbtn pd15 uels">周文杰</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								-->
+<!--							</div>-->
+<!--								-->
+<!--						</perfect-scrollbar>-->
+<!--					</div>-->
 				
 				</div>
 			</div>
@@ -1097,6 +1097,8 @@
 <script>
 	import { getPage } from "@/api/data";
   import {getusername} from "@/utils/rquser";
+  import {getStarPerson} from "@/utils/reqper";
+  import {request} from "@/utils/request";
 	export default {
 		data() {
 			return {
@@ -1134,13 +1136,18 @@
       getusername().then(res => {
         this.username = res
       })
+
+      getStarPerson().then(res =>{
+        this.starPerson=res.data
+        console.log(this.starPerson)
+      })
 		},
 		methods: {
 			// 初始化数据
 			loadData() {
 				this.getStarPro()
 				this.getStarTask()
-				this.getStarPerson()
+				// this.getStarPerson()
 			},
 			//点击查看更多
 			getMore(){
@@ -1171,11 +1178,16 @@
 				}).catch()
 			},
 			//获取星标人员
-			getStarPerson(){
-				this.$mock('starPerson').then(res => {
-					this.starPerson = res
-				}).catch()
-			},
+      // getStarPerson(){
+      //   request( 'api/user/findUserStarPeopleByUserId').then(res => {
+      //     this.starPerson = res
+      //   })
+      // },
+			// getStarPerson(){
+			// 	this.$mock('starPerson').then(res => {
+			// 		this.starPerson = res
+			// 	}).catch()
+			// },
 			//条件查询确定按钮事件
 			handleSubmit(){
 				this.params.page =1

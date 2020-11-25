@@ -11,3 +11,11 @@ export function getStarPro() {
     url: '/api/user/findUserStarProjects'
   })
 }
+
+export function getStarPerson() {
+  return request({
+    url: 'api/user/findUserStarPeopleByUserId',
+    params:{
+    }
+  })
+}

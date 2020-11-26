@@ -4,21 +4,21 @@
 			<div class="rfloat">
 				<FormItem label="团队">
 					<Select v-model="formItem.dept" style="width: 150px;">
-						<Option value="软件部" v-for="(item,index) in team">{{item.teamName}}</Option>
-<!--						<Option value="软件部">软件部</Option>-->
+            <Option value="硬件部">硬件部</Option>
+            <Option value="软件部">软件部</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-						<Option value="台州 椒江" v-for="(reg,index) in region">{{reg.placeName}}</Option>
-<!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
-<!--						<Option value="台州 路桥">台州 路桥</Option>-->
-<!--						<Option value="台州 临海">台州 临海</Option>-->
-<!--						<Option value="台州 温岭">台州 温岭</Option>-->
-<!--						<Option value="台州 玉环">台州 玉环</Option>-->
-<!--						<Option value="台州 天台">台州 天台</Option>-->
-<!--						<Option value="台州 仙居">台州 仙居</Option>-->
-<!--						<Option value="台州 三门">台州 三门</Option>-->
+            <Option value="台州 椒江">台州 椒江</Option>
+            <Option value="台州 黄岩">台州 黄岩</Option>
+            <Option value="台州 路桥">台州 路桥</Option>
+            <Option value="台州 临海">台州 临海</Option>
+            <Option value="台州 温岭">台州 温岭</Option>
+            <Option value="台州 玉环">台州 玉环</Option>
+            <Option value="台州 天台">台州 天台</Option>
+            <Option value="台州 仙居">台州 仙居</Option>
+            <Option value="台州 三门">台州 三门</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="优先级">
@@ -35,7 +35,7 @@
 			</div>
 		</Form>
 		
-		<div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')">星标项目</div>
+		<div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')" v-model="modal">星标项目</div>
 		<div class="grid">
 			<div class="ucard red-lbd" @click="openPro(item)" :class="['red-lbd','yel-lbd','blu-lbd'][index%3]" v-for="(item,index) in starPro" :key="index">
 				<div class="uflex">
@@ -54,13 +54,13 @@
 				</Rate>
 
 <!--        星标项目：进度条-->
-				<Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)" :stroke-width="8">
+				<Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)*100" :stroke-width="8">
 						<span>{{item.progress}}</span>
 				</Progress>
 
 				<div class="uflex mtb10">
           <!--星标项目：日期：几个月以前-->
-<!--					<div class="col3 obtn uels">{{parseTime(item.date)}}</div>-->
+					<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>
           <!--星标项目：地区-->
 					<div class="col3 sbtn uels">{{item.place}}</div>
           <!--星标项目：执行者-->
@@ -112,7 +112,7 @@
 
 					<div class="mflex mt5">
 
-            <!--星标任务：截至时间-->
+            <!--星标任务：截至时间.split(" ",10)-->
 						<div class="obtn uels">{{item.endTime.split(" ")[0]}}</div>
 
             <!--星标任务：负责人-->
@@ -212,7 +212,7 @@
 								<div class="flex1 uels" style="margin-top: -5px;">
 
                   <!--弹窗：项目优先级-->
-									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
+<!--									<Rate disabled v-model="" custom-icon="iconfont hy-star"></Rate>-->
 								</div>
 							</div>
 							<div class="flex mb10 ml">
@@ -249,10 +249,10 @@
 									<div>设备机台制作二维码，先出设计</div>
 									
 								</div>
-								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">
-									<span class="mr8">发起人</span>
-									<span>张新城</span>
-								</Rate>
+<!--								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">-->
+<!--									<span class="mr8">发起人</span>-->
+<!--									<span>张新城</span>-->
+<!--								</Rate>-->
 <!--								<Progress :percent="6/8*100" :stroke-width="8">-->
 <!--									<span>6/8</span>-->
 <!--								</Progress>-->
@@ -273,10 +273,10 @@
 									<div>设备机台制作二维码，先出设计</div>
 									
 								</div>
-								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">
-									<span class="mr8">发起人</span>
-									<span>张新城</span>
-								</Rate>
+<!--								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">-->
+<!--									<span class="mr8">发起人</span>-->
+<!--									<span>张新城</span>-->
+<!--								</Rate>-->
 <!--								<Progress :percent="6/8*100" :stroke-width="8">-->
 <!--									<span>6/8</span>-->
 <!--								</Progress>-->
@@ -488,7 +488,7 @@
 									</div>
 									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
 									<div class="flex mt5">
-										<div class="obtn uels"><!--10月10号截止-->{{task.endTime}}</div>
+										<div class="obtn uels"><!--10月10号截止-->{{task.endTime.split(" ")[0]}}</div>
 										<div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>
 									</div>
 								</div>
@@ -508,7 +508,7 @@
 <script>
 	import { getPage } from "@/api/data";
 
-  import  {getStarTask ,getStarPro,getStarPerson} from "../utils/rq-star";
+  import  {getStarTask,getStarPro,getStarPerson,getUserTasks,getTeam,getRegion} from "../utils/rq-star";
 
   export default {
 		data() {
@@ -523,25 +523,24 @@
 					level:'非常紧急',
 					title:''
 				},
-				starPro:[],
-        executor: [],
+				  starPro:[],
+          executor: [],
+          initiator: [],
+          name:[],
 
-				starTask:[],
-        status: [],
-        sponsor: [],
-        principal: [],
-        endTime: [],
+				  starTask:[],
+          status: [],
+          sponsor: [],
+          principal: [],
+          endTime: [],
 
-				starPerson:[],
-        userTasks:[],
-        team:[],
-        region:[],
-				proInfo:{},
+				  starPerson:[],
+          userTasks:[],
+          team:[],
+          region:[],
+				  proInfo:{},
 
-
-
-
-
+        valueText: 3,
 				modal: false,
 				empModal: false,
 				visible: false,
@@ -549,9 +548,9 @@
 			}
 		},
 		created() {
-			this.$nextTick(() => {
-				this.loadData()
-			});
+			 this.$nextTick(() => {
+			 	this.loadData()
+			 });
 
 			//获取星标任务多个数据
 			 getStarTask().then( res => {
@@ -575,35 +574,36 @@
          }
 
 
-       })
+       });
 
       getStarPro().then(res => {
         this.starPro = res.data
-      })
+        this.name = res.data.name
+      });
       //axios获取星标人员
-      getStarPerson().then(res => {
-        this.starPerson=res.data
-      })
-      //axios获取成员任务
-      getUserTasks().then(res => {
-        this.userTasks=res.data
-      })
-      //获取团队
-      getTeam().then(res => {
-        this.team=res.data
-      })
-      //获取地区
-      getRegion().then(res => {
-        this.region=res.data
-      })
+       getStarPerson().then(res => {
+         this.starPerson=res.data
+       });
+      //  //axios获取成员任务
+        getUserTasks().then(res => {
+          this.userTasks=res.data
+        });
+       //获取团队
+        getTeam().then(res => {
+          this.team=res.data
+        })
+       //获取地区
+        getRegion().then(res => {
+          this.region=res.data
+        })
 		},
 
     methods: {
 			// 初始化数据
 			loadData() {
-				this.getStarPro()
-				this.getStarTask()
-				// this.getStarPerson()
+         this.getStarPro()
+         this.getStarTask()
+         this.getStarPerson()
 			},
 			//点击查看更多
 			getMore(){

@@ -4,13 +4,13 @@
 			<div class="rfloat">
 				<FormItem label="团队">
 					<Select v-model="formItem.dept" style="width: 150px;">
-						<Option value="软件部" v-for="(item,index) in team">{{item.teamName}}</Option>
+						<Option :value="item.teamid" v-for="(item,index) in team" :key="item.teamid" :label="item.teamName">{{item.teamName}}</Option>
 <!--						<Option value="软件部">软件部</Option>-->
 					</Select>
 				</FormItem>
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-						<Option value="台州 椒江" v-for="(reg,index) in region">{{reg.placeName}}</Option>
+						<Option value="reg.placeid" v-for="(reg,index) in region" :key="reg.placeid" :label="reg.placeName">{{reg.placeName}}</Option>
 <!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
 <!--						<Option value="台州 路桥">台州 路桥</Option>-->
 <!--						<Option value="台州 临海">台州 临海</Option>-->
@@ -489,7 +489,7 @@
 <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
                   <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
 									<div class="flex mt5">
-										<div class="obtn uels"><!--10月10号截止-->{{task.endTime}}</div>
+										<div class="obtn uels"><!--10月10号截止-->{{task.endTime.split(" ")[0]}}</div>
 										<div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>
 									</div>
 								</div>
@@ -508,7 +508,15 @@
 
 <script>
 	import { getPage } from "@/api/data";
-  import  {getStarTask ,getStarPro,getStarPerson,getUserTasks,getRegion,getTeam} from "../utils/rq-star";
+  import {
+    getStarTask,
+    getStarPro,
+    getStarPerson,
+    getUserTasks,
+    getRegion,
+    getTeam,
+    handleSubmit
+  } from "../utils/rq-star";
   export default {
 		data() {
 			return {
@@ -616,13 +624,12 @@
 					}
 				}).catch()
 			},
-
 			//条件查询确定按钮事件
 			handleSubmit(){
 				this.params.page =1
 				this.starPro = []
 				//this.getStarPro()
-				this.$mock('starPro').then(res => {
+				handleSubmit().then(res => {
 					let newData=res.filter(item=>{
 						if(this.formItem.title&&!this.formItem.area){
 							return item.title.indexOf(this.formItem.title)>-1

@@ -510,17 +510,8 @@
 import axios from 'axios'
 	import { getPage } from "@/api/data";
 
-  import  {getStarTask,getStarPro,getStarPerson,getUserTasks,getTeam,getRegion,getStarProInfo} from "../utils/rq-star";
-
-  import {
-    getStarTask,
-    getStarPro,
-    getStarPerson,
-    getUserTasks,
-    getRegion,
-    getTeam,
-    screeningStro
-  } from "../utils/rq-star";
+  import  {getStarTask,getStarPro,getStarPerson,getUserTasks,getTeam,getRegion,screeningStro} from "../utils/rq-star";
+;
   export default {
     data() {
       return {

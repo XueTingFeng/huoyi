@@ -20,7 +20,6 @@ export function getStarPro() {
 
   })
 }
-//星标人员
 //请求星标人员
 export function getStarPerson() {
   return request({
@@ -30,15 +29,7 @@ export function getStarPerson() {
     }
   })
 }
-//请求地区
-export function getRegion() {
-  return request({
-    url: '/api/place/findPlaces',
-    params:{
-      // userId:'1',
-    }
-  })
-}
+
 //请求团队
 export function getTeam() {
   return request({
@@ -48,15 +39,7 @@ export function getTeam() {
     }
   })
 }
-//星标人员
-  export function getStarPerson() {
-    return request({
-      url: '/api/user/findUserStarPeopleByUserId',
-      params:{
-        userId: '1'
-      }
-    })
-  }
+
 //成员任务
 export function getUserTasks() {
   return request({
@@ -66,15 +49,7 @@ export function getUserTasks() {
      }
   })
 }
-//团队信息
-export function getTeam(){
-  return request({
-    url: '/api/team/findTeams',
-    // params:{
-    //   userId: '1'
-    // }
-  })
-}
+
 //地区
 export function getRegion() {
   return request({
@@ -93,15 +68,7 @@ export function getRegion() {
        }
     })
 }
-//请求成员任务
-export function getUserTasks() {
-  return request({
-    url: 'api/user/findUserTasksByUserId',
-    params: {
-      userId:'1',
-    }
-  })
-}
+
 //筛选星标项目请求
 export function screeningStro(stardata){
   return request({

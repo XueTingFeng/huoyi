@@ -1,15 +1,21 @@
 import {request} from "./request";
 import {star} from "../views/star"
+import {data} from "@/mock/tree.api";
 //请求星标任务接口
 export function getStarTask() {
   return request({
-    url: '/api/user/findUserStarTaskByUserId'
+    url: '/api/user/findUserStarTaskByUserId',
+    params:{
+      userId: '1'
+    }
   })
 }
-
 export function getStarPro() {
   return request({
-    url: '/api/user/findUserStarProjects'
+    url: '/api/user/findUserStarProjects',
+    params:{
+      id: '1'
+    }
   })
 }
 //请求星标人员
@@ -35,7 +41,7 @@ export function getTeam() {
   return request({
     url: '/api/team/findTeams',
     params:{
-      // userId:'1',
+      type:'1',
     }
   })
 }
@@ -48,14 +54,17 @@ export function getUserTasks() {
     }
   })
 }
-
-export function handleSubmit(){
+//筛选星标项目请求
+export function screeningStro(stardata){
   return request({
-    url:'/api/project/findUserStarProjectInfo',
-    data:'formItem.title',
+    url:'/api/user/findUserStarProjects',
     params:{
       id:'1',
-
-    }
+      teamId:stardata.dept,
+      place:'',
+      priority:'',
+      keyword:'',
+    },
   })
 }
+

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Modal } from 'view-design'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+var qs = require('qs')
 
 export function request(config){
 	//创建axios实例
@@ -12,7 +13,7 @@ export function request(config){
 	withCredentials: true, // 开启跨域
 	timeout: 5000, // 请求超时时间
 	headers: {
-		'Content-Type': 'application/json;charset=utf-8'
+		'Content-Type': 'application/json;charset=utf-8',
 	},
 
 })
@@ -23,6 +24,13 @@ export function request(config){
 		const isToken = (config.headers || {}).isToken === false
 		if (getToken() && !isToken) {
 			config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+		}
+		if (config.type && config.type === 'form') {
+			config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+			//data是接收的数据，接收的数据需要通过qs编码才可以直接使用
+			if (config.data) {
+				config.data = qs.stringify(config.data)
+			}
 		}
 		return config
 	}, error => {

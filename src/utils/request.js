@@ -13,7 +13,7 @@ export function request(config){
 	withCredentials: true, // 开启跨域
 	timeout: 5000, // 请求超时时间
 	headers: {
-		'Content-Type': 'application/json;charset=utf-8'
+		'Content-Type': 'application/json;charset=utf-8',
 	},
 
 })
@@ -52,7 +52,6 @@ export function request(config){
 			}
 		},
 		error => {
-			console.log('err' + error)
 			let {message} = error;
 			if (message == "Network Error") {
 				message = "后端接口连接异常";

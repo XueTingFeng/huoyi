@@ -1,4 +1,6 @@
 import {request} from "./request";
+import {star} from "../views/star"
+import {data} from "@/mock/tree.api";
 //请求星标任务接口
 export function getStarTask() {
   return request({
@@ -19,14 +21,42 @@ export function getStarPro() {
   })
 }
 //星标人员
+//请求星标人员
 export function getStarPerson() {
   return request({
-    url: '/api/user/findUserStarPeopleByUserId',
-     params:{
-       userId: '1'
-     }
+    url: 'api/user/findUserStarPeopleByUserId',
+    params:{
+      userId:'1',
+    }
   })
 }
+//请求地区
+export function getRegion() {
+  return request({
+    url: '/api/place/findPlaces',
+    params:{
+      // userId:'1',
+    }
+  })
+}
+//请求团队
+export function getTeam() {
+  return request({
+    url: '/api/team/findTeams',
+    params: {
+      type: '1',
+    }
+  })
+}
+//星标人员
+  export function getStarPerson() {
+    return request({
+      url: '/api/user/findUserStarPeopleByUserId',
+      params:{
+        userId: '1'
+      }
+    })
+  }
 //成员任务
 export function getUserTasks() {
   return request({
@@ -63,5 +93,26 @@ export function getRegion() {
        }
     })
 }
-
+//请求成员任务
+export function getUserTasks() {
+  return request({
+    url: 'api/user/findUserTasksByUserId',
+    params: {
+      userId:'1',
+    }
+  })
+}
+//筛选星标项目请求
+export function screeningStro(stardata){
+  return request({
+    url:'/api/user/findUserStarProjects',
+    params:{
+      id:'1',
+      teamId:stardata.dept,
+      place:'',
+      priority:'',
+      keyword:'',
+    },
+  })
+}
 

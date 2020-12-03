@@ -10,26 +10,26 @@
 							<div class="label">状态</div>
 							<div @click="change" class="sbtn pd15 pointer">{{status===0?'外出中':'已归来'}}</div>
 						</div>
-						<div class="info">
-							<div class="label">项目权限</div>
-							<div class="flex1 uels">组长</div>
-						</div>
+<!--						<div class="info">-->
+<!--							<div class="label">项目权限</div>-->
+<!--							<div class="flex1 uels">组长</div>-->
+<!--						</div>-->
 						<div class="info">
 							<div class="label">登录时间时间</div>
 							<div class="flex1 uels">2020年9月30日12:00:00</div>
 						</div>
-						<div class="info">
-							<div class="label">项目角色</div>
-							<div class="flex1 uels">
-								<div>项目1(组长)</div>
-							</div>
-						</div>
-						<div class="info">
-							<div class="label"></div>
-							<div class="flex1 uels">
-								<div>项目2(发起人)</div>
-							</div>
-						</div>
+<!--						<div class="info">-->
+<!--							<div class="label">项目角色</div>-->
+<!--							<div class="flex1 uels">-->
+<!--								<div>项目1(组长)</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="info">-->
+<!--							<div class="label"></div>-->
+<!--							<div class="flex1 uels">-->
+<!--								<div>项目2(发起人)</div>-->
+<!--							</div>-->
+<!--						</div>-->
 						<div class="info">查看成员项目内任务</div>
 					</div>
 				</Tooltip>&nbsp;

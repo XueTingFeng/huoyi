@@ -82,7 +82,7 @@
 			</div>
 			<div class="col5">
 				<div class="uflex mtm">
-					<div class="btxt">参与项目<span class="ml">6</span></div>
+					<div class="btxt">参与项目<span class="ml">{{join_pro.length}}</span></div>
 				</div>
 			</div>
 		</div>
@@ -109,7 +109,7 @@
 							</div>
 							<div class="flex1">
 								<div class="uflex">
-									<div>{{item.title}}</div>
+									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
@@ -118,17 +118,17 @@
 									</div>
 									
 								</div>
-								<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">
+								<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 									<span class="mr8">发起人</span>
-									<span>{{item.creator}}</span>
+									<span>{{item.sponsor}}</span>
 								</Rate>
 								<!-- <Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate> -->
 <!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.date}}截止</div>
-									<div class="sbtn pd15 uels">{{item.optman}}</div>
+									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
 							
@@ -158,7 +158,7 @@
 							</div>
 							<div class="flex1">
 								<div class="uflex">
-									<div>{{item.title}}</div>
+									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
@@ -167,17 +167,17 @@
 									</div>
 									
 								</div>
-								<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">
+								<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 									<span class="mr8">发起人</span>
-									<span>{{item.creator}}</span>
+									<span>{{item.sponsor}}</span>
 								</Rate>
 								<!-- <Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate> -->
 <!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.date}}截止</div>
-									<div class="sbtn pd15 uels">{{item.optman}}</div>
+									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
 							
@@ -207,7 +207,7 @@
 							</div>
 							<div class="flex1">
 								<div class="uflex">
-									<div>{{item.title}}</div>
+									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
@@ -216,16 +216,16 @@
 									</div>
 									
 								</div>
-								<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">
+								<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 									<span class="mr8">发起人</span>
-									<span>{{item.creator}}</span>
+									<span>{{item.sponsor}}</span>
 								</Rate>
 <!--								<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.date}}截止</div>
-									<div class="sbtn pd15 uels">{{item.optman}}</div>
+									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
 							
@@ -242,19 +242,19 @@
 						</div>
 						<div class="flex1">
 							<div class="uflex lh24">
-								<div>{{item.title}}</div>
+								<div>{{item.name}}</div>
 								<!-- <img class="img" :src="require('@/assets/images/home/Collection.png')"> -->
 							</div>
-							<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">
+							<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 								<span class="mr8">发起人</span>
-								<span>{{item.creator}}</span>
+								<span>{{item.sponsor}}</span>
 							</Rate>
 <!--							<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
 <!--								<span>{{item.progress}}</span>-->
 <!--							</Progress>-->
 							<div class="flex mt5">
-								<div class="obtn uels">{{item.date}}截止</div>
-								<div class="sbtn pd15 uels">{{item.optman}}</div>
+								<div class="obtn uels">{{item.endTime}}截止</div>
+								<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 							</div>
 						</div>
 						
@@ -264,24 +264,27 @@
 			</div>
 			<div class="col5 last">
 				<perfect-scrollbar>
-					<div class="ucard blu-lbd">
+
+
+          <!--我的项目-->
+					<div class="ucard blu-lbd" v-for="(item,index) in join_pro" :key="index">
 						<div class="uflex">
-							<div class="btxt">项目1</div>
+							<div class="btxt">{{item.name}}</div>
 							<div class="">
 								<img class="img" :src="require('@/assets/images/home/Collection.png')">
 							</div>
 						</div>
-						<Rate disabled show-text v-model="valueText" custom-icon="iconfont hy-star">
+						<Rate disabled show-text v-model="item.priority" custom-icon="iconfont hy-star">
 							<span class="mr8">发起人</span>
-							<span>张深一</span>
+							<span>{{item.initiator}}</span>
 						</Rate>
-						<Progress :percent="6/8*100" :stroke-width="8">
+						<Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)*100" :stroke-width="8">
 								<span>6/8</span>
 						</Progress>
 						<div class="uflex mtb10">
-							<div class="col3 obtn uels">10天前</div>
-							<div class="col3 sbtn uels">台州 临海</div>
-							<div class="col3 sbtn uels">沈达一</div>
+							<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>
+							<div class="col3 sbtn uels">{{item.place}}</div>
+							<div class="col3 sbtn uels">{{item.executor}}</div>
 						</div>
 						<div class="flex">
 							<div class="key">周杰：</div>
@@ -294,66 +297,8 @@
 							<div>10.11 12:00</div>
 						</div>
 					</div>
-					<div class="ucard yel-lbd">
-						<div class="uflex">
-							<div class="btxt">项目1</div>
-							<div>
-								<img class="img" :src="require('@/assets/images/home/Collection.png')">
-							</div>
-						</div>
-						<Rate disabled show-text v-model="valueText" custom-icon="iconfont hy-star">
-							<span class="mr8">发起人</span>
-							<span>张深一</span>
-						</Rate>
-						<Progress :percent="6/8*100" :stroke-width="8">
-								<span>6/8</span>
-						</Progress>
-						<div class="uflex mtb10">
-							<div class="col3 obtn uels">10天前</div>
-							<div class="col3 sbtn uels">台州 临海</div>
-							<div class="col3 sbtn uels">沈达一</div>
-						</div>
-						<div class="flex">
-							<div class="key">周杰：</div>
-							<div class="flex1 uels">项目中间对接进行中</div>
-							<div>09.28 12:00</div>
-						</div>
-						<div class="flex">
-							<div class="key uels">张美兰：</div>
-							<div class="flex1 uels">项目增加望申请延迟1天</div>
-							<div>10.11 12:00</div>
-						</div>
-					</div>
-					<div class="ucard blu-lbd">
-						<div class="uflex">
-							<div class="btxt">项目1</div>
-							<div class="">
-								<img class="img" :src="require('@/assets/images/home/Collection.png')">
-							</div>
-						</div>
-						<Rate disabled show-text v-model="valueText" custom-icon="iconfont hy-star">
-							<span class="mr8">发起人</span>
-							<span>张深一</span>
-						</Rate>
-						<Progress :percent="6/8*100" :stroke-width="8">
-								<span>6/8</span>
-						</Progress>
-						<div class="uflex mtb10">
-							<div class="col3 obtn uels">10天前</div>
-							<div class="col3 sbtn uels">台州 临海</div>
-							<div class="col3 sbtn uels">沈达一</div>
-						</div>
-						<div class="flex">
-							<div class="key">周杰：</div>
-							<div class="flex1 uels">项目中间对接进行中</div>
-							<div>09.28 12:00</div>
-						</div>
-						<div class="flex">
-							<div class="key uels">张美兰：</div>
-							<div class="flex1 uels">项目增加望申请延迟1天</div>
-							<div>10.11 12:00</div>
-						</div>
-					</div>
+
+
 				</perfect-scrollbar>
 			</div>
 		</div>
@@ -362,55 +307,58 @@
 		<div class="mflex xtitle">
 			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">2</span>
 		</div>
+
+
 		<div class="grid">
-			<div class="ucard flex blu-bd">
+			<div class="ucard flex blu-bd" v-for="(item,index) in myTask" :key="index">
 				<div class="lfbox">
 					<Icon type="md-arrow-dropdown" size="24"/>
 					<div class="state">进行中</div>
 				</div>
 				<div class="flex1">
 					<div class="uflex">
-						<div>月每天稼动率折线图</div>
+						<div>{{item.name}}</div>
 						<div class="mflex">
 							<div class="mflex opt">
-								<Icon @click="stop" type="ios-pause" size="24"/>
-								<Icon @click="done" class="ml5" type="md-checkmark" size="24"/>
+								<Icon @click="stop" type="ios-pause" size="20"/>
+								<Icon @click="done" class="ml5" type="md-checkmark" size="20"/>
+                <Icon type="md-close" size="20" @click="endTask"/>
 							</div>
 						</div>
 						
 					</div>
-					<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
+					<Rate disabled v-model="item.priority" custom-icon="iconfont hy-star"></Rate>
 <!--					<Progress :percent="6/8*100" :stroke-width="8">-->
 <!--						<span>6/8</span>-->
 <!--					</Progress>-->
 					<div class="mflex mt5">
-						<div class="obtn uels">10月10号截止</div>
-						<div class="sbtn pd15 uels">沈达一</div>
-					</div>
-				</div>
-			</div>
-			<div class="ucard flex blu-bd">
-				<div class="lfbox">
-					<Icon type="md-arrow-dropdown" size="24"/>
-					<div class="state">进行中</div>
-				</div>
-				<div class="flex1">
-					<div class="uflex">
-						<div>报警信息新页面</div>
-						<div><img class="img" :src="require('@/assets/images/home/Collection.png')"></div>
-						
-					</div>
-					<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>
-<!--					<Progress :percent="6/8*100" :stroke-width="8">-->
-<!--						<span>6/8</span>-->
-<!--					</Progress>-->
-					<div class="mflex mt5">
-						<div class="obtn uels">10月10号截止</div>
-						<div class="sbtn pd15 uels">沈达一</div>
+						<div class="obtn uels">{{item.end_time}}</div>
+						<div class="sbtn pd15 uels">{{item.executor.sponsor}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<!-- 添加弹窗 -->
 		<Modal v-model="modal" scrollable title="创建新任务">
 			<div class="flex">
@@ -418,47 +366,47 @@
 					<Dropdown placement="right-start" >
 						<Icon type="md-arrow-dropdown" size="24"/>
 						<DropdownMenu slot="list">
-							<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>
-							<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>
-							<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>
-							<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>
+							<DropdownItem @click.native="dropdown('未开始')" v-model="addMyTask.status=0">未开始</DropdownItem>
+							<DropdownItem @click.native="dropdown('进行中')" v-model="addMyTask.status=1">进行中</DropdownItem>
+							<DropdownItem @click.native="dropdown('待接收')" v-model="addMyTask.status=2">待接收</DropdownItem>
+							<DropdownItem @click.native="dropdown('已完成')" v-model="addMyTask.status=3">已完成</DropdownItem>
 						</DropdownMenu>
 					</Dropdown>
 					
 					<div class="state">{{state}}</div>
 				</div>
-				<Input v-model="vo.content" type="textarea" :rows="3" placeholder="输入产品需求内容......" />
+				<Input v-model="addMyTask.name" type="textarea" :rows="3" placeholder="输入产品需求内容......" />
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
-					<img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
+					<img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目id
 				</div>
-				<div class="flex1"><Input v-model="vo.project" class="search" placeholder="所属项目"/></div>
+				<div class="flex1"><Input v-model="addMyTask.pj_id" class="search" placeholder="所属项目"/></div>
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
 					<img class="uicon" :src="require('@/assets/images/detail/Plan.png')">设置截止时间
 				</div>
-				<div class="flex1"><DatePicker v-model="vo.time" type="datetime" class="search" placeholder="截止时间"></DatePicker></div>
+				<div class="flex1"><DatePicker v-model="addMyTask.end_time" type="datetime" class="search" placeholder="截止时间"></DatePicker></div>
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
 					<img class="uicon" :src="require('@/assets/images/detail/priority.png')">优先级
 				</div>
-				<div class="flex1"><Rate v-model="vo.rate" custom-icon="iconfont hy-star"></Rate></div>
+				<div class="flex1"><Rate v-model="addMyTask.priority" custom-icon="iconfont hy-star"></Rate></div>
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
-					<img class="uicon" :src="require('@/assets/images/detail/Person.png')">负责人
+					<img class="uicon" :src="require('@/assets/images/detail/Person.png')">执行人
 				</div>
 				<div class="flex1 down">
 					<Dropdown placement="right-start">
-						<span class="cbod">{{vo.person}}</span>
+						<span class="cbod">{{addMyTask.member_id}}</span>
 						<DropdownMenu slot="list" style="padding: 6px 10px;">
 							<Button type="default" ghost long @click="search">搜索</Button>
-							<RadioGroup v-model="vo.person" vertical>
-								<DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in persons" :key="index">
-									<Radio :label="item">{{item}}</Radio>
+							<RadioGroup v-model="addMyTask.member_id" vertical>
+								<DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in team" :key="index">
+									<Radio :label="item.userId">{{item.userName}}</Radio>
 								</DropdownItem>
 							</RadioGroup>
 						</DropdownMenu>
@@ -475,12 +423,27 @@
 
 <script>
 	import draggable from "vuedraggable";
-	export default {
+
+	import {getMyProject,getMyTask,postMyTask,getTeamMembers} from "../utils/rq-my";
+
+  export default {
 		components: {
 		  draggable
 		},
 		data() {
 			return {
+			  myTask:[],
+			  team:[],
+			  addMyTask: {
+          user_id:'',
+          pj_id:'',
+          name: '',
+          end_time:'',
+          priority:'',
+          status:'',
+          member_id:'',
+          state: ''
+        },
 				fromId:'',
 				toId:'',
 				formItem: {
@@ -501,7 +464,11 @@
 				list3:[],
 				list4:[],
 				myPro:[],
-				persons: ['赵迁', '钱隼', '孙俪', '李轴'],
+				userName: [],
+
+
+        join_pro: [],
+        task: [],
 
 				valueText:3,
 				state:'未开始',
@@ -509,31 +476,48 @@
 			}
 		},
 		created() {
-			this.$nextTick(() => {
-				this.getList()
-				this.getMyPro()
-			})
+			// this.$nextTick(() => {
+			// 	this.getList()
+			// 	this.getMyPro()
+			// })
+      this.getMyProject()
+      this.getMyTask()
+
 		},
 		methods: {
+
+		  //获取我的项目数据
+		  getMyProject(){
+		    getMyProject().then(res => {
+		      this.join_pro = res.data
+        })
+      },
 			//获取我的数据
-			getList(){
-				this.$mock('myPro').then(res => {
-					this.myPro=res
-				}).catch()
-			},
-			//获取参与项目
-			getMyPro(){
-				this.$mock('myData').then(res => {
-					this.list1=res.filter(item=>item.status.id===1)
-					this.list2=res.filter(item=>item.status.id===2)
-					this.list3=res.filter(item=>item.status.id===3)
-					this.list4=res.filter(item=>item.status.id===4)
-				}).catch()
+
+
+			//获取参与项目任务
+			getMyTask(){
+				getMyTask().then(res => {
+				  this.myTask = res.data[4]
+          //进行中
+					this.list1=res.data[1].filter(item=>item.status===1)
+          //未开始
+					this.list2=res.data[0].filter(item=>item.status===0)
+          //待接收
+					this.list3=res.data[2].filter(item=>item.status===2)
+          //待完成
+					this.list4=res.data[3].filter(item=>item.status===3)
+
+        }).catch()
 			},
 			// 添加打开弹窗
 			open(str){
 				this.state = str
 				this.modal = true
+          getTeamMembers().then(res => {
+            this.team = res.data
+            this.userName = res.data.userName
+          })
 			},
 			change(){
 				this.status = this.status==0?1:0
@@ -554,6 +538,9 @@
 				this.resetForm()
 			},
 			finish(){
+		    postMyTask(this.addMyTask).then(res=>{
+
+        })
 				this.modal = false
 				this.resetForm()
 			},
@@ -565,9 +552,17 @@
 					}
 				});
 			},
+      endTask() {
+		    this.$Modal.confirm({
+          title:'确认是否删除任务？',
+          onOk: () => {
+
+          }
+        })
+      },
 			stop(){
 				this.$Modal.confirm({
-					title: '确认是否终止任务？',
+					title: '确认是否暂停任务？',
 					onOk: () => {
 						
 					}

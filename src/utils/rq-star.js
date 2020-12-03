@@ -46,7 +46,7 @@ export function getTeam(){
   })
 }
 //地区
-export function getRegion(){
+export function getRegion() {
   return request({
     url: '/api/place/findPlaces',
     // params:{
@@ -54,3 +54,14 @@ export function getRegion(){
     // }
   })
 }
+  //星标项目弹窗
+  export function getStarProInfo() {
+    return request({
+      url: '/api/project/findProjectInfoById',
+       params:{
+         id: '1'
+       }
+    })
+}
+
+

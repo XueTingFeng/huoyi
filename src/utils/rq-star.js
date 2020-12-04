@@ -64,7 +64,8 @@ export function getRegion() {
     return request({
       url: '/api/project/findProjectInfoById',
        params:{
-         id: '1'
+         user_id: '1',
+         pj_id: '1'
        }
     })
 }

@@ -1,6 +1,4 @@
 import {request} from "./request";
-import {star} from "../views/star"
-import {data} from "@/mock/tree.api";
 //请求星标任务接口
 export function getStarTask() {
   return request({

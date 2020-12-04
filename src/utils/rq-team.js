@@ -1,5 +1,4 @@
 import {request} from "./request";
-import {data} from "@/mock/tree.api";
 //请求地区
 export function getRegion() {
     return request({

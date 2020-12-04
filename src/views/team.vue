@@ -70,8 +70,9 @@
 		<div class="grid flexNode">
 			<div class="col5" v-for="(item1,index1) in list">
 				<perfect-scrollbar>
+<!--          <draggable id="list1" :list="list" class="list-group" draggable=".ucard" group="a" @end="end(item1)">-->
 					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list[index1]" :key="index">
-						<div class="uflex">
+            <div class="uflex">
 							<div class="btxt">{{item.name}}</div>
 							<div>
 								<img class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">
@@ -102,7 +103,8 @@
 <!--							<div class="flex1 uels">&lt;!&ndash;项目增加望申请延迟1天&ndash;&gt;{{item.pjDynamic[1].dynamicContent}}</div>-->
 <!--							<div>&lt;!&ndash;10.11 12:00&ndash;&gt;{{item.pjDynamic[1].release_time.slice(10)}}</div>-->
 <!--						</div>-->
-					</div>
+          </div>
+<!--          </draggable>-->
 				</perfect-scrollbar>
 			</div>
 <!--			<div class="col5">-->
@@ -460,7 +462,6 @@
 					</Form>
           <perfect-scrollbar>
 					<div class="wbox">
-
 						<div class="ucard flex" v-for="(item,index) in taskInfo">
 							<div class="lfbox">
 								<Icon type="md-arrow-dropdown" size="24"/>
@@ -511,9 +512,10 @@
 <!--							<img class="img mr20" :src="require('@/assets/images/home/Collection.png')">-->
 <!--						</div>-->
 
-						<div class="addbox mflex"><Icon type="md-add" size="24"/>添加任务</div>
 					</div>
           </perfect-scrollbar>
+            <div class="addbox mflex"><Icon type="md-add" size="24"/>添加任务</div>
+
 					<div class="mflex mtb10" style="margin-top: 20px;">
 						<img class="micon" :src="require('@/assets/images/detail/Milestone.png')">节点里程碑
 					</div>
@@ -1136,6 +1138,9 @@
 					}
 				}
 			},
+      end(item) {
+
+      },
 			release(){
 				this.modal = false
 			},
@@ -1268,7 +1273,7 @@
 	margin-right: 15px;
 	vertical-align: middle;
 }
-.wbox{border: 1px solid #E6E6E9;border-radius: 8px;}
+.wbox{border: 1px solid #E6E6E9;border-radius: 8px;height: 250px;}
 .wbox .ucard{border-bottom: 1px solid #324364;margin-bottom:0}
 .addbox{padding: 10px 20px;cursor: pointer;}
 ::v-deep .wbox .ivu-progress-inner {background-color: #141e33;}

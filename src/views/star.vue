@@ -173,7 +173,7 @@
 
     </div>
     <!-- 星标项目弹窗 -->
-    <Modal v-model="modal" class="modal" scrollable :title="proInfo.title" :footer-hide="true" width="1200">
+    <Modal v-model="modal" class="modal" scrollable :title="proInfoName" :footer-hide="true" width="1200">
       <div class="mdflex">
         <div class="lbox">
           <div class="grid">
@@ -558,6 +558,7 @@
         tag:[],
         place:[],
 
+        proInfoName:[],
         proInfoTask:[],
         proInfosponsor:[],
         proInfoTeam:[],
@@ -679,6 +680,7 @@
 				this.proInfo = info
 				this.modal = true
         getStarProInfo().then(res => {
+          this.proInfoName = res.data[0].name
           this.node = res.data[0].node
           this.end_time = res.data[0].end_time
           this.remarks = res.data[0].remarks

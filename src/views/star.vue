@@ -116,7 +116,7 @@
             <div class="obtn uels">{{item.endTime.split(" ")[0]}}</div>
 
             <!--星标任务：执行人-->
-            <div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
+            <div class="sbtn pd15 uels" v-for="(item,index) in proExecutor" :key="index">{{item.username}}</div>
           </div>
         </div>
       </div>
@@ -267,7 +267,7 @@
 
                 <div class="flex mt5">
                   <div class="obtn uels redbtn pd15">{{item.endTime}}截止</div>
-                  <div class="sbtn pd15 uels mlr">{{item.executor[0].username}}</div>
+                  <div class="sbtn pd15 uels mlr" v-for="(item,index) in proExecutor" :key="index">{{item.username}}</div>
                 </div>
               </div>
               <img class="img mr20" :src="require('@/assets/images/home/Collection.png')">
@@ -568,6 +568,7 @@
         proInfoNode:[],
         proInfoUser:[],
         proInfoAct:[],
+        proExecutor:[],
 
         valueText: 3,
 				modal: false,
@@ -696,6 +697,8 @@
           this.proInfoNode = res.data[3]
           this.proInfoUser = res.data[2]
           this.proInfoAct = res.data[4]
+
+          this.proExecutor = res.data[1].executor
 
           for(let i=0;i<this.proInfoTask.length;i++){
 

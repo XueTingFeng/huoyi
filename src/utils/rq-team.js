@@ -39,11 +39,11 @@ export function getTeamMember(){
     })
 }
 //查找项目信息
-export function getProjectInfo(){
+export function getProjectInfo(info){
     return request({
         url:'/api/project/findProjectInfoById',
         params:{
-            pj_id:'1',
+            pj_id:info.pj_id,
             user_id:'1',
         },
     })
@@ -68,15 +68,15 @@ export function addProject(addData){
         data:{
             //必填
             projectName:addData.projectName,
-            nodeId:'1',
+            nodeId:addData.nodeId,
             endTime:new Date(addData.endTime).format("yyyy-MM-dd hh:mm:ss"),
             placeId:addData.placeId,
             initiator:/*addData.initiator*/'1',
-            teamId:'1',
+            teamId:addData.teamId,
             priority:addData.priority,
             // completeTime:'',
             principal:'1'/*addData.principal*/,
-            typeId:'1',
+            typeId:addData.typeId/*addData.teamId*/,
 //非必填
             remarks:addData.remarks,
             tags:'',

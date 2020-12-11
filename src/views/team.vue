@@ -320,6 +320,7 @@
 						<Dropdown placement="top-start">
 							<span class="ml20"><!--数字化团队-->{{addProInfo.teamName}}<Icon type="ios-arrow-down" size="22"/></span>
 							<DropdownMenu slot="list" style="padding: 6px 10px;">
+                <perfect-scrollbar>
 								<div style="text-align: center;">选择位置</div>
 								<div style="height: 75px;">
 									<div class="uflex mt10" v-for="(item,index) in dept">
@@ -331,11 +332,13 @@
 <!--								<div style="text-align: center;">-->
 <!--									<Button type="primary" @click="search">确定</Button>-->
 <!--								</div>	-->
+                </perfect-scrollbar>
 							</DropdownMenu>
 						</Dropdown>
             <Dropdown placement="top-start">
               <span class="ml20"><!--数字化团队-->{{addProInfo.typeName}}<Icon type="ios-arrow-down" size="22"/></span>
               <DropdownMenu slot="list" style="padding: 6px 10px;">
+                <perfect-scrollbar>
                 <div style="text-align: center;">选择位置</div>
                 <div style="height: 75px;">
                   <div class="uflex mt10" v-for="(item,index) in dept[0].types">
@@ -347,11 +350,13 @@
 <!--                <div style="text-align: center;">-->
 <!--                  <Button type="primary" @click="search">确定</Button>-->
 <!--                </div>-->
+                </perfect-scrollbar>
               </DropdownMenu>
             </Dropdown>
 						<Dropdown placement="top-start">
 							<span class="ml20"><!--产品(任务)计划-->{{addProInfo.nodeName}}<Icon type="ios-arrow-down" size="22"/></span>
 							<DropdownMenu slot="list" style="padding: 6px 10px;">
+                <perfect-scrollbar>
 								<div style="text-align: center;">选择状态</div>
 								<div style="height: 75px;">
 									<div class="uflex mt10" v-for="(item,index) in dept[0].types[0].nodes">
@@ -363,9 +368,9 @@
 <!--								<div style="text-align: center;">-->
 <!--									<Button type="primary" @click="search">确定</Button>-->
 <!--								</div>	-->
-							</DropdownMenu>
+                </perfect-scrollbar>
+              </DropdownMenu>
 						</Dropdown>
-
 					</div>
 					<div class="item-li">
 						<div class="uflex">
@@ -481,7 +486,7 @@
 <!--								</Progress>-->
 								<div class="flex mt5">
 									<div class="obtn uels redbtn pd15"><!--10月10号截止-->{{item.endTime.split(" ")[0]}}</div>
-									<div class="sbtn pd15 uels mlr"><!--周文杰-->{{item.executor[0].username}}</div>
+									<div class="sbtn pd15 uels mlr" v-for="(renwu,index1) in item.executor"><!--周文杰-->{{renwu.username}}</div>
 								</div>
 							</div>
 							<img class="img mr20" :src="require('@/assets/images/home/Collection.png')">
@@ -654,7 +659,9 @@
 								</FormItem>
 							</div>
 						</Form>
+
             <template v-for="(item,index) in dynamic">
+            <perfect-scrollbar>
 						<div class="uflex">
 							<div class="mflex flex1 uels">
 								<img class="micon" :src="require('@/assets/images/detail/Dynamic.png')"><!--沈达一-->{{item.name}}
@@ -665,7 +672,9 @@
 							<div class="uflex"><!--今天10:00-->{{item.release_time}}</div>
 						</div>
 						<div class="uflex blue-txt"><!--设备机台制作二维码，先出设计-->{{item.task_name}}</div>
+            </perfect-scrollbar>
             </template>
+
 <!--						<div class="uflex mt15">-->
 <!--							<div class="mflex flex1 uels">-->
 <!--								<span class="ml20">沈达一</span>-->
@@ -936,9 +945,9 @@
 			}
 		},
 		created() {
-			this.$nextTick(() => {
-				this.getStarPro()
-			})
+			// this.$nextTick(() => {
+			// 	this.getStarPro()
+			// })
       //获取地区
       getRegion().then(res => {
         this.region=res.data
@@ -946,6 +955,12 @@
       //获取团队
       getTeam().then(res =>{
         this.deptName=res.data[0].teamName
+        this.addProInfo.teamName=res.data[0].teamName
+        this.addProInfo.teamId=res.data[0].teamId
+        this.addProInfo.typeName=res.data[0].types[0].typeName
+        this.addProInfo.typeId=res.data[0].types[0].typeId
+        this.addProInfo.nodeName=res.data[0].types[0].nodes[0].nodeName
+        this.addProInfo.nodeId=res.data[0].types[0].nodes[0].nodeId
         this.dept=res.data
       })
       //获取团队所属项目
@@ -964,20 +979,20 @@
       // blueName(){
       // this.listmatch(/\{[^\}]+\}/)[0]
       // },
-			getStarPro(){
-				this.$mock('starPro').then(res => {
-					this.list1=res.filter(item=>item.status.id===1)
-					this.list2=res.filter(item=>item.status.id===2)
-					this.list3=res.filter(item=>item.status.id===3)
-					this.list4=res.filter(item=>item.status.id===4)
-					this.list5=res.filter(item=>item.status.id===5)
-				}).catch()
-			},
+			// getStarPro(){
+			// 	this.$mock('starPro').then(res => {
+			// 		this.list1=res.filter(item=>item.status.id===1)
+			// 		this.list2=res.filter(item=>item.status.id===2)
+			// 		this.list3=res.filter(item=>item.status.id===3)
+			// 		this.list4=res.filter(item=>item.status.id===4)
+			// 		this.list5=res.filter(item=>item.status.id===5)
+			// 	}).catch()
+			// },
 			// 项目弹窗
 			openPro(info){
 				this.proInfo = info
 				this.proModal = true
-        getProjectInfo().then(res => {
+        getProjectInfo(info).then(res => {
           this.projectInfo=res.data[0]
           this.taskInfo=res.data[1]
           this.projectPartInfo=res.data[2]
@@ -1049,9 +1064,8 @@
 			},
       //添加项目
 			openAdd(item){
-        this.addProInfo.nodeName=item.nodeName
-        this.addProInfo.typeName=item.typeName
-        this.addProInfo.teamName=item.teamName
+			  this.addProInfo.nodeName=item[0].nodeName
+        this.addProInfo.nodeId=item[0].nodeId
 				const date = new Date()
 				const year = date.getFullYear()
 				const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1

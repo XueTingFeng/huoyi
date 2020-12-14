@@ -58,12 +58,12 @@ export function getRegion() {
   })
 }
   //星标项目弹窗
-  export function getStarProInfo() {
+  export function getStarProInfo(pj_id) {
     return request({
       url: '/api/project/findProjectInfoById',
        params:{
          user_id: '1',
-         pj_id: '1'
+          pj_id: pj_id
        }
     })
 }

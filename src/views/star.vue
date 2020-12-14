@@ -1,43 +1,48 @@
 <template>
 	<div class="page">
-		<Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
-			<div class="rfloat">
-				<FormItem label="团队">
-					<Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
-						<Option :value="item.teamId" v-for="(item,index) in team">{{item.teamName}}</Option>
-<!--						<Option value="软件部">软件部</Option>-->
-					</Select>
-				</FormItem>
-				<FormItem label="地区">
-					<Select v-model="formItem.area" style="width: 150px;">
-						<Option value="reg.placeid" v-for="(reg,index) in region">{{reg.placeName}}</Option>
-<!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
-<!--						<Option value="台州 路桥">台州 路桥</Option>-->
-<!--						<Option value="台州 临海">台州 临海</Option>-->
-<!--						<Option value="台州 温岭">台州 温岭</Option>-->
-<!--						<Option value="台州 玉环">台州 玉环</Option>-->
-<!--						<Option value="台州 天台">台州 天台</Option>-->
-<!--						<Option value="台州 仙居">台州 仙居</Option>-->
-<!--						<Option value="台州 三门">台州 三门</Option>-->
-					</Select>
-				</FormItem>
-				<FormItem label="优先级">
-					<Select v-model="formItem.level" style="width: 150px;">
-						<Option value="非常紧急">非常紧急</Option>
-						<Option value="紧急">紧急</Option>
-						<Option value="正常">正常</Option>
-					</Select>
-				</FormItem>
-				<FormItem label="关键字">
-					<Input class="search" v-model="formItem.title" @keyup.enter.native="handleSubmit()" suffix="ios-search" placeholder="搜索"/>
-				</FormItem>
-				<Button type="primary" @click="handleSubmit()">确定</Button>
-			</div>
-		</Form>
+    <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
+      <div class="rfloat">
 
-    <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')" v-model="modal">星标项目</div>
+        <FormItem label="关键字">
+          <Input clearable class="search" v-model="formItem.title" @keyup.enter.native="handleSubmit()" suffix="ios-search" placeholder="搜索"/>
+        </FormItem>
+        <Button type="primary" @click="handleSubmit()">确定</Button>
+      </div>
+    </Form>
+
+
+
+
+    <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')" v-model="modal">星标项目
+      <div>
+        <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
+          <div class="lfloat">
+            <FormItem label="团队">
+              <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
+                <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+              </Select>
+            </FormItem>
+            <FormItem label="地区">
+              <Select v-model="formItem.area" style="width: 150px;">
+                <Option value="reg.placeid" v-for="(reg) in region">{{reg.placeName}}</Option>
+              </Select>
+            </FormItem>
+            <FormItem label="优先级">
+              <Select v-model="formItem.level" style="width: 150px;">
+                <Option value="1">1星</Option>
+                <Option value="2">2星</Option>
+                <Option value="3">3星</Option>
+              </Select>
+            </FormItem>
+            <Button type="primary" @click="">清空</Button>
+          </div>
+        </Form>
+      </div>
+
+    </div>
+
     <div class="grid">
-      <div class="ucard red-lbd" @click="openPro(item)" :class="['red-lbd','yel-lbd','blu-lbd'][index%3]" v-for="(item,index) in starPro" :key="index">
+      <div class="ucard red-lbd" @click="openPro(item.pj_id)" :class="['red-lbd','yel-lbd','blu-lbd'][index%3]" v-for="(item,index) in starPro" :key="index">
         <div class="uflex">
 
           <!--星标项目：项目标题-->
@@ -86,7 +91,30 @@
 
     <div class="more" @click="getMore()">查看更多<Icon type="md-arrow-dropdown" size="24"/></div>
 
-    <div class="mflex xtitle" style="position: relative;left: -8px;"><img :src="require('@/assets/images/home/star.png')">星标任务</div>
+
+
+
+    <div class="mflex xtitle" style="position: relative;left: -8px;"><img :src="require('@/assets/images/home/star.png')">星标任务
+      <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
+        <div class="rfloat">
+          <Tooltip placement="top-start" content="筛选任务所在项目">
+          <FormItem label="项目">
+            <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
+              <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+            </Select>
+          </FormItem>
+          </Tooltip>
+          <FormItem label="优先级">
+            <Select v-model="formItem.level" style="width: 150px;">
+              <Option value="1">1星</Option>
+              <Option value="2">2星</Option>
+              <Option value="3">3星</Option>
+            </Select>
+          </FormItem>
+          <Button type="primary" @click="">清空</Button>
+        </div>
+      </Form>
+    </div>
     <div class="grid">
       <div class="ucard flex " :class="['red-bd','blu-bd'][index%2]" v-for="(item,index) in starTask" :key="index" >
         <div class="lfbox">
@@ -122,7 +150,30 @@
       </div>
     </div>
     <!--星标人员-->
-    <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')">星标人员</div>
+    <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')">星标人员
+      <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
+        <div class="rfloat">
+          <FormItem label="团队">
+            <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
+              <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="状态">
+            <Select v-model="formItem.area" style="width: 150px;">
+              <Option value="reg.placeid" v-for="(reg) in region">{{reg.placeName}}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="忙碌度">
+            <Select v-model="formItem.level" style="width: 150px;">
+              <Option value="非常紧急">非常紧急</Option>
+              <Option value="紧急">紧急</Option>
+              <Option value="正常">正常</Option>
+            </Select>
+          </FormItem>
+          <Button type="primary" @click="">清空</Button>
+        </div>
+      </Form>
+    </div>
     <div class="grid">
       <div class="ucard pointer" @click="open" v-for="(item,index) in starPerson" :key="index">
 
@@ -236,9 +287,7 @@
               <FormItem label="执行者">
                 <Input class="mdinput" size="small" placeholder="执行者" style="width: 100px" />
               </FormItem>
-              <FormItem label="关键字">
-                <Input class="mdinput" size="small" search @on-search="search" suffix="ios-search" placeholder="搜索" style="width: 100px" />
-              </FormItem>
+
             </div>
           </Form>
 
@@ -581,39 +630,9 @@
 			this.$nextTick(() => {
 				// this.loadData()
 			});
-
-			//获取星标任务多个数据
-			 getStarTask().then( res => {
-			   // console.log(res)
-         this.starTask = res.data
-
-         //获取星标任务状态，判断状态
-         for(let i=0;i<this.starTask.length;i++){
-
-           let task = this.starTask[i];
-           //console.log(task);
-           if(task.status===0){
-             this.starTask[i].status='未开始'
-           }else if(task.status===1){
-             this.starTask[i].status='进行中'
-           }else if(task.status===2){
-             this.starTask[i].status='待接收'
-           }else if(task.status===3){
-             this.starTask[i].status='已完成'
-           }
-         }
-
-
-       })
-
-      getStarPro().then(res => {
-        this.starPro = res.data
-        this.name=res.data.name
-      })
-      //axios获取星标人员
-      getStarPerson().then(res => {
-        this.starPerson=res.data
-      })
+      this.getStarTask()
+      this.getStarPro()
+      this.getStarPerson()
 
       //获取团队
       getTeam().then(res => {
@@ -633,6 +652,46 @@
 			// 	// this.getStarPerson()
 			// },
 			//点击查看更多
+
+      //获取星标项目
+      getStarPro() {
+        getStarPro().then(res => {
+          this.starPro = res.data
+          this.name=res.data.name
+        })
+      },
+      getStarTask() {
+        //获取星标任务多个数据
+        getStarTask().then( res => {
+          // console.log(res)
+          this.starTask = res.data
+
+          //获取星标任务状态，判断状态
+          for(let i=0;i<this.starTask.length;i++){
+
+            let task = this.starTask[i];
+            //console.log(task);
+            if(task.status===0){
+              this.starTask[i].status='未开始'
+            }else if(task.status===1){
+              this.starTask[i].status='进行中'
+            }else if(task.status===2){
+              this.starTask[i].status='待接收'
+            }else if(task.status===3){
+              this.starTask[i].status='已完成'
+            }
+          }
+
+
+        })
+      },
+      getStarPerson() {
+        //axios获取星标人员
+        getStarPerson().then(res => {
+          this.starPerson=res.data
+        })
+      },
+
 			getMore(){
 				this.params.page +=1
 				this.$mock('starPro').then(res => {
@@ -677,10 +736,12 @@
 				});
 			},
 			// 星标项目弹窗
-			openPro(info){
-				this.proInfo = info
+			openPro(pj_id){
+				//this.proInfo = info
 				this.modal = true
-        getStarProInfo().then(res => {
+
+        getStarProInfo(pj_id).then(res => {
+          this.pj_id = res.data.pj_id
           this.proInfoName = res.data[0].name
           this.node = res.data[0].node
           this.end_time = res.data[0].end_time
@@ -715,7 +776,7 @@
             }
           }
         })
-
+        this.getStarProInfo()
 
 			},
 			// 星标人员弹窗

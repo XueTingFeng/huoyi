@@ -41,9 +41,21 @@ export function postMyTask(addMyTask) {
       name: addMyTask.name,
       end_time:new Date(addMyTask.end_time).format("yyyy-MM-dd hh:mm:ss"),
       priority:addMyTask.priority,
-      status:addMyTask.status,
+      status:'2',
       member_id:addMyTask.member_id,
       state: '0'
+    },
+    type:"form"
+  })
+}
+
+export function postMyTaskStatus(postStatus) {
+  return request({
+    url: '/api/project/updateProjectTask',
+    method: 'post',
+    data: {
+      task_id: '2',
+      status: postStatus.status
     },
     type:"form"
   })

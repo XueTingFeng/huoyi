@@ -45,9 +45,9 @@
 				</FormItem>
 				<FormItem label="优先级">
 					<Select v-model="formItem.level" style="width: 150px;">
-						<Option value="非常紧急">非常紧急</Option>
-						<Option value="紧急">紧急</Option>
-						<Option value="正常">正常</Option>
+						<Option value="1">1星</Option>
+						<Option value="2">2星</Option>
+						<Option value="3">3星</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="关键字">
@@ -60,13 +60,13 @@
 			<div class="col5">
 				<div class="uflex mtm">
 					<div class="btxt">进行中<span class="ml">{{list1.length}}</span></div>
-					<div class="addbtn" @click="open('进行中')">+</div>
+<!--					<div class="addbtn" @click="open('进行中')">+</div>-->
 				</div>
 			</div>
 			<div class="col5">
 				<div class="uflex mtm">
 					<div class="btxt">未开始<span class="ml">{{list2.length}}</span></div>
-					<div class="addbtn" @click="open('未开始')">+</div>
+<!--					<div class="addbtn" @click="open('未开始')">+</div>-->
 				</div>
 			</div>
 			<div class="col5">
@@ -99,10 +99,10 @@
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
 									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>
-										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>
-										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>
-										<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>
+<!--										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>-->
+<!--										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>-->
+<!--										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>-->
+										<DropdownItem @click.native="dropdown('已完成')"><span @click="changeStatus(postStatus.status=3)" >已完成</span></DropdownItem>
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">进行中</div>
@@ -197,10 +197,8 @@
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
 									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>
-										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>
-										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>
-										<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>
+										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>
+										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">待接收</div>
@@ -238,7 +236,7 @@
 					<div class="ucard flex gay-bd" v-for="(item,index) in list4" :key="index">
 						<div class="lfbox down">
 							<Icon type="md-arrow-dropdown" size="24"/>
-							<div class="state">{{item.status.name}}</div>
+							<div class="state">已完成</div>
 						</div>
 						<div class="flex1">
 							<div class="uflex lh24">
@@ -379,9 +377,13 @@
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
-					<img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目id
+					<img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
 				</div>
-				<div class="flex1"><Input v-model="addMyTask.pj_id" class="search" placeholder="所属项目"/></div>
+				<div class="flex1"><!--<Input  class="search" placeholder="所属项目"/>-->
+          <Select style="width: 150px;">
+            <option value="1" class="search" v-model="addMyTask.pj_id"></option>
+          </Select>
+          </div>
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
@@ -424,7 +426,7 @@
 <script>
 	import draggable from "vuedraggable";
 
-	import {getMyProject,getMyTask,postMyTask,getTeamMembers} from "../utils/rq-my";
+	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus} from "../utils/rq-my";
 
   export default {
 		components: {
@@ -443,6 +445,9 @@
           status:'',
           member_id:'',
           state: ''
+        },
+        postStatus: {
+			    status:''
         },
 				fromId:'',
 				toId:'',
@@ -510,6 +515,11 @@
 
         }).catch()
 			},
+      changeStatus() {
+		    postMyTaskStatus(this.postStatus).then(res => {
+
+        })
+      },
 			// 添加打开弹窗
 			open(str){
 				this.state = str

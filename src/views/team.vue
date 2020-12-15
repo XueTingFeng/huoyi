@@ -38,8 +38,12 @@
 		<div class="grid flexNode">
 			<div class="col5" style="" v-for="(item,index) in node">
 				<div class="uflex mtm">
-					<div class="btxt"><!--产品(任务)计划-->{{index}}<span class="ml">{{list1.length}}</span></div>
-					<div class="addbtn" @click="openAdd(item)">+</div>
+					<div class="btxt"><!--产品(任务)计划-->{{index}}<span class="ml">{{item.length}}</span></div>
+					<div class="addbtn" @click="openAdd(item)">
+            <Tooltip content="新建项目" placement="bottom">
+              +
+            </Tooltip>
+          </div>
 				</div>
 			</div>
 <!--			<div class="col5">-->
@@ -71,11 +75,14 @@
 			<div class="col5" v-for="(item1,index1) in list">
 				<perfect-scrollbar>
 <!--          <draggable id="list1" :list="list" class="list-group" draggable=".ucard" group="a" @end="end(item1)">-->
-					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list[index1]" :key="index">
+					<div class="ucard red-lbd" style="width: 250px;height: 188px" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list[index1]" :key="index">
             <div class="uflex">
 							<div class="btxt">{{item.name}}</div>
 							<div>
-								<img class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">
+                <Tooltip content="星标" placement="bottom">
+                  <img class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">
+                </Tooltip>
+<!--								<img class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">-->
 							</div>
 						</div>
 						<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
@@ -89,9 +96,21 @@
 <!--              <span>{{item.progress}}</span>-->
 <!--            </Progress>-->
 						<div class="uflex mtb10">
-							<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>
-							<div class="col3 sbtn uels">{{item.place}}</div>
-							<div class="col3 sbtn uels">{{item.principal}}</div>
+							<div class="col3 obtn uels">
+                <Tooltip content="截止时间" placement="bottom">
+                  {{parseTime(item.release_time)}}
+                </Tooltip>
+              </div>
+							<div class="col3 sbtn uels">
+                <Tooltip content="地区" placement="bottom">
+                {{item.place}}
+                </Tooltip>
+              </div>
+							<div class="col3 sbtn uels">
+                <Tooltip content="负责人" placement="bottom">
+                  {{item.principal}}
+                </Tooltip>
+              </div>
 						</div>
 						<div class="flex" v-for="(Proitem,Pro) in item.dynamics">
 							<div class="key"><!--周杰：-->{{Proitem.member_name}}:</div>
@@ -519,7 +538,7 @@
 
 					</div>
           </perfect-scrollbar>
-            <div class="addbox mflex"><Icon type="md-add" size="24"/>添加任务</div>
+            <div class="addbox mflex" @click="addTeamTask"><Icon type="md-add" size="24"/>添加任务</div>
 
 					<div class="mflex mtb10" style="margin-top: 20px;">
 						<img class="micon" :src="require('@/assets/images/detail/Milestone.png')">节点里程碑
@@ -629,7 +648,7 @@
               <Avatar shape="square" class="mr8" :src=item.avatar v-for="(item,index) in projectPartInfo"/>
 <!--							<Avatar shape="square" class="mr8" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />-->
 <!--							<Avatar shape="square" class="mr8" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />-->
-							<span class="plus"><Icon type="md-add" size="24"/></span>
+							<span class="plus"><Icon type="md-add" size="24" @click="addproUser"/></span>
 						</div>
 					</div>
 					<div class="rbody">
@@ -847,14 +866,112 @@
         </div>
       </div>
     </Modal>
+<!--添加参与者弹窗-->
+    <Modal v-model="addProjectUser" scrollable title="团队成员" :footer-hide="true" width="900">
+      <div class="grid modal">
+        <div class="ucard boder" v-for="(item,index) in teammember" @click="addProUser(item)">
+          <div class="uflex baseline">
+            <Rate class="rates" v-model="valueText" disabled icon="ios-square" />
+            <div class="mt15">
+              <Badge>
+                <Avatar shape="square" :src=item.avatar size="54" />
+                <div class="round" slot="count">
+                  <div class="ins"></div>
+                </div>
+              </Badge>
+              <div class="text"><!--张美兰-->{{item.userName}}</div>
+            </div>
+            <div class="textr">
+              <span class="group" v-if="item.isLeader==1">组长</span>
+              <img class="img" :src="require('@/assets/images/home/Collection.png')">
+            </div>
+          </div>
+          <div class="flex" v-for="(project1) in item.project">
+            <div class="w50 uels"><!--项目1-->{{project1.name}}</div>
+            <div class="flex1 uels"><!--调整产能参数结构-->{{project1.taskName}}</div>
+            <div><!--截至10.11 12:00-->{{project1.taskEndTime}}</div>
+          </div>
+        </div>
+      </div>
+    </Modal>
+<!--    添加任务弹窗-->
+    <Modal v-model="addTaskWin" scrollable title="创建新任务">
+      <div class="flex">
+<!--        <div class="lfbox down">-->
+<!--          <Dropdown placement="right-start" >-->
+<!--            <Icon type="md-arrow-dropdown" size="24"/>-->
+<!--            <DropdownMenu slot="list">-->
+<!--              <DropdownItem @click.native="dropdown('未开始')" v-model="addMyTask.status=0">未开始</DropdownItem>-->
+<!--              <DropdownItem @click.native="dropdown('进行中')" v-model="addMyTask.status=1">进行中</DropdownItem>-->
+<!--              <DropdownItem @click.native="dropdown('待接收')" v-model="addMyTask.status=2">待接收</DropdownItem>-->
+<!--              <DropdownItem @click.native="dropdown('已完成')" v-model="addMyTask.status=3">已完成</DropdownItem>-->
+<!--            </DropdownMenu>-->
+<!--          </Dropdown>-->
+
+<!--          <div class="state">{{state}}</div>-->
+<!--        </div>-->
+        <Input v-model="addMyTask.name" type="textarea" :rows="3" placeholder="输入产品需求内容......" />
+      </div>
+      <div class="uflex mtl">
+        <div class="label">
+          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目id
+        </div>
+        <div class="flex1"><Input v-model="addMyTask.pj_id" class="search" placeholder="所属项目"/></div>
+      </div>
+      <div class="uflex mtl">
+        <div class="label">
+          <img class="uicon" :src="require('@/assets/images/detail/Plan.png')">设置截止时间
+        </div>
+        <div class="flex1"><DatePicker v-model="addMyTask.end_time" type="datetime" class="search" placeholder="截止时间"></DatePicker></div>
+      </div>
+      <div class="uflex mtl">
+        <div class="label">
+          <img class="uicon" :src="require('@/assets/images/detail/priority.png')">优先级
+        </div>
+        <div class="flex1"><Rate v-model="addMyTask.priority" custom-icon="iconfont hy-star"></Rate></div>
+      </div>
+      <div class="uflex mtl">
+        <div class="label">
+          <img class="uicon" :src="require('@/assets/images/detail/Person.png')">执行人
+        </div>
+        <div class="flex1 down">
+          <Dropdown placement="right-start">
+            <span class="cbod">{{addMyTask.member_id}}</span>
+            <DropdownMenu slot="list" style="padding: 6px 10px;">
+              <Button type="default" ghost long @click="search">搜索</Button>
+              <RadioGroup v-model="addMyTask.member_id" vertical>
+                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in team" :key="index">
+                  <Radio :label="item.userId">{{item.userName}}</Radio>
+                </DropdownItem>
+              </RadioGroup>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+      </div>
+      <div slot="footer">
+        <Button type="default" ghost @click="save">完成并创建下一个</Button>
+        <Button type="primary" @click="finishTask">完成</Button>
+      </div>
+    </Modal>
 	</div>
 </template>
 
 <script>
-  import {getTeamMember,getRegion,screeningTeam,getProjectInfo,getTeam,getTeamProject,addProject} from "@/utils/rq-team";
+import {
+  getTeamMember,
+  getRegion,
+  screeningTeam,
+  getProjectInfo,
+  getTeam,
+  getTeamProject,
+  addProject,
+  upTeamProjectInfo,
+  addTask
+} from "@/utils/rq-team";
   export default {
 		data() {
 			return {
+			  i:0,
 			  //团队成员信息
 			  teammember:{},
         //地区
@@ -893,7 +1010,7 @@
           releaseTime:''
         },
         //添加项目信息
-      addProInfo:{
+        addProInfo:{
 			  teamId:'',
         teamName:'',
         typeId:'',
@@ -901,7 +1018,17 @@
         nodeId:'',
         nodeName:'',
       },
-
+        //添加项目任务
+        addMyTask: {
+          user_id:'',
+          pj_id:'',
+          name: '',
+          end_time:'',
+          priority:'',
+          status:'',
+          member_id:'',
+          state: ''
+        },
 				curTime:'',
 				formItem: {
 					area:'',
@@ -942,7 +1069,15 @@
 			    avatar:[],
           memberId:[],
         },
-			}
+        addProjectUser:false,
+        projectUser:'',
+        //项目弹窗添加参与者
+        upProInfo: {
+          projectId:'',
+          user_id:'',
+        },
+        addTaskWin:false,
+      }
 		},
 		created() {
 			// this.$nextTick(() => {
@@ -999,6 +1134,14 @@
           this.milestone=res.data[3]
           this.dynamic=res.data[4]
           this.folderInfo=res.data[5]
+          for (this.i=0;this.i<=this.projectPartInfo.length;this.i++){
+            if (this.i=this.projectPartInfo.length){
+              this.upProInfo.user_id=this.upProInfo.user_id+this.projectPartInfo[this.i].user_id
+            }else{
+              this.upProInfo.user_id=this.upProInfo.user_id+','+this.projectPartInfo[this.i].user_id
+            }
+          }
+          this.upProInfo.projectId=this.dynamic.pj_id
         })
 			},
 			//条件查询确定按钮事件
@@ -1064,8 +1207,8 @@
 			},
       //添加项目
 			openAdd(item){
-			  this.addProInfo.nodeName=item[0].nodeName
-        this.addProInfo.nodeId=item[0].nodeId
+			  // this.addProInfo.nodeName=item[0].nodeName
+        // this.addProInfo.nodeId=item[0].nodeId
 				const date = new Date()
 				const year = date.getFullYear()
 				const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
@@ -1076,6 +1219,10 @@
 				this.vo.createTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute
 				this.addModal = true
 			},
+      //添加任务
+      addTeamTask(){
+        this.addTaskWin=true
+      },
       //添加参与者弹窗
       addParticipants(){
         this.participants=true
@@ -1105,14 +1252,38 @@
         this.adduser.memberId.push(item.memberId)
         this.participants=false
       },
+      //项目弹窗添加参与者弹窗
+      addproUser(){
+        this.addProjectUser=true
+      },
+      //项目弹窗添加参与者
+      addProUser(item){
+
+        for (this.i=0;this.i<=this.projectPartInfo.length;this.i++){
+          if (item.userid=this.projectPartInfo[this.i].user_id){
+            this.addProjectUser=false
+
+          }else{
+            this.upProInfo.user_id=this.upProInfo.user_id+','+item.userid
+            upTeamProjectInfo(this.upProInfo)
+            this.addProjectUser=false
+          }
+        }
+        upTeamProjectInfo(this.upProInfo)
+        // upTeamProjectInfo(this.upProInfo).then(res=>{
+        // })
+      },
 			search(){
 
 			},
       //完成并创建下一个
 			save(){
-			  this.adduser=[]
+        this.adduser={
+          avatar:[],
+          memberId:[],
+        }
       },
-      //完成
+      //完成添加项目
 			finish(){
 			  addProject(this.addteamdata).then(res => {
 
@@ -1123,6 +1294,16 @@
           memberId:[],
         }
 			},
+      //完成添加项目任务
+      finishTask(){
+        addTask(this.addMyTask).then(res=>{
+
+        })
+      },
+      //完成并创建下一个任务
+      saveTask(){
+
+      },
       //选择地区
       checkPlace(item){
 			  this.vo.area=item.placeName

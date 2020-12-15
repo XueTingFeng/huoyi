@@ -89,3 +89,32 @@ export function addProject(addData){
         type:"form"
     })
 }
+//更新项目
+export function upTeamProjectInfo(item){
+    return request({
+        method:'post',
+        url:'/api/project/updateProject',
+        data:{
+            projectId:item.projectId,
+            executors:item.user_id,
+        },
+        type:"form"
+    })
+}
+export function addTask(item){
+    return request({
+        method:'post',
+        url:'/api/project/addProjectTask',
+        data:{
+            user_id:'1',
+            pj_id:item.pj_id,
+            name: item.name,
+            end_time:new Date(item.end_time).format("yyyy-MM-dd hh:mm:ss"),
+            priority:item.priority,
+            status:item.status,
+            member_id:item.member_id,
+            state: '0'
+        },
+        type:"form"
+    })
+}

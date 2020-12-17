@@ -16,7 +16,7 @@
 					<img :src="cur?require('@/assets/images/home/home-active.png'):require('../assets/images/home/home-unactive.png')">
 				</div>
 			</div>
-			<Avatar shape="square" src="user.avatar" />
+			<Avatar shape="square" :src="user.avatar" />
 			
 			<!-- <Dropdown>
 			    <Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
@@ -57,18 +57,20 @@ export default {
 		this.$nextTick(() => {
 			this.getMsgNum()
 		});
-		this.getUser()
+    this.getUser()
+
+
 	},
 	methods: {
-    getUser(user){
-      getUser.then(res => {
-        user.id = res.data.userId
-        user.name = res.data.userName
-        user.avatar = res.data.avatar
-        user.status = res.data.status
-        user.saturation = res.data.saturation
-      })
-    },
+     getUser(user){
+       getUser(user).then(res => {
+         user.id = res.data.userId
+         user.name = res.data.userName
+         user.avatar = res.data.avatar
+         user.status = res.data.status
+         user.saturation = res.data.saturation
+       })
+     },
 		getMsgNum(){
 			
 		},

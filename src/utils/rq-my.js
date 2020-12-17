@@ -1,4 +1,5 @@
 import {request} from "./request";
+import Cookies from 'js-cookie'
 
 //请求用户项目
 export function getMyProject() {
@@ -66,7 +67,7 @@ export function getUser(token) {
   return request({
     url: '/api/user/findUserByToken',
     params: {
-      token:token
+      token: Cookies.get(token)
     }
   })
 }

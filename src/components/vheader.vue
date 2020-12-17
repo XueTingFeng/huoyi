@@ -30,11 +30,20 @@
 
 <script>	
 import { removeToken } from '@/utils/auth'
+import {autoLogin} from "../utils/auth";
+
 export default {
 	data() {
 		return {
 			msgNum:2,
-			cur:true
+			cur:true,
+
+      user :{
+			  userName:'',
+        avatar:'',
+        status:0,
+        saturation:0
+      }
 		};
 	},
 	created() {
@@ -45,9 +54,15 @@ export default {
 		} 
 		this.$nextTick(() => {
 			this.getMsgNum()
-		}); 
+		});
+		this.autoLogin()
 	},
 	methods: {
+    autoLogin(user){
+      autoLogin.then(res => {
+        console.log(res.date)
+      })
+    },
 		getMsgNum(){
 			
 		},

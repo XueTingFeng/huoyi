@@ -60,3 +60,13 @@ export function postMyTaskStatus(myTaskId) {
     type:"form"
   })
 }
+
+// 根據token請求用戶信息
+export function getUser(token) {
+  return request({
+    url: '/api/user/findUserByToken',
+    params: {
+      token:token
+    }
+  })
+}

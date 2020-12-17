@@ -33,26 +33,8 @@
 						<div class="">
 
                 <img class="img" :src="require('@/assets/images/login/wechat.png' )" @click="show2 = true" >
-              <Modal
-                  v-model="show2"
-
-                  title="微信"
-                  @on-ok="ok"
-                  ok-text="登录"
-                  @on-cancel="cancel">
+              <Modal v-model="show2" title="微信" @on-ok="ok" ok-text="登录" @on-cancel="cancel">
                 <div id="wxLoginDiv" style="text-align: center"></div>
-              </Modal>
-
-
-							<img class="img" :src="require('@/assets/images/login/ding.png')" @click="show3 = true">
-              <Modal
-                  v-model="show3"
-
-                  title="钉钉扫码登录"
-                  @on-ok="ok"
-                  ok-text="登录"
-                  @on-cancel="cancel">
-                <div id="dingLogin" style="text-align: center;"><img src="" alt="" style="text-align:center;"></div>
               </Modal>
 
 						</div>
@@ -72,6 +54,7 @@
 import {setToken} from "@/utils/auth";
 import { login } from "@/api/login";
 import {getcode,getlogInTo} from "@/utils/rq-login";
+import {getToken} from "../utils/auth";
 
 export default {
 		name: "Login",
@@ -117,9 +100,9 @@ export default {
 					this.$Message.error('手机号码不正确')
 					return false
 				} */
-        this.$mock('login').then(res => {
+        getToken().then(res => {
           //login(this.loginForm).then(res => {
-          setToken(res.token)
+          window.sessionStorage.setItem('token',res.data.token)
           this.$router.push({path: this.redirect || "/"});
         }).catch()
       },
@@ -135,32 +118,27 @@ export default {
         });
       },
       codeLogin() {
-        let obj = new WxLogin({
-          self_redirect: true,
-          id: "wxLoginDiv",
-          appid: "ww468465bb8be614d4",
-          agentid : "1000002",
-          scope: "",
-          redirect_uri: "https://huoyi.pblog.top/api/user/loginEntWxCb",
-          state: "",
-          style: "",
-          href: ""// 网络css样式
+        window.WwLogin({
+          "id" : "wxLoginDiv",
+          "appid" : "ww468465bb8be614d4",
+          "agentid" : "1000002",
+          "redirect_uri" : "https://huoyi.pblog.top/api/user/loginEntWxCb",
+          "state" : "",
+          "href" : "",
         });
-
-
       },
 
-      watch: {
-        $router: {
-          handler: function (route) {
-            this.redirect = route.query && route.query.redirect;
-          },
-          immediate: true
-        }
-      }
+    //   watch: {
+    //     $router: {
+    //       handler: function (route) {
+    //         this.redirect = route.query && route.query.redirect;
+    //       },
+    //       immediate: true
+    //     }
+    //   }
     },
     mounted() {
-		  this.codeLogin()
+     this.codeLogin()
     }
   }
 </script>

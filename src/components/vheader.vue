@@ -30,7 +30,8 @@
 
 <script>	
 import { removeToken } from '@/utils/auth'
-import {autoLogin} from "../utils/auth";
+import {getUser} from "@/utils/rq-my";
+
 
 export default {
 	data() {
@@ -56,11 +57,11 @@ export default {
 		this.$nextTick(() => {
 			this.getMsgNum()
 		});
-		this.autoLogin()
+		this.getUser()
 	},
 	methods: {
-    autoLogin(user){
-      autoLogin.then(res => {
+    getUser(user){
+      getUser.then(res => {
         user.id = res.data.userId
         user.name = res.data.userName
         user.avatar = res.data.avatar

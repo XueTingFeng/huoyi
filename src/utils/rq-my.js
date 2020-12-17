@@ -49,13 +49,13 @@ export function postMyTask(addMyTask) {
   })
 }
 
-export function postMyTaskStatus(postStatus) {
+export function postMyTaskStatus(myTaskId) {
   return request({
     url: '/api/project/updateProjectTask',
     method: 'post',
     data: {
-      task_id: '2',
-      status: postStatus.status
+      task_id: myTaskId,
+      status: '3'
     },
     type:"form"
   })

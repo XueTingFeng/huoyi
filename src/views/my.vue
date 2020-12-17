@@ -102,7 +102,7 @@
 <!--										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>-->
-										<DropdownItem @click.native="dropdown('已完成')"><span @click="changeStatus(postStatus.status=3)" >已完成</span></DropdownItem>
+										<DropdownItem @click.native="dropdown('已完成')"><span v-model="item.myTaskId" @click="changeStatus(myTaskId)" >已完成</span></DropdownItem>
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">进行中</div>
@@ -435,6 +435,9 @@
 		data() {
 			return {
 			  myTask:[],
+        myTaskId:[],
+        taskId: [],
+
 			  team:[],
 			  addMyTask: {
           user_id:'',
@@ -447,7 +450,8 @@
           state: ''
         },
         postStatus: {
-			    status:''
+			    status:'',
+          task_id:''
         },
 				fromId:'',
 				toId:'',
@@ -487,7 +491,6 @@
 			// })
       this.getMyProject()
       this.getMyTask()
-
 		},
 		methods: {
 
@@ -504,6 +507,7 @@
 			getMyTask(){
 				getMyTask().then(res => {
 				  this.myTask = res.data[4]
+
           //进行中
 					this.list1=res.data[1].filter(item=>item.status===1)
           //未开始
@@ -514,9 +518,13 @@
 					this.list4=res.data[3].filter(item=>item.status===3)
 
         }).catch()
+
 			},
-      changeStatus() {
-		    postMyTaskStatus(this.postStatus).then(res => {
+      changeStatus(myTaskId) {
+        getMyTask().then(res => {
+              this.myTaskId = res.data[1].taskId
+        });
+		    postMyTaskStatus(myTaskId).then(res => {
 
         })
       },

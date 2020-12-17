@@ -10,7 +10,7 @@
 								<Select class="select" v-model="type">
 									<Option value="+86">+86</Option>
 								</Select>
-								<Input v-model="codeInfo.phone" placeholder="填写手机号码"></Input>
+								<Input v-model="phone" placeholder="填写手机号码"></Input>
 							</div>
 						<!--</FormItem>-->
 						<Button @click="sendcode" class="btn" long>发送验证码</Button>
@@ -62,26 +62,6 @@
 				</div>
 			
 		</div>
-<!--    验证码弹窗-->
-<!--    <Modal v-model="yzmtc" scrollable title="请输入验证码" @on-ok="logInTo" @on-cancel="cancel">-->
-<!--        <Form ref="formInline" :model="codeInfo" inline>-->
-<!--          <FormItem prop="phone">-->
-<!--            <Input type="text" v-model="codeInfo.phone" placeholder="手机号">-->
-<!--              <Icon type="ios-person-outline" slot="prepend"></Icon>-->
-<!--            </Input>-->
-<!--          </FormItem>-->
-<!--          <FormItem prop="yzm">-->
-<!--            <Input type="text" v-model="codeInfo.code" placeholder="验证码">-->
-<!--              <Icon type="ios-lock-outline" slot="prepend"></Icon>-->
-<!--            </Input>-->
-<!--          </FormItem>-->
-<!--          <FormItem prop="yhm">-->
-<!--            <Input type="text" v-model="codeInfo.userName" placeholder="用户名">-->
-<!--              <Icon type="ios-lock-outline" slot="prepend"></Icon>-->
-<!--            </Input>-->
-<!--          </FormItem>-->
-<!--        </Form>-->
-<!--    </Modal>-->
 	</div>
 </template>
 
@@ -98,13 +78,6 @@ export default {
     components: {},
 		data() {
 			return {
-        yzmtc:false,
-        codeInfo:{
-          phone:'',
-          code:'',
-          userName:'',
-        },
-
 				imgSrc:require('@/assets/images/bg.png'),
 				show: true,
         show2: false,
@@ -128,18 +101,6 @@ export default {
     },
 
 		methods: {
-		  //登入
-      logInTo(){
-        getlogInTo(this.codeInfo).then(res => {
-          setToken(res.token)
-          this.$router.push({path: this.redirect || "/"});
-        }).catch()
-      },
-      //发送验证码
-      code(){
-        getcode(this.codeInfo)
-        this.yzmtc=true
-      },
       ok() {
         this.$Message.info('登录成功');
         this.sendcode();

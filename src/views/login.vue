@@ -33,8 +33,9 @@
 						<div class="">
 
                 <img class="img" :src="require('@/assets/images/login/wechat.png' )" @click="show2 = true" >
-              <Modal v-model="show2" title="微信" @on-ok="ok" ok-text="登录" @on-cancel="cancel">
+              <Modal v-model="show2" title="微信" >
                 <div id="wxLoginDiv" style="text-align: center"></div>
+                <div slot="footer"></div>
               </Modal>
 
 						</div>
@@ -84,13 +85,13 @@ export default {
     },
 
 		methods: {
-      ok() {
-        this.$Message.info('登录成功');
-        this.sendcode();
-      },
-      cancel() {
-        this.$Message.info('Clicked cancel');
-      },
+      // ok() {
+      //   this.$Message.info('登录成功');
+      //   this.sendcode();
+      // },
+      // cancel() {
+      //   this.$Message.info('Clicked cancel');
+      // },
       sendcode() {
         /* if(!this.phone){
 					this.$Message.error('请输入手机号')
@@ -100,15 +101,16 @@ export default {
 					this.$Message.error('手机号码不正确')
 					return false
 				} */
-        getToken().then(res => {
+        this.$mock('login').then(res => {
           //login(this.loginForm).then(res => {
-          window.sessionStorage.setItem('token',res.data.token)
+          setToken(res.token)
           this.$router.push({path: this.redirect || "/"});
         }).catch()
       },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
+            //getToken().then({}) window.sessionStorage.setItem('token',res.data.token)
             this.$mock('login').then(res => {
               //login(this.loginForm).then(res => {
               setToken(res.token)

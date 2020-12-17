@@ -38,7 +38,7 @@
 		<div class="grid flexNode">
 			<div class="col5" style="" v-for="(item,index) in node">
 				<div class="uflex mtm">
-					<div class="btxt"><!--产品(任务)计划-->{{index}}<span class="ml">{{item.length}}</span></div>
+					<div class="btxt"><!--产品(任务)计划-->{{item.node_name}}<span class="ml">{{item.length}}</span></div>
 					<div class="addbtn" @click="openAdd(item)">
             <Tooltip content="新建项目" placement="bottom">
               +
@@ -75,7 +75,7 @@
 			<div class="col5" v-for="(item1,index1) in list">
 				<perfect-scrollbar>
 <!--          <draggable id="list1" :list="list" class="list-group" draggable=".ucard" group="a" @end="end(item1)">-->
-					<div class="ucard red-lbd" style="width: 250px;height: 188px" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list[index1]" :key="index">
+					<div class="ucard red-lbd" style="width: 250px;height: 188px" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list[index1].project" :key="index">
             <div class="uflex">
 							<div class="btxt">{{item.name}}</div>
 							<div>
@@ -298,7 +298,7 @@
 						<Dropdown placement="right-start">
 							<span class="cbod">{{vo.area}}</span>
 							<DropdownMenu slot="list" style="padding: 6px 10px;">
-								<Button type="default" ghost long @click="search">搜索</Button>
+								<Button type="default" ghost long @click="">搜索</Button>
 								<RadioGroup v-model="addteamdata.placeId" vertical>
 									<DropdownItem @click.native="checkPlace(item)" v-for="(item, index) in region" :key="index">
 										<Radio :label="item.placeId">{{item.placeName}}</Radio>
@@ -316,7 +316,7 @@
 						<Dropdown placement="right-start">
 							<span class="cbod">{{vo.person}}</span>
 							<DropdownMenu slot="list" style="padding: 6px 10px;">
-								<Button type="default" ghost long @click="search">搜索</Button>
+								<Button type="default" ghost long @click="">搜索</Button>
 								<RadioGroup v-model="addteamdata.principal" vertical>
 									<DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in teammember" :key="index">
 										<Radio :label="item.userId">{{item.userName}}</Radio>
@@ -914,9 +914,13 @@
       </div>
       <div class="uflex mtl">
         <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目id
+          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
         </div>
-        <div class="flex1"><Input v-model="addMyTask.pj_id" class="search" placeholder="所属项目"/></div>
+        <div class="flex1"><!--<Input  class="search" placeholder="所属项目"/>-->
+          <Select style="width: 150px;">
+            <option value="1" class="search" v-model="addMyTask.pj_id"></option>
+          </Select>
+        </div>
       </div>
       <div class="uflex mtl">
         <div class="label">
@@ -940,7 +944,7 @@
             <DropdownMenu slot="list" style="padding: 6px 10px;">
               <Button type="default" ghost long @click="search">搜索</Button>
               <RadioGroup v-model="addMyTask.member_id" vertical>
-                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in team" :key="index">
+                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in teammember" :key="index">
                   <Radio :label="item.userId">{{item.userName}}</Radio>
                 </DropdownItem>
               </RadioGroup>
@@ -1077,6 +1081,13 @@ import {
           user_id:'',
         },
         addTaskWin:false,
+        //筛选信息
+        screeningInfo:{
+          teamId:'',
+          place:'',
+          priority:'',
+          keyword:'',
+        },
       }
 		},
 		created() {
@@ -1100,8 +1111,8 @@ import {
       })
       //获取团队所属项目
       getTeamProject().then(res=>{
-        this.node=res.data[0]
-        this.list=res.data[0]
+        this.node=res.data
+        this.list=res.data
       })
       //获取团队成员
       getTeamMember().then(res=>{
@@ -1146,13 +1157,13 @@ import {
 			},
 			//条件查询确定按钮事件
       handleSubmit(){
-        this.list1=[]
-        this.list2=[]
-        this.list3=[]
-        this.list4=[]
-        this.list5=[]
+        // this.list1=[]
+        // this.list2=[]
+        // this.list3=[]
+        // this.list4=[]
+        // this.list5=[]
         //this.getStarPro()
-        screeningTeam().then(res => {
+        screeningTeam(this.formItem).then(res => {
           let newData=res.data.filter(item=>{
             if(this.formItem.title&&!this.formItem.area){
               return item.title.indexOf(this.formItem.title)>-1

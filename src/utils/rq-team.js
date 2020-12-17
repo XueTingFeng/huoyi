@@ -18,12 +18,12 @@ export function getTeam() {
     })
 }
 //筛选团队项目请求
-export function screeningTeam(){
+export function screeningTeam(info){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
             teamId:'1',
-            place:'',
+            place:info.area,
             priority:'',
             keyword:'',
         },
@@ -101,6 +101,7 @@ export function upTeamProjectInfo(item){
         type:"form"
     })
 }
+//添加项目任务
 export function addTask(item){
     return request({
         method:'post',

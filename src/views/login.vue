@@ -40,7 +40,7 @@
                   @on-ok="ok"
                   ok-text="登录"
                   @on-cancel="cancel">
-                <div id="dingWeiXin" style="text-align: center"></div>
+                <div id="wxLoginDiv" style="text-align: center"></div>
               </Modal>
 
 
@@ -135,50 +135,29 @@ export default {
         });
       },
       codeLogin() {
-        var obj = new WxLogin({
+        let obj = new WxLogin({
           self_redirect: true,
-          id: "dingWeiXin",
-          appid: "wxbdc5610cc59c1631",
-          scope: "snsapi_login",
-          redirect_uri: "https://passport.yhd.com/wechat/callback.do",
+          id: "wxLoginDiv",
+          appid: "ww468465bb8be614d4",
+          agentid : "1000002",
+          scope: "",
+          redirect_uri: "https://huoyi.pblog.top/api/user/loginEntWxCb",
           state: "",
           style: "",
           href: ""// 网络css样式
         });
-        var dingAppid = 'dingoazz7latsua0kyw7qi';
-        var redirect_url = encodeURIComponent('http://localhost:8081/api/user/callBackDingDing');
-        var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+dingAppid+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+redirect_url)
-        var obj = DDLogin({
-          id:"dingLogin",//这里需要你在自己的页面定义一个HTML标签并设置id，例如<div id="login_container"></div>或<span id="login_container"></span>
-          goto: goto, //请参考注释里的方式
-          style: "border:none;background-color:#FFFFFF;width:100px;height:100px;",
-          width : "365",
-          height: "400"
-        });
 
 
-        var handleMessage = function (event) {
-          var origin = event.origin;
-          if( origin == "https://login.dingtalk.com" ) { //判断是否来自ddLogin扫码事件。
-            var loginTmpCode = event.data;
-            window.location.href =  "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid="+ dingAppid +"&response_type=code&scope=snsapi_login&state=STATE&redirect_uri="+redirect_url+"&loginTmpCode=" +
-                loginTmpCode;
-          }
-        };
-        if (typeof window.addEventListener != 'undefined') {
-          window.addEventListener('message', handleMessage, false);
-        } else if (typeof window.attachEvent != 'undefined') {
-          window.attachEvent('onmessage', handleMessage);
-        }
       },
-      // watch: {
-      //   $router: {
-      //     handler: function (route) {
-      //       this.redirect = route.query && route.query.redirect;
-      //     },
-      //     immediate: true
-      //   }
-      // }
+
+      watch: {
+        $router: {
+          handler: function (route) {
+            this.redirect = route.query && route.query.redirect;
+          },
+          immediate: true
+        }
+      }
     },
     mounted() {
 		  this.codeLogin()

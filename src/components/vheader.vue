@@ -16,7 +16,7 @@
 					<img :src="cur?require('@/assets/images/home/home-active.png'):require('../assets/images/home/home-unactive.png')">
 				</div>
 			</div>
-			<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
+			<Avatar shape="square" src="user.avatar" />
 			
 			<!-- <Dropdown>
 			    <Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
@@ -39,6 +39,7 @@ export default {
 			cur:true,
 
       user :{
+			  userId:'',
 			  userName:'',
         avatar:'',
         status:0,
@@ -60,7 +61,11 @@ export default {
 	methods: {
     autoLogin(user){
       autoLogin.then(res => {
-        console.log(res.date)
+        user.id = res.data.userId
+        user.name = res.data.userName
+        user.avatar = res.data.avatar
+        user.status = res.data.status
+        user.saturation = res.data.saturation
       })
     },
 		getMsgNum(){

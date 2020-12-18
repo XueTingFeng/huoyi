@@ -122,13 +122,11 @@ export default {
     //登入
     logInTo(){
       getlogInTo(this.codeInfo).then(res => {
-        if (res.code ==200){
-          this.$router.push({path: this.redirect || "/"});
+        if (res.code!=200) {
+          alert(res.message)
         }
-
-      }).catch(res =>{
-        alert('error')
-      })
+        this.$router.push({path: this.redirect || "/"});
+      }).catch()
     },
     //发送验证码
     code(){

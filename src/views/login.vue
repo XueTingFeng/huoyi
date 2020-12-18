@@ -199,9 +199,8 @@ export default {
     }
   }
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
-	
+
 	.select{width: 115px;margin-right: 15px;}
 	::v-deep .select .ivu-select-selection{height: 45px;border: 1px solid #fff;border-radius: 15px;background-color: #0c1321;}
 	::v-deep .ivu-select-selection .ivu-select-selected-value{height: 45px;line-height: 45px;font-size: 16px;color: #fff;}

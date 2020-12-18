@@ -10,7 +10,7 @@
 			<div class="rfloat">
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-            <Option value=item.placeid v-for="(item,index) in region" :key="index">{{item.placeName}}</Option>
+            <Option value="" v-for="(item,index) in region" :key="index" @click="choosePlace(item)">{{item.placeName}}</Option>
 <!--						<Option value="台州 椒江">台州 椒江</Option>-->
 <!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
 <!--						<Option value="台州 路桥">台州 路桥</Option>-->
@@ -1084,7 +1084,7 @@ import {
         //筛选信息
         screeningInfo:{
           teamId:'',
-          place:'',
+          placeId:'',
           priority:'',
           keyword:'',
         },
@@ -1134,6 +1134,11 @@ import {
 			// 		this.list5=res.filter(item=>item.status.id===5)
 			// 	}).catch()
 			// },
+      //筛选选择地区
+      choosePlace(item){
+        this.screeningInfo.placeId=item.placeId
+        console.log(this.screeningInfo)
+      },
 			// 项目弹窗
 			openPro(info){
 				this.proInfo = info
@@ -1241,17 +1246,17 @@ import {
       //选择团队
       onTeam(item){
         this.addProInfo.teamName=item.teamName
-        this.addProInfo.teamId=item.teamId
+        this.addteamdata.teamId=item.teamId
       },
       //选择类型
       onType(item){
         this.addProInfo.typeName=item.typeName
-        this.addProInfo.typeId=item.typeId
+        this.addteamdata.typeId=item.typeId
       },
       //选择节点
       onNode(item){
         this.addProInfo.nodeName=item.nodeName
-        this.addProInfo.nodeId=item.nodeId
+        this.addteamdata.nodeId=item.nodeId
       },
       //回车事件
       addLabel(value){
@@ -1296,6 +1301,7 @@ import {
       },
       //完成添加项目
 			finish(){
+			  console.log(this.addteamdata)
 			  addProject(this.addteamdata).then(res => {
 
         })

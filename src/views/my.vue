@@ -194,13 +194,13 @@
 								<span>暂停中</span>
 							</div>
 							<div class="lfbox down">
-								<Dropdown placement="right-start" >
-									<Icon type="md-arrow-dropdown" size="24"/>
-									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>
-										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>
-									</DropdownMenu>
-								</Dropdown>
+<!--								<Dropdown placement="right-start" >-->
+<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
+<!--									<DropdownMenu slot="list">-->
+<!--										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>-->
+<!--										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>-->
+<!--									</DropdownMenu>-->
+<!--								</Dropdown>-->
 								<div class="state">待接收</div>
 							</div>
 							<div class="flex1">
@@ -364,10 +364,7 @@
 					<Dropdown placement="right-start" >
 						<Icon type="md-arrow-dropdown" size="24"/>
 						<DropdownMenu slot="list">
-							<DropdownItem @click.native="dropdown('未开始')" v-model="addMyTask.status=0">未开始</DropdownItem>
-							<DropdownItem @click.native="dropdown('进行中')" v-model="addMyTask.status=1">进行中</DropdownItem>
-							<DropdownItem @click.native="dropdown('待接收')" v-model="addMyTask.status=2">待接收</DropdownItem>
-							<DropdownItem @click.native="dropdown('已完成')" v-model="addMyTask.status=3">已完成</DropdownItem>
+							<DropdownItem @click.native="dropdown('待接收')" >待接收</DropdownItem>
 						</DropdownMenu>
 					</Dropdown>
 					
@@ -380,9 +377,18 @@
 					<img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
 				</div>
 				<div class="flex1"><!--<Input  class="search" placeholder="所属项目"/>-->
-          <Select style="width: 150px;">
-            <option value="1" class="search" v-model="addMyTask.pj_id"></option>
-          </Select>
+
+          <Dropdown placement="right-start">
+            <span class="cbod">{{addMyTask.pj_id}}</span>
+            <DropdownMenu slot="list" style="padding: 6px 10px;">
+              <RadioGroup v-model="addMyTask.pj_id" vertical>
+                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in join_pro" :key="index">
+                  <Radio :label="item.pj_id">{{item.name}}</Radio>
+                </DropdownItem>
+              </RadioGroup>
+            </DropdownMenu>
+          </Dropdown>
+
           </div>
 			</div>
 			<div class="uflex mtl">
@@ -445,7 +451,6 @@
           name: '',
           end_time:'',
           priority:'',
-          status:'',
           member_id:'',
           state: ''
         },
@@ -476,7 +481,10 @@
 				userName: [],
 
 
-        join_pro: [],
+        join_pro: {
+			     name:'',
+          pj_id:''
+         },
         task: [],
 
 				valueText:3,
@@ -535,7 +543,8 @@
           getTeamMembers().then(res => {
             this.team = res.data
             this.userName = res.data.userName
-          })
+            // this.member_id = res.data.member_id
+          });
 			},
 			change(){
 				this.status = this.status==0?1:0

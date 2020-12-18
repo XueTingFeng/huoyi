@@ -42,7 +42,6 @@ export function postMyTask(addMyTask) {
       name: addMyTask.name,
       end_time:new Date(addMyTask.end_time).format("yyyy-MM-dd hh:mm:ss"),
       priority:addMyTask.priority,
-      status:'2',
       member_id:addMyTask.member_id,
       state: '0'
     },
@@ -63,7 +62,8 @@ export function postMyTaskStatus(myTaskId) {
 }
 
 // 根據token請求用戶信息
-export function getUser(token) {
+const token = 'HuoYi-Token'
+export function getUser() {
   return request({
     url: '/api/user/findUserByToken',
     params: {

@@ -16,7 +16,7 @@
 					<img :src="cur?require('@/assets/images/home/home-active.png'):require('../assets/images/home/home-unactive.png')">
 				</div>
 			</div>
-			<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
+			<Avatar shape="square" :src="user.avatar" />
 			
 			<!-- <Dropdown>
 			    <Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
@@ -30,11 +30,22 @@
 
 <script>	
 import { removeToken } from '@/utils/auth'
+import {getUser} from "@/utils/rq-my";
+
+
 export default {
 	data() {
 		return {
 			msgNum:2,
-			cur:true
+			cur:true,
+
+      user :{
+			  userId:'',
+			  userName:'',
+        avatar:'',
+        status:0,
+        saturation:0
+      }
 		};
 	},
 	created() {
@@ -45,9 +56,21 @@ export default {
 		} 
 		this.$nextTick(() => {
 			this.getMsgNum()
-		}); 
+		});
+    this.getUser()
+
+
 	},
 	methods: {
+     getUser(user){
+       getUser(user).then(res => {
+         user.id = res.data.userId
+         user.name = res.data.userName
+         user.avatar = res.data.avatar
+         user.status = res.data.status
+         user.saturation = res.data.saturation
+       })
+     },
 		getMsgNum(){
 			
 		},

@@ -122,14 +122,22 @@ export default {
     //登入
     logInTo(){
       getlogInTo(this.codeInfo).then(res => {
-        setToken(res.token)
-        this.$router.push({path: this.redirect || "/"});
+        if (res.code!=200){
+          alert(res.message)
+        }else {
+          this.$router.push({path: this.redirect || "/"});
+        }
       }).catch()
     },
     //发送验证码
     code(){
-      getcode(this.codeInfo)
-      this.yzmtc=true
+      getcode(this.codeInfo).then(res => {
+        if(res.code!=200){
+          alert(res.message);
+        }else{
+          this.yzmtc=true
+        }
+      }).catch()
     },
     sendcode() {
       /* if(!this.phone){

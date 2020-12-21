@@ -29,9 +29,11 @@
             </FormItem>
             <FormItem label="优先级">
               <Select v-model="formItem.level" style="width: 150px;">
-                <Option value="1">1星</Option>
-                <Option value="2">2星</Option>
-                <Option value="3">3星</Option>
+                <Option value="pro_1">1星</Option>
+                <Option value="pro_2">2星</Option>
+                <Option value="pro_3">3星</Option>
+                <Option value="pro_4">4星</Option>
+                <Option value="pro_5">5星</Option>
               </Select>
             </FormItem>
             <Button type="primary" @click="">清空</Button>
@@ -94,7 +96,7 @@
 
 
 
-    <div class="mflex xtitle" style="position: relative;left: -8px;"><img :src="require('@/assets/images/home/star.png')">星标任务
+    <div class="mflex xtitle" style="position: relative;left: -8px; margin-top: 20px"><img :src="require('@/assets/images/home/star.png')">星标任务
       <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
         <div class="rfloat">
           <Tooltip placement="top-start" content="筛选任务所在项目">
@@ -106,9 +108,11 @@
           </Tooltip>
           <FormItem label="优先级">
             <Select v-model="formItem.level" style="width: 150px;">
-              <Option value="1">1星</Option>
-              <Option value="2">2星</Option>
-              <Option value="3">3星</Option>
+              <Option value="task_1">1星</Option>
+              <Option value="task_2">2星</Option>
+              <Option value="task_3">3星</Option>
+              <Option value="task_4">4星</Option>
+              <Option value="task_5">5星</Option>
             </Select>
           </FormItem>
           <Button type="primary" @click="">清空</Button>
@@ -150,7 +154,7 @@
       </div>
     </div>
     <!--星标人员-->
-    <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')">星标人员
+    <div class="mflex xtitle" style="margin-top: 20px;"><img :src="require('@/assets/images/home/star.png')">星标人员
       <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
         <div class="rfloat">
           <FormItem label="团队">
@@ -160,14 +164,17 @@
           </FormItem>
           <FormItem label="状态">
             <Select v-model="formItem.area" style="width: 150px;">
-              <Option value="reg.placeid" v-for="(reg) in region">{{reg.placeName}}</Option>
+              <Option value="1">正常</Option>
+              <Option value="0">外出</Option>
             </Select>
           </FormItem>
           <FormItem label="忙碌度">
             <Select v-model="formItem.level" style="width: 150px;">
-              <Option value="非常紧急">非常紧急</Option>
-              <Option value="紧急">紧急</Option>
-              <Option value="正常">正常</Option>
+              <Option value="1">1</Option>
+              <Option value="2">2</Option>
+              <Option value="3">3</Option>
+              <Option value="4">4</Option>
+              <Option value="5">5</Option>
             </Select>
           </FormItem>
           <Button type="primary" @click="">清空</Button>

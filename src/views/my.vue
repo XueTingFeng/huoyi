@@ -48,6 +48,8 @@
 						<Option value="1">1星</Option>
 						<Option value="2">2星</Option>
 						<Option value="3">3星</Option>
+            <Option value="4">4星</Option>
+            <Option value="5">5星</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="关键字">
@@ -148,10 +150,10 @@
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
 									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>
-										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>
-										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>
-										<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>
+										<DropdownItem @click.native="dropdown('未开始')">开始</DropdownItem>
+<!--										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>-->
+<!--										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>-->
+<!--										<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>-->
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">未开始</div>
@@ -194,13 +196,13 @@
 								<span>暂停中</span>
 							</div>
 							<div class="lfbox down">
-<!--								<Dropdown placement="right-start" >-->
-<!--									<Icon type="md-arrow-dropdown" size="24"/>-->
-<!--									<DropdownMenu slot="list">-->
-<!--										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>-->
-<!--										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>-->
-<!--									</DropdownMenu>-->
-<!--								</Dropdown>-->
+								<Dropdown placement="right-start" >
+									<Icon type="md-arrow-dropdown" size="24"/>
+									<DropdownMenu slot="list">
+										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>
+										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>
+									</DropdownMenu>
+								</Dropdown>
 								<div class="state">待接收</div>
 							</div>
 							<div class="flex1">
@@ -303,7 +305,7 @@
 		<Divider />
 		
 		<div class="mflex xtitle">
-			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">2</span>
+			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">{{myTask.length}}</span>
 		</div>
 
 
@@ -395,7 +397,7 @@
 				<div class="label">
 					<img class="uicon" :src="require('@/assets/images/detail/Plan.png')">设置截止时间
 				</div>
-				<div class="flex1"><DatePicker v-model="addMyTask.end_time" type="datetime" class="search" placeholder="截止时间"></DatePicker></div>
+				<div class="flex1"><DatePicker v-model="addMyTask.end_time" type="date" class="search" placeholder="截止时间"></DatePicker></div>
 			</div>
 			<div class="uflex mtl">
 				<div class="label">
@@ -517,13 +519,13 @@
 				  this.myTask = res.data[4]
 
           //进行中
-					this.list1=res.data[1].filter(item=>item.status===1)
+					this.list1=res.data[1]
           //未开始
-					this.list2=res.data[0].filter(item=>item.status===0)
+					this.list2=res.data[0]
           //待接收
-					this.list3=res.data[2].filter(item=>item.status===2)
+					this.list3=res.data[2]
           //待完成
-					this.list4=res.data[3].filter(item=>item.status===3)
+					this.list4=res.data[3]
 
         }).catch()
 
@@ -543,7 +545,7 @@
           getTeamMembers().then(res => {
             this.team = res.data
             this.userName = res.data.userName
-            // this.member_id = res.data.member_id
+             this.memberId = res.data.memberId
           });
 			},
 			change(){

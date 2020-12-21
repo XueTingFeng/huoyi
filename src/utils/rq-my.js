@@ -14,7 +14,7 @@ export function getMyProject() {
 //请求用户任务
 export function getMyTask() {
   return request({
-    url: 'api/user/findUserTasksByUserId',
+    url: '/api/user/findUserTasksByUserId',
     params: {
       userId: '1',
       type: '1'
@@ -61,13 +61,13 @@ export function postMyTaskStatus(myTaskId) {
   })
 }
 
-// 根據token請求用戶信息
-const token = 'HuoYi-Token'
-export function getUser() {
-  return request({
-    url: '/api/user/findUserByToken',
-    params: {
-      token: Cookies.get(token)
-    }
-  })
-}
+// // 根據token請求用戶信息
+// const token = 'HuoYi-Token'
+// export function getUser() {
+//   return request({
+//     url: '/api/user/findUserByToken',
+//     params: {
+//       token: Cookies.get(token)
+//     }
+//   })
+// }

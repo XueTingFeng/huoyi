@@ -13,7 +13,7 @@
             <Input v-model="codeInfo.phone" placeholder="填写手机号码"></Input>
           </div>
           <!--</FormItem>-->
-          <Button @click="code" class="btn" long>发送验证码</Button>
+          <Button @click="sendcode" class="btn" long>发送验证码</Button>
         </Form>
         <!--<Form v-show="!show" ref="loginForm" :model="loginForm" :rules="loginRules">
           <div class="uflex">
@@ -49,17 +49,17 @@
     <Modal v-model="yzmtc" scrollable title="请输入验证码" @on-ok="logInTo" @on-cancel="cancel">
         <Form ref="formInline" :model="codeInfo" inline>
           <FormItem prop="phone">
-            <Input type="text" v-model="codeInfo.phone" placeholder="手机号">
+            <Input class="input-call" type="text" v-model="codeInfo.phone" placeholder="手机号">
               <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
           </FormItem>
           <FormItem prop="yzm">
-            <Input type="text" v-model="codeInfo.code" placeholder="验证码">
+            <Input class="input-call" type="text" v-model="codeInfo.code" placeholder="验证码">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </Input>
           </FormItem>
           <FormItem prop="yhm">
-            <Input type="text" v-model="codeInfo.userName" placeholder="用户名">
+            <Input class="input-call" type="text" v-model="codeInfo.userName" placeholder="用户名">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </Input>
           </FormItem>
@@ -130,13 +130,14 @@ export default {
     },
     //发送验证码
     code(){
-      getcode(this.codeInfo).then(res => {
-        if(res.code!=200){
-          alert(res.message);
-        }else{
-          this.yzmtc=true
-        }
-      }).catch()
+      // getcode(this.codeInfo).then(res => {
+      //   if(res.code!=200){
+      //     alert(res.message);
+      //   }else{
+      //     this.yzmtc=true
+      //   }
+      // }).catch()
+      this.yzmtc=true
     },
     sendcode() {
       /* if(!this.phone){
@@ -190,6 +191,9 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+  .input-call :nth-last-child(1){
+  color: black !important;
+  }
 
 	.select{width: 115px;margin-right: 15px;}
 	::v-deep .select .ivu-select-selection{height: 45px;border: 1px solid #fff;border-radius: 15px;background-color: #0c1321;}

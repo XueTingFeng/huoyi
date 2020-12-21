@@ -10,7 +10,7 @@
 			<div class="rfloat">
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-            <Option value="" v-for="(item,index) in region" :key="index" @click="choosePlace(item)">{{item.placeName}}</Option>
+            <Option value="" v-for="(item,index) in region" :key="index" @click="choosePlace(item)" style="color: black">{{item.placeName}}</Option>
 <!--						<Option value="台州 椒江">台州 椒江</Option>-->
 <!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
 <!--						<Option value="台州 路桥">台州 路桥</Option>-->
@@ -287,7 +287,7 @@
 						<img class="uicon" :src="require('@/assets/images/detail/Time.png')">计划截止时间
 					</div>
 					<div class="flex1">
-						<DatePicker v-model="addteamdata.endTime" format="yyyy-MM-dd HH:mm" type="datetime" class="search" placeholder="计划截止时间"></DatePicker>
+						<DatePicker v-model="addteamdata.endTime" format="yyyy-MM-dd" type="date" class="search" placeholder="计划截止时间"></DatePicker>
 					</div>
 				</div>
 				<div class="uflex mt15 ml">
@@ -1102,11 +1102,11 @@ import {
       getTeam().then(res =>{
         this.deptName=res.data[0].teamName
         this.addProInfo.teamName=res.data[0].teamName
-        this.addProInfo.teamId=res.data[0].teamId
+        this.addteamdata.teamId=res.data[0].teamId
         this.addProInfo.typeName=res.data[0].types[0].typeName
-        this.addProInfo.typeId=res.data[0].types[0].typeId
+        this.addteamdata.typeId=res.data[0].types[0].typeId
         this.addProInfo.nodeName=res.data[0].types[0].nodes[0].nodeName
-        this.addProInfo.nodeId=res.data[0].types[0].nodes[0].nodeId
+        this.addteamdata.nodeId=res.data[0].types[0].nodes[0].nodeId
         this.dept=res.data
       })
       //获取团队所属项目

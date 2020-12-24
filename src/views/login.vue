@@ -15,19 +15,19 @@
           <!--</FormItem>-->
           <Button @click="sendcode" class="btn" long>发送验证码</Button>
         </Form>
-        <!--<Form v-show="!show" ref="loginForm" :model="loginForm" :rules="loginRules">
+        <Form v-show="!show" ref="loginForm" :model="loginForm" :rules="loginRules">
           <div class="uflex">
             <span class="bold">登录以继续使用</span>
             <span class="hand">忘记密码</span>
           </div>
           <FormItem prop="username">
-            <Input v-model="loginForm.username" class="mt30" placeholder="输入手机号或工作邮箱"></Input>
+            <Input v-model="loginForm.account" class="mt30" placeholder="输入账号"></Input>
           </FormItem>
           <FormItem prop="password">
             <Input type="password" v-model="loginForm.password" placeholder="密码"></Input>
           </FormItem>
           <Button class="btn" @click="handleLogin" long>立即开始</Button>
-        </Form>-->
+        </Form>
 
         <div class="uflex">
           <div class="">
@@ -40,7 +40,7 @@
 
           </div>
 
-          <!--<div class="hand" @click="show = !show">{{show?'账号密码登录':'验证码登录'}}</div>-->
+          <div class="hand" @click="show = !show">{{show?'账号密码登录':'验证码登录'}}</div>
         </div>
       </div>
 
@@ -74,7 +74,7 @@
 <script>
 import {setToken} from "@/utils/auth";
 import { login } from "@/api/login";
-import {getcode,getlogInTo} from "@/utils/rq-login";
+import {getcode,getlogInTo,getacclogInTo} from "@/utils/rq-login";
 import {getToken} from "../utils/auth";
 
 export default {
@@ -96,12 +96,12 @@ export default {
 				type:'+86',
 				phone: '',
 				loginForm: {
-					username: "admin",
-					password: "123456"
+          account: "",
+					password: ""
 				},
 				loginRules: {
-					username: [{required: true,trigger: "blur",message: "请输入手机号或工作邮箱"},{pattern: /(^1[3456789]\d{9}$)|(^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$)/,message: "手机号码或邮箱格式不正确",trigger: "blur"}],
-					password: [{required: true,trigger: "blur",message: "请输入密码"}]
+          account: {required: true,trigger: "blur",message: "请输入手机号或账号"},/*{pattern: /(^1[3456789]\d{9}$)|(^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$)/,message: "手机号码或邮箱格式不正确",trigger: "blur"}],*/
+          password: [{required: true,trigger: "blur",message: "请输入密码"}]
 				},
 				redirect: undefined
 			};
@@ -116,28 +116,29 @@ export default {
     //   this.$Message.info('登录成功');
     //   this.sendcode();
     // },
-    // cancel() {
-    //   this.$Message.info('Clicked cancel');
-    // },
+    cancel() {
+      this.$Message.info('Clicked cancel');
+    },
     //登入
     logInTo(){
       getlogInTo(this.codeInfo).then(res => {
         if (res.code!=200) {
           alert(res.message)
+        }else{
+          setToken(res.data.token)
+          this.$router.push({path: this.redirect || "/"});
         }
-        this.$router.push({path: this.redirect || "/"});
       }).catch()
     },
     //发送验证码
     code(){
-      // getcode(this.codeInfo).then(res => {
-      //   if(res.code!=200){
-      //     alert(res.message);
-      //   }else{
-      //     this.yzmtc=true
-      //   }
-      // }).catch()
-      this.yzmtc=true
+      getcode(this.codeInfo).then(res => {
+        if(res.code!=200){
+          alert(res.message);
+        }else{
+          this.yzmtc=true
+        }
+      }).catch()
     },
     sendcode() {
       /* if(!this.phone){
@@ -148,22 +149,26 @@ export default {
         this.$Message.error('手机号码不正确')
         return false
       } */
-      this.$mock('login').then(res => {
-        //login(this.loginForm).then(res => {
-        setToken(res.token)
-        this.$router.push({path: this.redirect || "/"});
-      }).catch()
+      this.yzmtc=true
+      // this.$mock('login').then(res => {
+      //   //login(this.loginForm).then(res => {
+      //   setToken(res.token)
+      //   this.$router.push({path: this.redirect || "/"});
+      // }).catch()
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.$mock('login').then(res => {
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+          getacclogInTo(this.loginForm).then(res => {
+            if (res.code == 10612){
+              alert(res.message)
+            }
             //login(this.loginForm).then(res => {
-            setToken(res.token)
+            setToken(res.data.token)
             this.$router.push({path: this.redirect || "/"});
           }).catch()
-        }
-      });
+      //   }
+      // });
     },
     codeLogin() {
       window.WwLogin({
@@ -176,14 +181,14 @@ export default {
       });
     },
 
-    //   watch: {
-    //     $router: {
-    //       handler: function (route) {
-    //         this.redirect = route.query && route.query.redirect;
-    //       },
-    //       immediate: true
-    //     }
-    //   }
+      // watch: {
+      //   $router: {
+      //     handler: function (route) {
+      //       this.redirect = route.query && route.query.redirect;
+      //     },
+      //     immediate: true
+      //   }
+      // }
   },
   mounted() {
     this.codeLogin()

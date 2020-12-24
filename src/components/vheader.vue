@@ -18,12 +18,12 @@
 			</div>
 <!--			<Avatar shape="square" :src="user.avatar" />-->
 			
-			<!-- <Dropdown>
-			    <Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
+			 <Dropdown>
+			    <Avatar shape="square" :src=user.avatar />
 				<DropdownMenu slot="list">
 					<DropdownItem @click.native="logout">退出登录</DropdownItem>
 				</DropdownMenu>
-			</Dropdown> -->
+			</Dropdown>
 		</div>
 	</div>
 </template>
@@ -31,6 +31,7 @@
 <script>	
 import { removeToken } from '@/utils/auth'
 import {getUser} from "@/utils/rq-my";
+import {getUserInfo} from "@/utils/rq-bheader";
 
 
 export default {
@@ -58,7 +59,9 @@ export default {
 			this.getMsgNum()
 		});
     // this.getUser()
-
+    getUserInfo().then(res=>{
+      this.user=res.data
+    })
 
 	},
 	methods: {

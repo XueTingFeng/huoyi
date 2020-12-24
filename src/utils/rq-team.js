@@ -1,4 +1,11 @@
 import {request} from "./request";
+//查询当前用户
+export function getUserInfo(){
+    return request({
+        method:'get',
+        url:'/api/user/findUserByToken',
+    })
+}
 //请求地区
 export function getRegion() {
     return request({
@@ -18,7 +25,7 @@ export function getTeam() {
     })
 }
 //筛选团队项目请求
-export function screeningTeam(info){
+export function screeningTeam(info,){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
@@ -35,6 +42,7 @@ export function getTeamMember(){
         url:'/api/team/findTeamMembersByTeamId',
         params:{
             teamId:'1',
+            userId:'1',
         },
     })
 }
@@ -61,7 +69,7 @@ export function getTeamProject(){
     })
 }
 //添加项目
-export function addProject(addData){
+export function addProject(addData,token){
     return request({
         method:"post",
         url:'/api/project/addProject',
@@ -71,16 +79,16 @@ export function addProject(addData){
             nodeId:addData.nodeId,
             endTime:new Date(addData.endTime).format("yyyy-MM-dd hh:mm:ss"),
             placeId:addData.placeId,
-            initiator:/*addData.initiator*/'1',
+            initiator:addData.initiator,
             teamId:addData.teamId,
             priority:addData.priority,
             // completeTime:'',
-            principal:'1'/*addData.principal*/,
-            typeId:addData.typeId/*addData.teamId*/,
+            principal:addData.principal,
+            typeId:addData.typeId,
 //非必填
             remarks:addData.remarks,
             tags:'',
-            executors:'',
+            executors:addData.executors,
             releaseTime:''
         },
         // headers:{
@@ -90,7 +98,7 @@ export function addProject(addData){
     })
 }
 //更新项目
-export function upTeamProjectInfo(item){
+export function upTeamProjectInfo(item,){
     return request({
         method:'post',
         url:'/api/project/updateProject',
@@ -107,15 +115,24 @@ export function addTask(item){
         method:'post',
         url:'/api/project/addProjectTask',
         data:{
-            user_id:'1',
+            user_id:item.user_id,
             pj_id:item.pj_id,
             name: item.name,
             end_time:new Date(item.end_time).format("yyyy-MM-dd hh:mm:ss"),
             priority:item.priority,
-            status:item.status,
             member_id:item.member_id,
             state: '0'
         },
         type:"form"
+    })
+}
+//查询项目用户
+export function getProUser(project){
+    return request({
+        method:'get',
+        url:'/api/project/findProjectMemberByProjectId',
+        params:{
+            projectId:project,
+        },
     })
 }

@@ -126,6 +126,8 @@ export default {
           alert(res.message)
         }else{
           setToken(res.data.token)
+          window.sessionStorage.setItem('token',data.token)
+
           this.$router.push({path: this.redirect || "/"});
         }
       }).catch()

@@ -17,12 +17,5 @@ export function removeToken() {
 }
 
 
-export function autoLogin() {
-  let token = getToken();
-  if(token!=null){
-return getUser(token)
-  }else{
-    return null;
-  }
-}
+
 

@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import {getUser} from './rq-my'
 
 const TokenKey = 'HuoYi-Token'
 

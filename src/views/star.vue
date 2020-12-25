@@ -49,7 +49,7 @@
 
           <!--星标项目：项目标题-->
           <div class="btxt">{{item.name}}</div>
-          <img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">
+          <img class="img" @click.stop="cancelPro(item)" :src="require('@/assets/images/home/Collection.png')">
         </div>
 
         <!--星标项目星星：iview的rate评分ui-->
@@ -132,7 +132,7 @@
 
             <!--星标任务:标题-->
             <div >{{item.name}}</div>
-            <img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">
+            <img class="img" @click.stop="cancelTask(item)" :src="require('@/assets/images/home/Collection.png')">
           </div>
           <Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
             <span class="mr8">发起人</span>
@@ -160,6 +160,11 @@
           <FormItem label="团队">
             <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
               <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="项目">
+            <Select v-model="formItem.area" style="width: 150px;">
+              <Option value="1"></Option>
             </Select>
           </FormItem>
           <FormItem label="状态">
@@ -575,8 +580,13 @@
     getRegion,
     getTeam,
     screeningStro,
-      getStarProInfo
+    getStarProInfo,
+    getUserInfo,
+    cancelStarPro,
+    cancelStarTask,
+    cancelStarUser,
   } from "../utils/rq-star";
+  import {getTeamProject} from "@/utils/rq-team";
   export default {
 		data() {
 			return {
@@ -631,24 +641,38 @@
 				empModal: false,
 				visible: false,
 				isEdit: false,
+        //当前用户信息
+        userInFo:{
+          userId:'',
+          userName:'',
+          avatar:'',
+          status:0,
+          saturation:0,
+          teamMemberId:'',
+        },
 			}
 		},
 		created() {
-			this.$nextTick(() => {
-				// this.loadData()
-			});
-      this.getStarTask()
-      this.getStarPro()
-      this.getStarPerson()
+      //获取当前用户
+      getUserInfo().then(res=>{
+        this.userInFo=res.data
+        this.$nextTick(() => {
+          // this.loadData()
+        });
+        this.getStarTask()
+        this.getStarPro()
+        this.getStarPerson()
 
-      //获取团队
-      getTeam().then(res => {
-        this.team=res.data
+        //获取团队
+        getTeam().then(res => {
+          this.team=res.data
+        })
+        //获取地区
+        getRegion().then(res => {
+          this.region=res.data
+        })
       })
-      //获取地区
-      getRegion().then(res => {
-        this.region=res.data
-      })
+
 		},
 
     methods: {
@@ -662,7 +686,7 @@
 
       //获取星标项目
       getStarPro() {
-        getStarPro().then(res => {
+        getStarPro(this.userInFo).then(res => {
           this.starPro = res.data
           this.name=res.data.name
         })
@@ -734,14 +758,67 @@
 					this.starPro = newData.slice(0,10)||[]
 				}).catch()
 			},
-			cancel(id){
-				this.$Modal.confirm({
-					title: '确认取消？',
-					onOk: () => {
-						this.$Message.info('点击取消!')
-					}
-				});
-			},
+      cancelPro(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelStarPro(item.pj_id,this.userInFo).then(res=>{
+              if (res.code==200){
+                getStarPro(this.userInFo).then(res => {
+                this.starPro = res.data
+                this.name=res.data.name
+              })
+              }
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
+      cancelTask(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelStarTask(item.pj_id,this.userInFo).then(res=>{
+              if (res.code==200){
+                getStarTask().then( res => {
+                  // console.log(res)
+                  this.starTask = res.data
+                  //获取星标任务状态，判断状态
+                  for(let i=0;i<this.starTask.length;i++){
+                    let task = this.starTask[i];
+                    //console.log(task);
+                    if(task.status===0){
+                      this.starTask[i].status='未开始'
+                    }else if(task.status===1){
+                      this.starTask[i].status='进行中'
+                    }else if(task.status===2){
+                      this.starTask[i].status='待接收'
+                    }else if(task.status===3){
+                      this.starTask[i].status='已完成'
+                    }
+                  }
+                })
+              }
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
+      cancelUser(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelStarUser(item.pj_id,this.userInFo).then(res=>{
+              if (res.code==200){
+                getStarPerson().then(res => {
+                this.starPerson=res.data
+              })
+              }
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
 			// 星标项目弹窗
 			openPro(pj_id){
 				//this.proInfo = info

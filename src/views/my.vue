@@ -129,7 +129,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{parseTime(item.endTime)}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -178,7 +178,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{parseTime(item.endTime)}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -224,7 +224,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{parseTime(item.endTime)}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -253,7 +253,7 @@
 <!--								<span>{{item.progress}}</span>-->
 <!--							</Progress>-->
 							<div class="flex mt5">
-								<div class="obtn uels">{{item.endTime}}截止</div>
+								<div class="obtn uels">{{parseTime(item.endTime)}}截止</div>
 								<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 							</div>
 						</div>
@@ -284,7 +284,7 @@
 						<div class="uflex mtb10">
 							<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>
 							<div class="col3 sbtn uels">{{item.place}}</div>
-							<div class="col3 sbtn uels">{{item.executor}}</div>
+							<div class="col3 sbtn uels">{{item.principal}}</div>
 						</div>
 						<div class="flex">
 							<div class="key">周杰：</div>
@@ -516,6 +516,7 @@
 			//获取参与项目任务
 			getMyTask(){
 				getMyTask().then(res => {
+
 				  this.myTask = res.data[4]
 
           //进行中

@@ -69,7 +69,7 @@ export function getTeamProject(){
     })
 }
 //添加项目
-export function addProject(addData,token){
+export function addProject(addData){
     return request({
         method:"post",
         url:'/api/project/addProject',
@@ -134,5 +134,30 @@ export function getProUser(project){
         params:{
             projectId:project,
         },
+    })
+}
+//取消星标
+export function cancelStar(id,user){
+    return request({
+        method:'get',
+        url:'/api/user/deleteUserStar',
+        params:{
+            type :'2',
+            fkId:id,
+            userId:user.userId,
+        },
+    })
+}
+//添加星标
+export function addStar(id,user){
+    return request({
+        method:'post',
+        url:'/api/user/addUserStar',
+        data:{
+            type :'2',
+            fkId:id,
+            userId:user.userId,
+        },
+        type:"form"
     })
 }

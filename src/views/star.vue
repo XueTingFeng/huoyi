@@ -57,7 +57,7 @@
           <span class="mr8">发起人</span>
 
           <!--星标项目：发起人姓名-->
-          <span  class="username">{{item.initiator}}</span>
+          <span  class="username">{{item.initiatorName}}</span>
         </Rate>
 
         <!--        星标项目：进度条-->
@@ -74,19 +74,14 @@
           <div class="col3 sbtn uels">{{item.principal}}</div>
         </div>
 
-        <div class="flex">
+        <div class="flex" v-for="(item) in item.pjDynamic">
           <!--星标项目：项目动态-->
-          <div class="key">周杰：</div>
-          <div class="flex1 uels">项目中间对接进行中</div>
+          <div class="key">{{item.name}}:</div>
+          <div class="flex1 uels">{{item.dynamicContent}}</div>
           <div>09.28 12:00</div>
         </div>
-        <div class="flex">
-          <div class="key uels">张美兰：</div>
-          <div class="flex1 uels">项目增加望申请延迟1天</div>
-          <div>10.11 12:00</div>
-        </div>
-      </div>
 
+      </div>
 
 
     </div>

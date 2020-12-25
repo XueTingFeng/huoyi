@@ -78,12 +78,12 @@ export default {
 			
 		},
 		inback(){
-			
 			this.$Modal.confirm({
 				title: '确定后进入后台管理？',
 				onOk: () => {
-					removeToken()
-					//location.href = '/'
+					// removeToken()
+
+          this.$router.push({path:'/admin'})
 				}
 			});
 		},

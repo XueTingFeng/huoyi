@@ -34,7 +34,7 @@
 
             <img class="img" :src="require('@/assets/images/login/wechat.png' )" @click="show2 = true" >
             <Modal v-model="show2" title="微信" >
-              <div id="wxLoginDiv" style="text-align: center"></div>
+              <div id="wxLoginDiv" style="text-align: center"></div>0
               <div slot="footer"></div>
             </Modal>
 
@@ -126,6 +126,8 @@ export default {
           alert(res.message)
         }else{
           setToken(res.data.token)
+          window.sessionStorage.setItem('token',data.token)
+
           this.$router.push({path: this.redirect || "/"});
         }
       }).catch()

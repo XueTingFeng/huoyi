@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import {getUser} from './rq-my'
 
 const TokenKey = 'HuoYi-Token'
 
@@ -17,12 +16,5 @@ export function removeToken() {
 }
 
 
-export function autoLogin() {
-  let token = getToken();
-  if(token!=null){
-return getUser(token)
-  }else{
-    return null;
-  }
-}
+
 

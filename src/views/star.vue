@@ -62,7 +62,7 @@
 
         <!--        星标项目：进度条-->
         <Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)*100" :stroke-width="8">
-          <span>{{item.progress}}</span>
+          <span>{{item.nodeOrder}}/{{item.nodeSum}}</span>
         </Progress>
 
         <div class="uflex mtb10">

@@ -279,7 +279,7 @@
 							<span>{{item.initiator}}</span>
 						</Rate>
 						<Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)*100" :stroke-width="8">
-								<span>6/8</span>
+								<span>{{item.nodeOrder}}/{{item.nodeSum}}</span>
 						</Progress>
 						<div class="uflex mtb10">
 							<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>

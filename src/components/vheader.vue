@@ -1,7 +1,8 @@
 <template>
 	<div class="header">
 		<div class="logo"><img :src="require('../assets/images/home/logomdpi.png')"><img :src="require('../assets/images/home/huoyimdpi.png')"></div>
-		<div class="mflex">
+    <!--<div class="logo"><img :src="require('../assets/images/home/huoyimdpi.png')"></div>-->
+    <div class="mflex">
 			<div class="uflex menu">
 				<div @click="inback()" class="menu-item">
 					<img :src="require('../assets/images/home/square.png')" style="width: 24px;height: 24px;">

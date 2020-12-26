@@ -518,24 +518,24 @@
 				<div class="grid">
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">进行中<span class="ml">6</span></div>
+							<div class="btxt">进行中<span class="ml">{{userTasks2.length}}</span></div>
 						</div>
 					</div>
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">未开始<span class="ml">6</span></div>
+							<div class="btxt">未开始<span class="ml">{{userTasks1.length}}</span></div>
 						</div>
 					</div>
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">待接收<span class="ml">6</span></div>
+							<div class="btxt">待接收<span class="ml">{{userTasks0.length}}</span></div>
 						</div>
 					</div>
 				</div>
 				<div class="grid">
-					<div class="col3" v-for="(tasks,index) in userTasks">
+					<div class="col3">
 						<perfect-scrollbar>
-							<div class="ucard flex red-bd" v-for="(task,value) in userTasks[index]">
+							<div class="ucard flex red-bd" v-for="(task,value) in userTasks2">
 								<div class="lfbox">
 									<Icon type="md-arrow-dropdown" size="24"/>
 									<div class="state">{{ (task.status==0)?("未接收"):((task.status==1)?("未开始"):("进行中"))}}</div>
@@ -558,6 +558,55 @@
 						</perfect-scrollbar>
 					</div>
 
+          <div class="col3">
+            <perfect-scrollbar>
+              <div class="ucard flex red-bd" v-for="(task,value) in userTasks1">
+                <div class="lfbox">
+                  <Icon type="md-arrow-dropdown" size="24"/>
+                  <div class="state">{{ (task.status==0)?("未接收"):((task.status==1)?("未开始"):("进行中"))}}</div>
+                </div>
+                <div class="flex1">
+                  <div class="uflex">
+                    <div><!--项目99-->{{task.name}}</div>
+                    <img class="img" :src="require('@/assets/images/home/Collection.png')">
+                  </div>
+                  <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+                  <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
+                  <div class="flex mt5">
+                    <div class="obtn uels"><!--10月10号截止-->{{task.endTime.split(" ")[0]}}</div>
+                    <div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>
+                  </div>
+                </div>
+
+              </div>
+
+            </perfect-scrollbar>
+          </div>
+
+          <div class="col3">
+            <perfect-scrollbar>
+              <div class="ucard flex red-bd" v-for="(task,value) in userTasks0">
+                <div class="lfbox">
+                  <Icon type="md-arrow-dropdown" size="24"/>
+                  <div class="state">{{ (task.status==0)?("未接收"):((task.status==1)?("未开始"):("进行中"))}}</div>
+                </div>
+                <div class="flex1">
+                  <div class="uflex">
+                    <div><!--项目99-->{{task.name}}</div>
+                    <img class="img" :src="require('@/assets/images/home/Collection.png')">
+                  </div>
+                  <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
+                  <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
+                  <div class="flex mt5">
+                    <div class="obtn uels"><!--10月10号截止-->{{task.endTime.split(" ")[0]}}</div>
+                    <div class="sbtn pd15 uels"><!--周文杰-->{{task.sponsor}}</div>
+                  </div>
+                </div>
+
+              </div>
+
+            </perfect-scrollbar>
+          </div>
 				
 				</div>
 			</div>
@@ -607,7 +656,9 @@
         endTime: [],
 
 				starPerson:[],
-        userTasks:[],
+        userTasks0:[],
+        userTasks1:[],
+        userTasks2:[],
         team:[],
         region:[],
 				proInfo:{},
@@ -863,7 +914,10 @@
 				this.empModal = true
         //axios获取成员任务
         getUserTasks().then(res => {
-          this.userTasks=res.data
+          this.userTasks0=res.data[0]
+          this.userTasks1=res.data[1]
+          this.userTasks2=res.data[2]
+
         })
 			},
 			search(){

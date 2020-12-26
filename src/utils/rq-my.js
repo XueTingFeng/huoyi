@@ -17,7 +17,7 @@ export function getMyTask() {
     url: '/api/user/findUserTasksByUserId',
     params: {
       userId: '1',
-      type: '1'
+      type: '0'
     }
   })
 }

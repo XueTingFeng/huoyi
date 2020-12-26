@@ -97,14 +97,14 @@
 								<Icon @click="play(item.id)" class="pointer" type="ios-play" size="22"/>
 								<span>暂停中</span>
 							</div>
-							<div class="lfbox down">
+							<div class="lfbox down" >
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
 									<DropdownMenu slot="list">
 <!--										<DropdownItem @click.native="dropdown('未开始')">未开始</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>-->
-										<DropdownItem @click.native="dropdown('已完成')"><span v-model="item.myTaskId" @click="changeStatus(myTaskId)" >已完成</span></DropdownItem>
+										<DropdownItem @click.native="dropdown(item.taskId,3)" >已完成</DropdownItem>
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">进行中</div>
@@ -149,8 +149,8 @@
 							<div class="lfbox down">
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
-									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">开始</DropdownItem>
+									<DropdownMenu slot="list" v-model="item.taskId">
+										<DropdownItem @click.native="dropdown(item.taskId,2)">开始</DropdownItem>
 <!--										<DropdownItem @click.native="dropdown('进行中')">进行中</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('待接收')">待接收</DropdownItem>-->
 <!--										<DropdownItem @click.native="dropdown('已完成')">已完成</DropdownItem>-->
@@ -198,9 +198,9 @@
 							<div class="lfbox down">
 								<Dropdown placement="right-start" >
 									<Icon type="md-arrow-dropdown" size="24"/>
-									<DropdownMenu slot="list">
-										<DropdownItem @click.native="dropdown('未开始')">接收</DropdownItem>
-										<DropdownItem @click.native="dropdown('进行中')">拒收</DropdownItem>
+									<DropdownMenu slot="list" v-model="item.taskId">
+										<DropdownItem @click.native="dropdown(item.taskId,1)">接收</DropdownItem>
+										<DropdownItem @click.native="dropdown(item.taskId,4)">拒收</DropdownItem>
 									</DropdownMenu>
 								</Dropdown>
 								<div class="state">待接收</div>
@@ -305,12 +305,12 @@
 		<Divider />
 		
 		<div class="mflex xtitle">
-			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">{{myTask.length}}</span>
+			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">{{distributeTask.length}}</span>
 		</div>
 
 
-		<div class="grid">
-			<div class="ucard flex blu-bd" v-for="(item,index) in myTask" :key="index">
+		<div class="grid" >
+			<div class="ucard flex blu-bd" v-for="(item,index) in distributeTask" :key="index">
 				<div class="lfbox">
 					<Icon type="md-arrow-dropdown" size="24"/>
 					<div class="state">进行中</div>
@@ -327,13 +327,13 @@
 						</div>
 						
 					</div>
-					<Rate disabled v-model="item.priority" custom-icon="iconfont hy-star"></Rate>
+					<Rate disabled  custom-icon="iconfont hy-star" v-model="item.priority"></Rate><!---->
 <!--					<Progress :percent="6/8*100" :stroke-width="8">-->
 <!--						<span>6/8</span>-->
 <!--					</Progress>-->
 					<div class="mflex mt5">
-						<div class="obtn uels">{{item.end_time}}</div>
-						<div class="sbtn pd15 uels">{{item.executor.sponsor}}</div>
+						<div class="obtn uels">{{item.endTime}}</div>
+						<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 					</div>
 				</div>
 			</div>
@@ -434,7 +434,7 @@
 <script>
 	import draggable from "vuedraggable";
 
-	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus} from "../utils/rq-my";
+	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask} from "../utils/rq-my";
 
   export default {
 		components: {
@@ -444,7 +444,7 @@
 			return {
 			  myTask:[],
         myTaskId:[],
-        taskId: [],
+
 
 			  team:[],
 			  addMyTask: {
@@ -458,7 +458,7 @@
         },
         postStatus: {
 			    status:'',
-          task_id:''
+          taskId:''
         },
 				fromId:'',
 				toId:'',
@@ -476,11 +476,14 @@
 					person:'赵迁'
 				},		
 				list1:[],
+        list1TaskId:[],
 				list2:[],
 				list3:[],
 				list4:[],
 				myPro:[],
 				userName: [],
+
+        distributeTask:[],
 
 
         join_pro: {
@@ -501,6 +504,7 @@
 			// })
       this.getMyProject()
       this.getMyTask()
+      this.getDistributeTask()
 		},
 		methods: {
 
@@ -516,7 +520,7 @@
 			//获取参与项目任务
 			getMyTask(){
 				getMyTask().then(res => {
-				  this.myTask = res.data[4]
+				 // this.myTask = res.data[4]
 
           //进行中
 					this.list1=res.data[1]
@@ -524,20 +528,21 @@
 					this.list2=res.data[0]
           //待接收
 					this.list3=res.data[2]
-          //待完成
+          //已完成
 					this.list4=res.data[3]
 
         }).catch()
 
 			},
-      changeStatus(myTaskId) {
-        getMyTask().then(res => {
-              this.myTaskId = res.data[1].taskId
-        });
-		    postMyTaskStatus(myTaskId).then(res => {
-
+      //我派发的任务视图
+      getDistributeTask(){
+        getDistributeTask().then(res => {
+          this.distributeTask = res.data
         })
       },
+      // changeStatus() {
+		  //
+      // },
 			// 添加打开弹窗
 			open(str){
 				this.state = str
@@ -559,8 +564,10 @@
 					}
 				});
 			},
-			dropdown(e){
-				this.state = e
+			dropdown(taskId,status){
+        postMyTaskStatus(taskId,status).then(res => {
+
+        })
 			},
 			search(){},
 			save(){

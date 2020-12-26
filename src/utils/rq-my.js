@@ -17,6 +17,17 @@ export function getMyTask() {
     url: '/api/user/findUserTasksByUserId',
     params: {
       userId: '1',
+      type: '0'
+    }
+  })
+}
+
+//请求我派发的视图
+export function getDistributeTask() {
+  return request({
+    url: '/api/user/findUserTasksByUserId',
+    params: {
+      userId: '1',
       type: '1'
     }
   })
@@ -27,7 +38,8 @@ export function getTeamMembers() {
   return request({
     url: '/api/team/findTeamMembersByTeamId',
     params: {
-      teamId: '1'
+      teamId: '1',
+      userId: '1'
     }
   })
 }
@@ -49,13 +61,13 @@ export function postMyTask(addMyTask) {
   })
 }
 
-export function postMyTaskStatus(myTaskId) {
+export function postMyTaskStatus(taskId,status) {
   return request({
     url: '/api/project/updateProjectTask',
     method: 'post',
     data: {
-      task_id: myTaskId,
-      status: '3'
+      task_id: taskId,
+      status: status
     },
     type:"form"
   })

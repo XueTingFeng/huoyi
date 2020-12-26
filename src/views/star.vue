@@ -97,7 +97,7 @@
           <Tooltip placement="top-start" content="筛选任务所在项目">
           <FormItem label="项目">
             <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
-              <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+              <Option :value="pro_1">项目1</Option>
             </Select>
           </FormItem>
           </Tooltip>

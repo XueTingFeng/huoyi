@@ -116,7 +116,7 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
+										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
 									
 								</div>
@@ -165,7 +165,7 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
+										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
 									
 								</div>
@@ -212,7 +212,7 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
+										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
 									
 								</div>
@@ -243,7 +243,7 @@
 						<div class="flex1">
 							<div class="uflex lh24">
 								<div>{{item.name}}</div>
-								<!-- <img class="img" :src="require('@/assets/images/home/Collection.png')"> -->
+								<!-- <img class="img" :src="require('@/assets/images/home/Collection-1(1).png')"> -->
 							</div>
 							<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 								<span class="mr8">发起人</span>
@@ -271,7 +271,7 @@
 						<div class="uflex">
 							<div class="btxt">{{item.name}}</div>
 							<div class="">
-								<img class="img" :src="require('@/assets/images/home/Collection.png')">
+								<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 							</div>
 						</div>
 						<Rate disabled show-text v-model="item.priority" custom-icon="iconfont hy-star">

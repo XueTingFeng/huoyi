@@ -1,4 +1,11 @@
 import {request} from "./request";
+//查询当前用户
+export function getUserInfo(){
+  return request({
+    method:'get',
+    url:'/api/user/findUserByToken',
+  })
+}
 //请求星标任务接口
 export function getStarTask() {
   return request({
@@ -9,11 +16,11 @@ export function getStarTask() {
   })
 }
 //星标项目
-export function getStarPro() {
+export function getStarPro(user) {
   return request({
     url: '/api/user/findUserStarProjects',
     params:{
-      id: '1'
+      id:user.userId,
      }
 
   })
@@ -78,6 +85,42 @@ export function screeningStro(stardata){
       place:'',
       priority:'',
       keyword:'',
+    },
+  })
+}
+//取消星标项目
+export function cancelStarPro(id,user){
+  return request({
+    method:'get',
+    url:'/api/user/deleteUserStar',
+    params:{
+      type :'2',
+      fkId:id,
+      userId:user.userId,
+    },
+  })
+}
+//取消星标任务
+export function cancelStarTask(id,user){
+  return request({
+    method:'get',
+    url:'/api/user/deleteUserStar',
+    params:{
+      type :'3',
+      fkId:id,
+      userId:user.userId,
+    },
+  })
+}
+//取消星标人员
+export function cancelStarUser(id,user){
+  return request({
+    method:'get',
+    url:'/api/user/deleteUserStar',
+    params:{
+      type :'1',
+      fkId:id,
+      userId:user.userId,
     },
   })
 }

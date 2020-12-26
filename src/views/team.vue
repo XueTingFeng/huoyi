@@ -80,8 +80,8 @@
 							<div class="btxt">{{item.name}}</div>
 							<div>
                 <Tooltip content="星标" placement="bottom">
-                  <img v-show="item.isStar==1" class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">
-                  <img v-show="!item.isStar==1" class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection-1(1).png')">
+                  <img v-show="item.isStar==1" class="img" @click.stop="cancel(item)" :src="require('@/assets/images/home/Collection.png')">
+                  <img v-show="!item.isStar==1" class="img" @click.stop="star(item)" :src="require('@/assets/images/home/Collection-1(1).png')">
                 </Tooltip>
 <!--								<img class="img" @click.stop="cancel(item.pj_id)" :src="require('@/assets/images/home/Collection.png')">-->
 							</div>
@@ -1045,7 +1045,9 @@ import {
   upTeamProjectInfo,
   addTask,
   getUserInfo,
-  getProUser
+  getProUser,
+  cancelStar,
+  addStar,
 } from "@/utils/rq-team";
   export default {
 		data() {
@@ -1180,7 +1182,7 @@ import {
           avatar:'',
           status:0,
           saturation:0,
-          memberId:'',
+          teamMemberId:'',
         },
         //项目用户信息
         proInFo:{
@@ -1195,34 +1197,34 @@ import {
 			// this.$nextTick(() => {
 			// 	this.getStarPro()
 			// })
-      //获取地区
-      getRegion().then(res => {
-        this.region=res.data
-      })
-      //获取团队
-      getTeam().then(res =>{
-        this.deptName=res.data[0].teamName
-        this.addProInfo.teamName=res.data[0].teamName
-        this.addteamdata.teamId=res.data[0].teamId
-        this.addProInfo.typeName=res.data[0].types[0].typeName
-        this.addteamdata.typeId=res.data[0].types[0].typeId
-        this.addProInfo.nodeName=res.data[0].types[0].nodes[0].nodeName
-        this.addteamdata.nodeId=res.data[0].types[0].nodes[0].nodeId
-        this.dept=res.data
-      })
-      //获取团队所属项目
-      getTeamProject().then(res=>{
-        this.node=res.data
-        this.list=res.data
-      })
-      //获取团队成员
-      getTeamMember().then(res=>{
-        this.teammember=res.data
-      })
+
       //当前用户信息
       getUserInfo().then(res=>{
         this.userInFo=res.data
-
+        //获取地区
+        getRegion().then(res => {
+          this.region=res.data
+        })
+        //获取团队
+        getTeam().then(res =>{
+          this.deptName=res.data[0].teamName
+          this.addProInfo.teamName=res.data[0].teamName
+          this.addteamdata.teamId=res.data[0].teamId
+          this.addProInfo.typeName=res.data[0].types[0].typeName
+          this.addteamdata.typeId=res.data[0].types[0].typeId
+          this.addProInfo.nodeName=res.data[0].types[0].nodes[0].nodeName
+          this.addteamdata.nodeId=res.data[0].types[0].nodes[0].nodeId
+          this.dept=res.data
+        })
+        //获取团队所属项目
+        getTeamProject().then(res=>{
+          this.node=res.data
+          this.list=res.data
+        })
+        //获取团队成员
+        getTeamMember().then(res=>{
+          this.teammember=res.data
+        })
       })
       // blueName()
 		},
@@ -1338,7 +1340,7 @@ import {
         this.adduser.avatar=[];
         this.adduser.memberId=[];
         this.adduser.avatar.push(this.userInFo.avatar)
-        this.adduser.memberId.push(this.userInFo.memberId)
+        this.adduser.memberId.push(this.userInFo.teamMemberId)
 				const date = new Date()
 				const year = date.getFullYear()
 				const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
@@ -1428,7 +1430,10 @@ import {
       //完成添加项目
 			finish(){
 			  addProject(this.addteamdata).then(res => {
-
+          if (res.code==200){getTeamProject().then(res=>{
+            this.node=res.data
+            this.list=res.data
+          })}
         })
 				this.addModal = false
         this.adduser={
@@ -1460,14 +1465,35 @@ import {
       checkTaskPerson(item){
         this.addMyTask.username=item.username
       },
-			cancel(id){
+			cancel(item){
 				this.$Modal.confirm({
-					title: '确认取消？',
+					title: '确认取消星标？',
 					onOk: () => {
-						this.$Message.info('点击取消!')
+            cancelStar(item.pj_id,this.userInFo).then(res=>{
+              if (res.code==200){
+                getTeamProject().then(res=>{
+                this.node=res.data
+                this.list=res.data
+              })
+              }
+            })
+						// this.$Message.info('点击取消!')
 					}
 				});
 			},
+      star(item){
+        this.$Modal.confirm({
+          title:'确认添加星标？',
+          onOk:()=>{
+            addStar(item.pj_id,this.userInFo).then(res=>{
+              if (res.code==200){getTeamProject().then(res=>{
+                this.node=res.data
+                this.list=res.data
+              })}
+            })
+          }
+        })
+      },
 			toNext(i){
 				if(i==0){//上一个
 					if(this.index!=0){

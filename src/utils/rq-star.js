@@ -25,11 +25,11 @@ export function getStarPro(user) {
   })
 }
 //请求星标人员
-export function getStarPerson() {
+export function getStarPerson(user) {
   return request({
     url: 'api/user/findUserStarPeopleByUserId',
     params:{
-      userId:'1',
+      userId:user.userId,
     }
   })
 }
@@ -49,7 +49,7 @@ export function getUserTasks() {
   return request({
     url: '/api/user/findUserTasksByUserId',
      params:{
-       userId: '1'
+       userId:user.userId,
      }
   })
 }

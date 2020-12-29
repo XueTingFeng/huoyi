@@ -143,7 +143,7 @@
             <div class="obtn uels">{{item.endTime.split(" ")[0]}}</div>
 
             <!--星标任务：执行人-->
-            <div class="sbtn pd15 uels" v-for="(item,index) in proExecutor" :key="index">{{item.username}}</div>
+            <div class="sbtn pd15 uels" >{{item.executor[0].username}}</div>
           </div>
         </div>
       </div>
@@ -630,6 +630,7 @@
     cancelStarTask,
     cancelStarUser,
   } from "../utils/rq-star";
+  import {getTeamProject} from "@/utils/rq-team";
   export default {
 		data() {
 			return {
@@ -701,9 +702,7 @@
       //获取当前用户
       getUserInfo().then(res=>{
         this.userInFo=res.data
-        // this.$nextTick(() => {
-        //   // this.loadData()
-        // });
+
         this.getStarTask()
         this.getStarPro()
         this.getStarPerson()
@@ -763,7 +762,7 @@
       },
       getStarPerson() {
         //axios获取星标人员
-        getStarPerson().then(res => {
+        getStarPerson(this.userInFo).then(res => {
           this.starPerson=res.data
         })
       },

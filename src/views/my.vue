@@ -1,14 +1,14 @@
 <template>
 	<div class="page">
-		<Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
+		<Form ref="formInline" :model="userInfo" inline :label-width="70" class="form">
 			<FormItem>
 				<Tooltip placement="right-start">
-					<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />
+					<Avatar shape="square" :src="userInfo.avatar" />
 					<div slot="content">
-						<div class="info">沈达一</div>
+						<div class="info">{{userInfo.userName}}</div>
 						<div class="info">
 							<div class="label">状态</div>
-							<div @click="change" class="sbtn pd15 pointer">{{status===0?'外出中':'已归来'}}</div>
+							<div @click="change(userInfo.userId,status==0?0:1)" class="sbtn pd15 pointer">{{userInfo.status===0?'正常':'外出'}}</div>
 						</div>
 <!--						<div class="info">-->
 <!--							<div class="label">项目权限</div>-->
@@ -16,7 +16,7 @@
 <!--						</div>-->
 						<div class="info">
 							<div class="label">登录时间</div>
-							<div class="flex1 uels">2020年9月30日12:00:00</div>
+							<div class="flex1 uels">{{userInfo.lastLoginTime}}</div>
 						</div>
 <!--						<div class="info">-->
 <!--							<div class="label">项目角色</div>-->
@@ -30,10 +30,10 @@
 <!--								<div>项目2(发起人)</div>-->
 <!--							</div>-->
 <!--						</div>-->
-						<div class="info">查看成员项目内任务</div>
+<!--						<div class="info">查看成员项目内任务</div>-->
 					</div>
 				</Tooltip>&nbsp;
-				<Rate class="square ml" v-model="valueText" disabled icon="ios-square" />
+				<Rate class="square ml" v-model="userInfo.saturation" disabled icon="ios-square" />
 			</FormItem>
 			<div class="rfloat">
 				<FormItem label="创建者">
@@ -74,7 +74,7 @@
 			<div class="col5">
 				<div class="uflex mtm">
 					<div class="btxt">待接收<span class="ml">{{list3.length}}</span></div>
-					<div class="addbtn" @click="open('待接收')">+</div>
+					<div class="addbtn" @click="open(userInfo.userId,userInfo.teamId)">+</div>
 				</div>
 			</div>
 			<div class="col5">
@@ -116,7 +116,8 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
+										<img class="img" @click="isStar(userInfo.userId,3,item.taskId)" v-show="item.isStar == 0" :src="require('@/assets/images/home/Collection-1(1).png')">
+                    <img class="img" @click="delStar(3,userInfo.userId,item.taskId)" v-show="item.isStar == 1" :src="require('@/assets/images/home/Collection.png')">
 									</div>
 									
 								</div>
@@ -129,7 +130,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{(item.endTime.substring(0,10))}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -165,7 +166,8 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
+                    <img class="img" @click="isStar(userInfo.userId,3,item.taskId)" v-show="item.isStar == 0" :src="require('@/assets/images/home/Collection-1(1).png')">
+                    <img class="img" @click="delStar(3,userInfo.userId,item.taskId)" v-show="item.isStar == 1" :src="require('@/assets/images/home/Collection.png')">
 									</div>
 									
 								</div>
@@ -178,7 +180,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{(item.endTime.substring(0,10))}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -212,7 +214,8 @@
 										<div class="mflex opt w30">
 											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
-										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
+                    <img class="img" @click="isStar(userInfo.userId,3,item.taskId)" v-show="item.isStar == 0" :src="require('@/assets/images/home/Collection-1(1).png')">
+                    <img class="img" @click="delStar(3,userInfo.userId,item.taskId)" v-show="item.isStar == 1" :src="require('@/assets/images/home/Collection.png')">
 									</div>
 									
 								</div>
@@ -224,7 +227,7 @@
 <!--									<span>{{item.progress}}</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels">{{item.endTime}}截止</div>
+									<div class="obtn uels">{{(item.endTime.substring(0,10))}}截止</div>
 									<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 								</div>
 							</div>
@@ -253,7 +256,7 @@
 <!--								<span>{{item.progress}}</span>-->
 <!--							</Progress>-->
 							<div class="flex mt5">
-								<div class="obtn uels">{{item.endTime}}截止</div>
+								<div class="obtn uels">{{(item.endTime.substring(0,10))}}截止</div>
 								<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 							</div>
 						</div>
@@ -271,12 +274,13 @@
 						<div class="uflex">
 							<div class="btxt">{{item.name}}</div>
 							<div class="">
-								<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
+                <img class="img" @click="isStar(userInfo.userId,2,item.pj_id)" v-show="item.isStar == 0" :src="require('@/assets/images/home/Collection-1(1).png')">
+                <img class="img" @click="delStar(2,userInfo.userId,item.pj_id)" v-show="item.isStar == 1" :src="require('@/assets/images/home/Collection.png')">
 							</div>
 						</div>
 						<Rate disabled show-text v-model="item.priority" custom-icon="iconfont hy-star">
 							<span class="mr8">发起人</span>
-							<span>{{item.initiator}}</span>
+							<span>{{item.initiatorName}}</span>
 						</Rate>
 						<Progress :percent="parseInt(item.nodeOrder)/parseInt(item.nodeSum)*100" :stroke-width="8">
 								<span>{{item.nodeOrder}}/{{item.nodeSum}}</span>
@@ -284,17 +288,14 @@
 						<div class="uflex mtb10">
 							<div class="col3 obtn uels">{{parseTime(item.release_time)}}</div>
 							<div class="col3 sbtn uels">{{item.place}}</div>
-							<div class="col3 sbtn uels">{{item.executor}}</div>
+
+
+							<div class="col3 sbtn uels" >{{item.principal}}</div>
+
 						</div>
-						<div class="flex">
-							<div class="key">周杰：</div>
-							<div class="flex1 uels">项目中间对接进行中</div>
-							<div>09.28 12:00</div>
-						</div>
-						<div class="flex">
-							<div class="key uels">张美兰：</div>
-							<div class="flex1 uels">项目增加望申请延迟1天</div>
-							<div>10.11 12:00</div>
+						<div class="flex" v-for="item in join_pro.pjDynamic">
+							<div class="key">{{item.dynamicContent}}</div>
+							<div>{{item.release_time}}</div>
 						</div>
 					</div>
 
@@ -338,7 +339,7 @@
 <!--						<span>6/8</span>-->
 <!--					</Progress>-->
 					<div class="mflex mt5">
-						<div class="obtn uels">{{item.endTime}}</div>
+						<div class="obtn uels">{{item.endTime.substring(0,10)}}截止</div>
 						<div class="sbtn pd15 uels">{{item.executor[0].username}}</div>
 					</div>
 				</div>
@@ -440,9 +441,10 @@
 <script>
 	import draggable from "vuedraggable";
 
-	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask,postMyTaskState} from "../utils/rq-my";
+	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask,postMyTaskState,getUserInfo,postUserInfo,addStar,delStar} from "../utils/rq-my";
 
   export default {
+   // inject: ['reload'],
 		components: {
 		  draggable
 		},
@@ -500,24 +502,57 @@
 
 				valueText:3,
 				state:'未开始',
-				status:0
+				status:0,
+
+        userInfo: {
+          userId:'',
+          userName:'',
+          avatar: '',
+          saturation:'',
+          status:'',
+          memberId:'',
+          lastLoginTime:''
+        }
 			}
 		},
 		created() {
-			// this.$nextTick(() => {
-			// 	this.getList()
-			// 	this.getMyPro()
-			// })
+			 // this.$nextTick(() => {
+       //   this.getMyProject()
+       //   this.getMyTask()
+       //   this.getDistributeTask()
+       //   this.getUserInfo()
+			 // })
+      //获取用户信息
+      getUserInfo().then(res => {
+        this.userInfo = res.data
 
-      this.getMyProject()
-      this.getMyTask()
-      this.getDistributeTask()
+        this.getMyProject()
+        this.getMyTask()
+        this.getDistributeTask()
+        this.getUserInfo()
+      })
+
 		},
 		methods: {
-
+      //添加星标
+      isStar(userId,type,fkId) {
+        addStar(userId,type,fkId).then(res => {
+          this.$nextTick(() => {
+            this.getMyTask()
+          })
+        })
+      },
+      //删除星标
+      delStar(type,userId,fkId) {
+        delStar(type,userId,fkId).then(res => {
+          this.$nextTick(() => {
+            this.getMyTask()
+          })
+        })
+      },
 		  //获取我的项目数据
 		  getMyProject(){
-		    getMyProject().then(res => {
+		    getMyProject(this.userInfo).then(res => {
 		      this.join_pro = res.data
         })
       },
@@ -526,7 +561,7 @@
 
 			//获取参与项目任务
 			getMyTask(){
-				getMyTask().then(res => {
+				getMyTask(this.userInfo).then(res => {
 				 // this.myTask = res.data[4]
 
           //进行中
@@ -538,47 +573,61 @@
           //已完成
 					this.list4=res.data[3]
 
-          this.$nextTick(() => {
-            this.getMyTask()
-          })
+          // this.$nextTick(() => {
+          //   this.getMyTask()
+          // })
         }).catch()
 
 			},
       //我派发的任务视图
       getDistributeTask(){
-        getDistributeTask().then(res => {
+        getDistributeTask(this.userInfo).then(res => {
           this.distributeTask = res.data
+
+          // this.$nextTick(() => {
+          //   this.getDistributeTask()
+          // })
         })
       },
       // changeStatus() {
 		  //
       // },
 			// 添加打开弹窗
-			open(str){
-				this.state = str
+			open(userId,teamId){
+
 				this.modal = true
-          getTeamMembers().then(res => {
+          getTeamMembers(userId,teamId).then(res => {
             this.team = res.data
             this.userName = res.data.userName
              this.memberId = res.data.memberId
           });
 			},
-			change(){
-				this.status = this.status==0?1:0
+			change(userId,status){
+        postUserInfo(userId,status).then(res => {
+         this.$nextTick(() => {
+           this.getUserInfo()
+         })
+        })
 			},
 			play(taskId,state){
 				this.$Modal.confirm({
 					title: '确认恢复暂停任务？',
 					onOk: () => {
             postMyTaskState(taskId,state).then(res => {
-
+              this.$nextTick(() => {
+                this.getMyTask()
+                this.getDistributeTask()
+              })
             })
 					}
 				});
 			},
 			dropdown(taskId,status){
         postMyTaskStatus(taskId,status).then(res => {
-
+          this.$nextTick(() => {
+            this.getMyTask()
+            this.getDistributeTask()
+          })
         })
 			},
 			search(){},
@@ -587,7 +636,10 @@
 			},
 			finish(){
 		    postMyTask(this.addMyTask).then(res=>{
-
+          this.$nextTick(() => {
+            this.getMyTask()
+            this.getDistributeTask()
+          })
         })
 				this.modal = false
 				this.resetForm()
@@ -597,7 +649,10 @@
           title: '确认暂停任务？',
           onOk: () => {
             postMyTaskState(taskId,state).then(res => {
-
+              this.$nextTick(() => {
+                this.getMyTask()
+                this.getDistributeTask()
+              })
             })
           }
         });
@@ -739,4 +794,5 @@
 	margin-right: 10px;
 	vertical-align: middle;
 }
+
 </style>

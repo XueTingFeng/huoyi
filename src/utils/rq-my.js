@@ -1,45 +1,65 @@
 import {request} from "./request";
-import Cookies from 'js-cookie'
+
+//获取用户信息
+export function getUserInfo(){
+  return request({
+    method:'get',
+    url:'/api/user/findUserByToken',
+  })
+}
+
+//修改用户状态
+export function postUserInfo(userId,status){
+  return request({
+    method:'post',
+    url:'/api/user/updateUserInfo',
+    data: {
+      userId: userId,
+      status: status
+    },
+    type: "form"
+  })
+}
 
 //请求用户项目
-export function getMyProject() {
+export function getMyProject(user) {
   return request({
     url: '/api/user/findUserJoinProject',
     params: {
-      id: '1'
+      id: user.userId
     }
   })
 }
 
 //请求用户任务
-export function getMyTask() {
+export function getMyTask(user) {
   return request({
     url: '/api/user/findUserTasksByUserId',
     params: {
-      userId: '1',
+      userId: user.userId,
       type: '0'
     }
   })
 }
 
 //请求我派发的视图
-export function getDistributeTask() {
+export function getDistributeTask(user) {
   return request({
     url: '/api/user/findUserTasksByUserId',
     params: {
-      userId: '1',
+      userId: user.userId,
       type: '1'
     }
   })
 }
 
 //请求团队成员
-export function getTeamMembers() {
+export function getTeamMembers(teamId,userId) {
   return request({
     url: '/api/team/findTeamMembersByTeamId',
     params: {
-      teamId: '1',
-      userId: '1'
+      teamId: teamId,
+      userId: userId
     }
   })
 }
@@ -84,6 +104,35 @@ export function postMyTaskState(taskId,state) {
     type:"form"
   })
 }
+
+//添加星标
+export function addStar(userId,type,fkId) {
+  return request({
+    url: '/api/user/addUserStar',
+    method: 'post',
+    data: {
+      userId:userId,
+      type:type,
+      fkId:fkId
+    },
+    type:"form"
+  })
+}
+
+//删除星标
+export function delStar(type,userId,fkId) {
+  return request({
+    url: '/api/user/deleteUserStar',
+    method: 'get',
+    params: {
+      type:type,
+      userId:userId,
+      fkId:fkId
+    },
+    type:"form"
+  })
+}
+
 // // 根據token請求用戶信息
 // const token = 'HuoYi-Token'
 // export function getUser() {

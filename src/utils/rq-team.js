@@ -25,14 +25,14 @@ export function getTeam() {
     })
 }
 //筛选团队项目请求
-export function screeningTeam(info,){
+export function screeningTeam(info){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
-            teamId:'1',
-            place:info.area,
-            priority:'',
-            keyword:'',
+            teamId:info.teamId,
+            place:info.placeId,
+            priority:info.priority,
+            keyword:info.keyword,
         },
     })
 }
@@ -136,25 +136,50 @@ export function getProUser(project){
         },
     })
 }
-//取消星标
+//取消项目星标
 export function cancelStar(id,user){
     return request({
         method:'get',
         url:'/api/user/deleteUserStar',
         params:{
-            type :'2',
+            type :2,
             fkId:id,
             userId:user.userId,
         },
     })
 }
-//添加星标
+//取消任务星标
+export function cancelTaskStar(id,user){
+    return request({
+        method:'get',
+        url:'/api/user/deleteUserStar',
+        params:{
+            type :3,
+            fkId:id,
+            userId:user.userId,
+        },
+    })
+}
+//添加项目星标
 export function addStar(id,user){
     return request({
         method:'post',
         url:'/api/user/addUserStar',
         data:{
-            type :'2',
+            type :2,
+            fkId:id,
+            userId:user.userId,
+        },
+        type:"form"
+    })
+}
+//添加任务星标
+export function addTaskStar(id,user){
+    return request({
+        method:'post',
+        url:'/api/user/addUserStar',
+        data:{
+            type :3,
             fkId:id,
             userId:user.userId,
         },

@@ -701,9 +701,9 @@
       //获取当前用户
       getUserInfo().then(res=>{
         this.userInFo=res.data
-        this.$nextTick(() => {
-          // this.loadData()
-        });
+        // this.$nextTick(() => {
+        //   // this.loadData()
+        // });
         this.getStarTask()
         this.getStarPro()
         this.getStarPerson()
@@ -738,7 +738,7 @@
       },
       getStarTask() {
         //获取星标任务多个数据
-        getStarTask().then( res => {
+        getStarTask(this.userInFo).then( res => {
           // console.log(res)
           this.starTask = res.data
 
@@ -823,9 +823,9 @@
         this.$Modal.confirm({
           title: '确认取消星标？',
           onOk: () => {
-            cancelStarTask(item.pj_id,this.userInFo).then(res=>{
-              if (res.code==200){
-                getStarTask().then( res => {
+            cancelStarTask(item.taskId,this.userInFo).then(res=>{
+
+                getStarTask(this.userInFo).then( res => {
                   // console.log(res)
                   this.starTask = res.data
                   //获取星标任务状态，判断状态
@@ -843,7 +843,7 @@
                     }
                   }
                 })
-              }
+
             })
             // this.$Message.info('点击取消!')
           }

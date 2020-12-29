@@ -7,11 +7,11 @@ export function getUserInfo(){
   })
 }
 //请求星标任务接口
-export function getStarTask() {
+export function getStarTask(user) {
   return request({
     url: '/api/user/findUserStarTaskByUserId',
      params: {
-       userId: '1'
+       userId: user.userId
      }
   })
 }

@@ -10,6 +10,7 @@
 			<div class="rfloat">
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
+            <Option value="全部" @click.native="Place" style="color: black">全部</Option>
             <Option value="" v-for="(item,index) in region" @click.native="choosePlace(item)" style="color: black">{{item.placeName}}</Option>
 <!--						<Option value="台州 椒江">台州 椒江</Option>-->
 <!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
@@ -24,13 +25,14 @@
 				</FormItem>
 				<FormItem label="优先级">
 					<Select v-model="formItem.level" style="width: 150px;">
+            <Option value="全部" @click.native="choosePriority">全部</Option>
 						<Option value="非常紧急" @click.native="choosePriority">非常紧急</Option>
 						<Option value="紧急" @click.native="choosePriority">紧急</Option>
 						<Option value="正常" @click.native="choosePriority">正常</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="关键字">
-					<Input class="search" suffix="md-search" placeholder="搜索" style="width: auto" />
+					<Input class="search" suffix="md-search" placeholder="搜索" style="width: auto" v-model="screeningInfo.keyword"/>
 				</FormItem>
 				<Button type="primary" @click="handleSubmit()">确定</Button>
 			</div>
@@ -474,7 +476,7 @@
 					</div>
 					<Form ref="formInline" :model="formItem" inline :label-width="70" class="form mt5">
 						<div class="lfloat mflex">
-							<img class="img" :src="require('@/assets/images/detail/Task.png')"><span class="mr8">任务</span> 0 / 2
+							<img class="img" :src="require('@/assets/images/detail/Task.png')"><span class="mr8">任务</span> {{unfinishedTask}} / {{taskInfo.length}}
 						</div>
 						<div class="rfloat">
 							<FormItem label="执行者">
@@ -509,7 +511,8 @@
 									<div class="sbtn pd15 uels mlr" v-for="(renwu,index1) in item.executor"><!--周文杰-->{{renwu.username}}</div>
 								</div>
 							</div>
-							<img class="img mr20" :src="require('@/assets/images/home/Collection.png')">
+              <img v-show="item.isStar==1" class="img" @click.stop="cancelProTask(item)" :src="require('@/assets/images/home/Collection.png')">
+              <img v-show="!item.isStar==1" class="img" @click.stop="starProTask(item)" :src="require('@/assets/images/home/Collection-1(1).png')">
 						</div>
 
 <!--						<div class="ucard flex">-->
@@ -1048,10 +1051,14 @@ import {
   getProUser,
   cancelStar,
   addStar,
+  cancelTaskStar,
+  addTaskStar,
 } from "@/utils/rq-team";
   export default {
 		data() {
 			return {
+			  //判断项目或任务
+        state:'',
 			  sfStar:false,
 			  i:0,
         //类型
@@ -1067,7 +1074,8 @@ import {
         projectId:'',
         //所属项目
         projectName:'',
-
+        //项目弹窗未完成个数
+        unfinishedTask:0,
         //项目信息
         projectInfo:[],
         //任务信息
@@ -1212,6 +1220,7 @@ import {
         getTeam().then(res =>{
           this.deptName=res.data[0].teamName
           this.deptId=res.data[0].teamId
+          this.screeningInfo.teamId=res.data[0].teamId
           this.addProInfo.teamName=res.data[0].teamName
           this.addteamdata.teamId=res.data[0].teamId
           this.addProInfo.typeName=res.data[0].types[0].typeName
@@ -1249,6 +1258,10 @@ import {
 			// 		this.list5=res.filter(item=>item.status.id===5)
 			// 	}).catch()
 			// },
+      //筛选选择地区点击全部
+      Place(){
+        this.screeningInfo.placeId=''
+      },
       //筛选选择地区
       choosePlace(item){
         this.screeningInfo.placeId=item.placeId
@@ -1261,6 +1274,8 @@ import {
           this.screeningInfo.priority=1
         }else if (this.formItem.level=='正常'){
           this.screeningInfo.priority=0
+        }else if (this.formItem.level=='全部'){
+          this.screeningInfo.priority=''
         }
       },
 			// 项目弹窗
@@ -1272,6 +1287,12 @@ import {
         getProjectInfo(info,this.userInFo).then(res => {
           this.projectInfo=res.data[0]
           this.taskInfo=res.data[1]
+          this.unfinishedTask=this.taskInfo.length
+          for (this.i=0;this.i<=this.taskInfo.length;this.i++){
+            if (res.data[1][this.i].status==3){
+              this.unfinishedTask=this.unfinishedTask-1
+            }
+          }
           this.projectPartInfo=res.data[2]
           this.milestone=res.data[3]
           this.dynamic=res.data[4]
@@ -1294,23 +1315,25 @@ import {
         // this.list4=[]
         // this.list5=[]
         //this.getStarPro()
-        screeningTeam(this.formItem).then(res => {
-          let newData=res.data.filter(item=>{
-            if(this.formItem.title&&!this.formItem.area){
-              return item.title.indexOf(this.formItem.title)>-1
-            }else if(!this.formItem.title&&this.formItem.area){
-              return item.area===this.formItem.area
-            }else if(!this.formItem.title&&this.formItem.area){
-              return item.title.indexOf(this.formItem.title)>-1&&item.area===this.formItem.area
-            }else{
-              return item
-            }
-          })
-            this.list1=newData.filter(item=>item.status.id===1)
-            this.list2=newData.filter(item=>item.status.id===2)
-            this.list3=newData.filter(item=>item.status.id===3)
-            this.list4=newData.filter(item=>item.status.id===4)
-            this.list5=newData.filter(item=>item.status.id===5)
+        screeningTeam(this.screeningInfo).then(res => {
+          this.node=res.data
+          this.list=res.data
+          // let newData=res.data.filter(item=>{
+          //   if(this.formItem.title&&!this.formItem.area){
+          //     return item.title.indexOf(this.formItem.title)>-1
+          //   }else if(!this.formItem.title&&this.formItem.area){
+          //     return item.area===this.formItem.area
+          //   }else if(!this.formItem.title&&this.formItem.area){
+          //     return item.title.indexOf(this.formItem.title)>-1&&item.area===this.formItem.area
+          //   }else{
+          //     return item
+          //   }
+          // })
+          //   this.list1=newData.filter(item=>item.status.id===1)
+          //   this.list2=newData.filter(item=>item.status.id===2)
+          //   this.list3=newData.filter(item=>item.status.id===3)
+          //   this.list4=newData.filter(item=>item.status.id===4)
+          //   this.list5=newData.filter(item=>item.status.id===5)
           }).catch()
       },
 			// handleSubmit(){
@@ -1489,6 +1512,7 @@ import {
       checkTaskPerson(item){
         this.addMyTask.username=item.username
       },
+      //取消项目星标
 			cancel(item){
 				this.$Modal.confirm({
 					title: '确认取消星标？',
@@ -1505,6 +1529,18 @@ import {
 					}
 				});
 			},
+      //取消项目任务星标
+      cancelProTask(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelTaskStar(item.taskId,this.userInFo).then(res=>{
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
+      //添加项目星标
       star(item){
         this.$Modal.confirm({
           title:'确认添加星标？',
@@ -1519,12 +1555,23 @@ import {
           }
         })
       },
+      //添加项目任务星标
+      starProTask(item){
+        this.$Modal.confirm({
+          title:'确认添加星标？',
+          onOk:()=>{
+            addTaskStar(item.taskId,this.userInFo).then(res=>{
+            })
+          }
+        })
+      },
 			toNext(i){
 				if(i==0){//上一个
 					if(this.index!=0){
 						this.index=this.index-1
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
+            this.screeningInfo.teamId = this.dept[this.index].teamId
             getTeamProject(this.deptId).then(res=>{
               this.node=res.data
               this.list=res.data
@@ -1535,6 +1582,7 @@ import {
 						this.index=this.index+1
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
+            this.screeningInfo.teamId = this.dept[this.index].teamId
             getTeamProject(this.deptId).then(res=>{
               this.node=res.data
               this.list=res.data

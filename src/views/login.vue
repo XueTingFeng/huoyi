@@ -13,7 +13,7 @@
             <Input v-model="codeInfo.phone" placeholder="填写手机号码"></Input>
           </div>
           <!--</FormItem>-->
-          <Button @click="sendcode" class="btn" long>发送验证码</Button>
+          <Button @click="code" class="btn" long>发送验证码</Button>
         </Form>
         <Form v-show="!show" ref="loginForm" :model="loginForm" :rules="loginRules">
           <div class="uflex">
@@ -126,7 +126,7 @@ export default {
           alert(res.message)
         }else{
           setToken(res.data.token)
-          window.sessionStorage.setItem('token',data.token)
+          // window.sessionStorage.setItem('token',data.token)
 
           this.$router.push({path: this.redirect || "/"});
         }

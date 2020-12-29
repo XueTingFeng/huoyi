@@ -10,7 +10,7 @@
 			<div class="rfloat">
 				<FormItem label="地区">
 					<Select v-model="formItem.area" style="width: 150px;">
-            <Option value="" v-for="(item,index) in region" :key="index" @click="choosePlace(item)" style="color: black">{{item.placeName}}</Option>
+            <Option value="" v-for="(item,index) in region" @click.native="choosePlace(item)" style="color: black">{{item.placeName}}</Option>
 <!--						<Option value="台州 椒江">台州 椒江</Option>-->
 <!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
 <!--						<Option value="台州 路桥">台州 路桥</Option>-->
@@ -24,9 +24,9 @@
 				</FormItem>
 				<FormItem label="优先级">
 					<Select v-model="formItem.level" style="width: 150px;">
-						<Option value="非常紧急">非常紧急</Option>
-						<Option value="紧急">紧急</Option>
-						<Option value="正常">正常</Option>
+						<Option value="非常紧急" @click.native="choosePriority">非常紧急</Option>
+						<Option value="紧急" @click.native="choosePriority">紧急</Option>
+						<Option value="正常" @click.native="choosePriority">正常</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="关键字">
@@ -345,7 +345,7 @@
 								<div style="height: 75px;">
 									<div class="uflex mt10" v-for="(item,index) in dept">
 										<span>团队</span>
-										<span @click="onTeam(item)"><!--数字化团队-->{{item.teamName}}<Icon type="ios-arrow-forward"></Icon></span>
+										<span @click="onTeam(item,index)"><!--数字化团队-->{{item.teamName}}<Icon type="ios-arrow-forward"></Icon></span>
 									</div>
 								</div>
 
@@ -361,7 +361,7 @@
                 <perfect-scrollbar>
                 <div style="text-align: center;">选择位置</div>
                 <div style="height: 75px;">
-                  <div class="uflex mt10" v-for="(item,index) in dept[0].types">
+                  <div class="uflex mt10" v-for="(item,index) in types">
                     <span>类型</span>
                     <span @click="onType(item)"><!--数字化团队-->{{item.typeName}}<Icon type="ios-arrow-forward"></Icon></span>
                   </div>
@@ -379,7 +379,7 @@
                 <perfect-scrollbar>
 								<div style="text-align: center;">选择状态</div>
 								<div style="height: 75px;">
-									<div class="uflex mt10" v-for="(item,index) in dept[0].types[0].nodes">
+									<div class="uflex mt10" v-for="(item,index) in nodes">
 										<span>节点</span>
 										<span @click="onNode(item)"><!--产品研发-->{{item.nodeName}}<Icon type="ios-arrow-forward"></Icon></span>
 									</div>
@@ -1054,6 +1054,10 @@ import {
 			return {
 			  sfStar:false,
 			  i:0,
+        //类型
+        types:[],
+        //节点
+        nodes:[],
 			  //团队成员信息
 			  teammember:{},
         //地区
@@ -1099,7 +1103,7 @@ import {
           username:'',
           region:'',
         },
-        //添加项目信息
+        //添加项目团队信息
         addProInfo:{
 			  teamId:'',
         teamName:'',
@@ -1136,6 +1140,7 @@ import {
 				// deptName:'数字化团队',
         dept: [],
         deptName:'',
+        deptId:'',
 				modal: false,
 				addModal: false,
 				proModal: false,
@@ -1194,10 +1199,8 @@ import {
       }
 		},
 		created() {
-			// this.$nextTick(() => {
-			// 	this.getStarPro()
-			// })
-
+      // this.$nextTick(() => {
+      // })
       //当前用户信息
       getUserInfo().then(res=>{
         this.userInFo=res.data
@@ -1208,6 +1211,7 @@ import {
         //获取团队
         getTeam().then(res =>{
           this.deptName=res.data[0].teamName
+          this.deptId=res.data[0].teamId
           this.addProInfo.teamName=res.data[0].teamName
           this.addteamdata.teamId=res.data[0].teamId
           this.addProInfo.typeName=res.data[0].types[0].typeName
@@ -1215,16 +1219,19 @@ import {
           this.addProInfo.nodeName=res.data[0].types[0].nodes[0].nodeName
           this.addteamdata.nodeId=res.data[0].types[0].nodes[0].nodeId
           this.dept=res.data
+          this.types=this.dept[0].types
+          this.nodes=this.dept[0].types[0].nodes
+          //获取团队所属项目
+          getTeamProject(this.deptId).then(res=>{
+            this.node=res.data
+            this.list=res.data
+          })
+          //获取团队成员
+          getTeamMember(this.deptId,this.userInFo).then(res=>{
+            this.teammember=res.data
+          })
         })
-        //获取团队所属项目
-        getTeamProject().then(res=>{
-          this.node=res.data
-          this.list=res.data
-        })
-        //获取团队成员
-        getTeamMember().then(res=>{
-          this.teammember=res.data
-        })
+
       })
       // blueName()
 		},
@@ -1246,13 +1253,23 @@ import {
       choosePlace(item){
         this.screeningInfo.placeId=item.placeId
       },
+      //筛选优先级
+      choosePriority(){
+        if (this.formItem.level=='非常紧急'){
+          this.screeningInfo.priority=2
+        }else if(this.formItem.level=='紧急'){
+          this.screeningInfo.priority=1
+        }else if (this.formItem.level=='正常'){
+          this.screeningInfo.priority=0
+        }
+      },
 			// 项目弹窗
 			openPro(info){
 				this.proInfo = info
         this.projectId=info.pj_id
         this.projectName=info.name
 				this.proModal = true
-        getProjectInfo(info).then(res => {
+        getProjectInfo(info,this.userInFo).then(res => {
           this.projectInfo=res.data[0]
           this.taskInfo=res.data[1]
           this.projectPartInfo=res.data[2]
@@ -1325,7 +1342,7 @@ import {
 
 			// 团队成员弹窗
 			open(){
-			  getTeamMember().then(res => {
+			  getTeamMember(this.deptId,this.userInFo).then(res => {
 			    this.teammember = res.data
         }),
 				this.modal = true
@@ -1363,9 +1380,15 @@ import {
         this.participants=true
       },
       //选择团队
-      onTeam(item){
+      onTeam(item,index){
         this.addProInfo.teamName=item.teamName
         this.addteamdata.teamId=item.teamId
+        this.addProInfo.typeName=this.dept[index].types[0].typeName
+        this.addteamdata.typeId=this.dept[index].types[0].typeId
+        this.addProInfo.nodeName=this.dept[index].types[0].nodes[0].nodeName
+        this.addteamdata.nodeId=this.dept[index].types[0].nodes[0].nodeId
+        this.types=this.dept[index].types
+        this.nodes=this.dept[index].types[0].nodes
       },
       //选择类型
       onType(item){
@@ -1379,7 +1402,7 @@ import {
       },
       //回车事件
       addLabel(value){
-			  // this.addteamdata.tags
+			  this.addteamdata.tags
       },
       //添加参与者
       addUser(item){
@@ -1430,7 +1453,8 @@ import {
       //完成添加项目
 			finish(){
 			  addProject(this.addteamdata).then(res => {
-          if (res.code==200){getTeamProject().then(res=>{
+          if (res.code==200){
+            getTeamProject(this.deptId).then(res=>{
             this.node=res.data
             this.list=res.data
           })}
@@ -1471,7 +1495,7 @@ import {
 					onOk: () => {
             cancelStar(item.pj_id,this.userInFo).then(res=>{
               if (res.code==200){
-                getTeamProject().then(res=>{
+                getTeamProject(this.deptId).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })
@@ -1486,7 +1510,8 @@ import {
           title:'确认添加星标？',
           onOk:()=>{
             addStar(item.pj_id,this.userInFo).then(res=>{
-              if (res.code==200){getTeamProject().then(res=>{
+              if (res.code==200){
+                getTeamProject(this.deptId).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })}
@@ -1499,11 +1524,21 @@ import {
 					if(this.index!=0){
 						this.index=this.index-1
 						this.deptName = this.dept[this.index].teamName
+            this.deptId = this.dept[this.index].teamId
+            getTeamProject(this.deptId).then(res=>{
+              this.node=res.data
+              this.list=res.data
+            })
 					}
 				}else{//下一个
 					if(this.index!=this.dept.length-1){
 						this.index=this.index+1
 						this.deptName = this.dept[this.index].teamName
+            this.deptId = this.dept[this.index].teamId
+            getTeamProject(this.deptId).then(res=>{
+              this.node=res.data
+              this.list=res.data
+            })
 					}
 				}
 			},

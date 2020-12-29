@@ -630,7 +630,6 @@
     cancelStarTask,
     cancelStarUser,
   } from "../utils/rq-star";
-  import {getTeamProject} from "@/utils/rq-team";
   export default {
 		data() {
 			return {

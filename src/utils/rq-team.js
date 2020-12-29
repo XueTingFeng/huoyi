@@ -37,31 +37,31 @@ export function screeningTeam(info,){
     })
 }
 //查找所有团队成员
-export function getTeamMember(){
+export function getTeamMember(teamId,user){
     return request({
         url:'/api/team/findTeamMembersByTeamId',
         params:{
-            teamId:'1',
-            userId:'1',
+            teamId:teamId,
+            userId:user.userId,
         },
     })
 }
 //查找项目信息
-export function getProjectInfo(info){
+export function getProjectInfo(info,user){
     return request({
         url:'/api/project/findProjectInfoById',
         params:{
             pj_id:info.pj_id,
-            user_id:'1',
+            user_id:user.userId,
         },
     })
 }
 //查询团队所有项目
-export function getTeamProject(){
+export function getTeamProject(id){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
-            teamId :'1',
+            teamId :id,
             place:'',
             priority:'',
             keyword:'',

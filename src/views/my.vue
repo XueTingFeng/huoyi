@@ -15,7 +15,7 @@
 <!--							<div class="flex1 uels">组长</div>-->
 <!--						</div>-->
 						<div class="info">
-							<div class="label">登录时间时间</div>
+							<div class="label">登录时间</div>
 							<div class="flex1 uels">2020年9月30日12:00:00</div>
 						</div>
 <!--						<div class="info">-->
@@ -93,8 +93,8 @@
 				<perfect-scrollbar>
 					<draggable id="list1" :list="list1" class="list-group" draggable=".ucard" group="a" @end="end" >
 						<div class="ucard flex" @dragend="ondragend(item,index)" :class="['red-bd','blu-bd'][index%2]" v-for="(item,index) in list1" :key="index">
-							<div v-if="item.pause" class="abs">
-								<Icon @click="play(item.id)" class="pointer" type="ios-play" size="22"/>
+							<div v-if="item.state === 1" class="abs">
+								<Icon @click="play(item.taskId,0)" class="pointer" type="ios-play" size="22"/>
 								<span>暂停中</span>
 							</div>
 							<div class="lfbox down" >
@@ -114,7 +114,7 @@
 									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
-											<Icon @click="pause" type="ios-pause" size="24"/>
+											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
 										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
@@ -142,8 +142,8 @@
 				<perfect-scrollbar>
 					<draggable id="list2" :list="list2" class="list-group" draggable=".ucard" group="a" @end="end" >
 						<div class="ucard flex" @dragend="ondragend(item,index)" :class="['red-bd','blu-bd'][index%2]" v-for="(item,index) in list2" :key="index">
-							<div v-if="item.pause" class="abs">
-								<Icon @click="play(item.id)" class="pointer" type="ios-play" size="22"/>
+							<div v-if="item.state === 1" class="abs">
+								<Icon @click="play(item.taskId,0)" class="pointer" type="ios-play" size="22"/>
 								<span>暂停中</span>
 							</div>
 							<div class="lfbox down">
@@ -163,7 +163,7 @@
 									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
-											<Icon @click="pause" type="ios-pause" size="24"/>
+											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
 										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
@@ -191,8 +191,8 @@
 				<perfect-scrollbar>
 					<draggable id="list3" :list="list3" class="list-group" draggable=".ucard" group="a" @end="end" >
 						<div class="ucard flex" @dragend="ondragend(item,index)" :class="['red-bd','blu-bd'][index%2]" v-for="(item,index) in list3" :key="index">
-							<div v-if="item.pause" class="abs">
-								<Icon @click="play(item.id)" class="pointer" type="ios-play" size="22"/>
+							<div v-if="item.state === 1" class="abs">
+								<Icon @click="play(item.taskId,0)" class="pointer" type="ios-play" size="22"/>
 								<span>暂停中</span>
 							</div>
 							<div class="lfbox down">
@@ -210,7 +210,7 @@
 									<div>{{item.name}}</div>
 									<div class="mflex">
 										<div class="mflex opt w30">
-											<Icon @click="pause" type="ios-pause" size="24"/>
+											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
 										</div>
 										<img class="img" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
@@ -311,6 +311,12 @@
 
 		<div class="grid" >
 			<div class="ucard flex blu-bd" v-for="(item,index) in distributeTask" :key="index">
+
+        <div v-if="item.state === 1" class="abs">
+          <Icon @click="play(item.taskId,0)" class="pointer" type="ios-play" size="22"/>
+          <span>暂停中</span>
+        </div>
+
 				<div class="lfbox">
 					<Icon type="md-arrow-dropdown" size="24"/>
 					<div class="state">进行中</div>
@@ -320,7 +326,7 @@
 						<div>{{item.name}}</div>
 						<div class="mflex">
 							<div class="mflex opt">
-								<Icon @click="stop" type="ios-pause" size="20"/>
+								<Icon @click="pause(item.taskId,1)" type="ios-pause" size="20"/>
 								<Icon @click="done" class="ml5" type="md-checkmark" size="20"/>
                 <Icon type="md-close" size="20" @click="endTask"/>
 							</div>
@@ -434,7 +440,7 @@
 <script>
 	import draggable from "vuedraggable";
 
-	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask} from "../utils/rq-my";
+	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask,postMyTaskState} from "../utils/rq-my";
 
   export default {
 		components: {
@@ -502,6 +508,7 @@
 			// 	this.getList()
 			// 	this.getMyPro()
 			// })
+
       this.getMyProject()
       this.getMyTask()
       this.getDistributeTask()
@@ -531,6 +538,9 @@
           //已完成
 					this.list4=res.data[3]
 
+          this.$nextTick(() => {
+            this.getMyTask()
+          })
         }).catch()
 
 			},
@@ -556,11 +566,13 @@
 			change(){
 				this.status = this.status==0?1:0
 			},
-			play(){
+			play(taskId,state){
 				this.$Modal.confirm({
-					title: '确认恢复中止任务？',
+					title: '确认恢复暂停任务？',
 					onOk: () => {
-						
+            postMyTaskState(taskId,state).then(res => {
+
+            })
 					}
 				});
 			},
@@ -580,13 +592,15 @@
 				this.modal = false
 				this.resetForm()
 			},
-			pause(){
-				this.$Modal.confirm({
-					title: '确认是否暂停任务？',
-					onOk: () => {
-						
-					}
-				});
+			pause(taskId,state){
+        this.$Modal.confirm({
+          title: '确认暂停任务？',
+          onOk: () => {
+            postMyTaskState(taskId,state).then(res => {
+
+            })
+          }
+        });
 			},
       endTask() {
 		    this.$Modal.confirm({

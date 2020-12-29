@@ -67,12 +67,23 @@ export function postMyTaskStatus(taskId,status) {
     method: 'post',
     data: {
       task_id: taskId,
-      status: status
+      status: status,
     },
     type:"form"
   })
 }
 
+export function postMyTaskState(taskId,state) {
+  return request({
+    url: '/api/project/updateProjectTask',
+    method: 'post',
+    data: {
+      task_id: taskId,
+      state: state,
+    },
+    type:"form"
+  })
+}
 // // 根據token請求用戶信息
 // const token = 'HuoYi-Token'
 // export function getUser() {

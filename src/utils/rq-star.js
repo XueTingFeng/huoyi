@@ -22,7 +22,6 @@ export function getStarPro(user) {
     params:{
       id:user.userId,
      }
-
   })
 }
 //请求星标人员

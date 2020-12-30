@@ -739,7 +739,10 @@
 							</div>
 							<div class="textr">
 								<span class="group" v-if="item.isLeader==1">组长</span>
-								<img class="img" :src="require('@/assets/images/home/Collection.png')">
+                <Tooltip content="星标" placement="bottom">
+                  <img v-show="item.isStar==1" class="img" @click.stop="cancelPersonnel(item)" :src="require('@/assets/images/home/Collection.png')">
+                  <img v-show="!item.isStar==1" class="img" @click.stop="starPersonnel(item)" :src="require('@/assets/images/home/Collection-1(1).png')">
+                </Tooltip>
 							</div>
 						</div>
 						<div class="flex" v-for="(project1) in item.project">
@@ -1053,6 +1056,8 @@ import {
   addStar,
   cancelTaskStar,
   addTaskStar,
+  cancelPersonnelStar,
+  addPersonnelStar,
 } from "@/utils/rq-team";
   export default {
 		data() {
@@ -1540,6 +1545,22 @@ import {
           }
         });
       },
+      //取消人员星标
+      cancelPersonnel(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelPersonnelStar(item.userId,this.userInFo).then(res=>{
+              if (res.code==200){
+                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                  this.teammember=res.data
+                })
+              }
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
       //添加项目星标
       star(item){
         this.$Modal.confirm({
@@ -1561,6 +1582,21 @@ import {
           title:'确认添加星标？',
           onOk:()=>{
             addTaskStar(item.taskId,this.userInFo).then(res=>{
+            })
+          }
+        })
+      },
+      //添加人员星标
+      starPersonnel(item){
+        this.$Modal.confirm({
+          title:'确认添加星标？',
+          onOk:()=>{
+            addPersonnelStar(item.userId,this.userInFo).then(res=>{
+              if (res.code==200){
+                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                this.teammember=res.data
+              })
+              }
             })
           }
         })

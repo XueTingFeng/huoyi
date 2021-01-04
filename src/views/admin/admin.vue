@@ -1,20 +1,16 @@
 <template>
 <div class="adminBg">
 <!-- <div class="box"></div>-->
-  <Menu active-name="1-2" :open-names="['1']" style="background-color: #0F182A">
+  <Menu active-name="1-1" :open-names="['1']" style="background-color: #0F182A">
     <Submenu name="1">
       <template slot="title">
         <Icon type="ios-analytics" />
-        Navigation One
+        项目
       </template>
-      <MenuGroup title="Item 1">
-        <MenuItem name="1-1">Option 1</MenuItem>
-        <MenuItem name="1-2">Option 2</MenuItem>
-      </MenuGroup>
-      <MenuGroup title="Item 2">
-        <MenuItem name="1-3">Option 3</MenuItem>
-        <MenuItem name="1-4">Option 4</MenuItem>
-      </MenuGroup>
+
+        <MenuItem name="1-1"  >项目信息</MenuItem>
+        <MenuItem name="1-2">新增项目</MenuItem>
+
     </Submenu>
     <Submenu name="2">
       <template slot="title">
@@ -40,12 +36,32 @@
       <MenuItem name="4-4">Option 12</MenuItem>
     </Submenu>
   </Menu>
+
+<adminpro class="rightBg"></adminpro>
+
+
+
+
+
+
 </div>
 </template>
 
 <script>
+import adminpro from "../../components/admingcp/adminpro";
 export default {
-  name: "admin"
+  name: "admin",
+  components: {
+    adminpro,
+  },
+  data(){
+    return {
+
+    }
+  },
+  methods:{
+
+  }
 }
 </script>
 
@@ -53,11 +69,19 @@ export default {
 .adminBg {
   width: 100%;
   height: 100%;
+  float: left;
+  display: flex;
 }
 
 .box {
   width: 300px;
   height: 300px;
   background-color: #fff;
+
+}
+
+.rightBg{
+  float: right;
+  flex: 1;
 }
 </style>

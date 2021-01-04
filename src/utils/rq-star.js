@@ -45,7 +45,7 @@ export function getTeam() {
 }
 
 //成员任务
-export function getUserTasks() {
+export function getUserTasks(user) {
   return request({
     url: '/api/user/findUserTasksByUserId',
      params:{

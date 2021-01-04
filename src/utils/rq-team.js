@@ -25,7 +25,7 @@ export function getTeam() {
     })
 }
 //筛选团队项目请求
-export function screeningTeam(info){
+export function screeningTeam(info,user){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
@@ -33,6 +33,7 @@ export function screeningTeam(info){
             place:info.placeId,
             priority:info.priority,
             keyword:info.keyword,
+            userId:user.userId
         },
     })
 }
@@ -57,7 +58,7 @@ export function getProjectInfo(info,user){
     })
 }
 //查询团队所有项目
-export function getTeamProject(id){
+export function getTeamProject(id,user){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
@@ -65,6 +66,7 @@ export function getTeamProject(id){
             place:'',
             priority:'',
             keyword:'',
+            userId:user.userId,
         },
     })
 }

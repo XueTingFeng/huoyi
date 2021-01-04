@@ -993,7 +993,7 @@ import {
   addTaskStar,
   cancelPersonnelStar,
   addPersonnelStar,
-} from "@/utils/rq-team";
+} from "../utils/rq-team";
   export default {
 		data() {
 			return {
@@ -1171,7 +1171,7 @@ import {
           this.types=this.dept[0].types
           this.nodes=this.dept[0].types[0].nodes
           //获取团队所属项目
-          getTeamProject(this.deptId).then(res=>{
+          getTeamProject(this.deptId,this.userInFo).then(res=>{
             this.node=res.data
             this.list=res.data
           })
@@ -1255,7 +1255,7 @@ import {
         // this.list4=[]
         // this.list5=[]
         //this.getStarPro()
-        screeningTeam(this.screeningInfo).then(res => {
+        screeningTeam(this.screeningInfo,this.userInFo).then(res => {
           this.node=res.data
           this.list=res.data
           // let newData=res.data.filter(item=>{
@@ -1403,6 +1403,7 @@ import {
         // upTeamProjectInfo(this.upProInfo).then(res=>{
         // })
       },
+
 			search(){
 
 			},
@@ -1417,7 +1418,7 @@ import {
 			finish(){
 			  addProject(this.addteamdata).then(res => {
           if (res.code==200){
-            getTeamProject(this.deptId).then(res=>{
+            getTeamProject(this.deptId,this.userInFo).then(res=>{
             this.node=res.data
             this.list=res.data
           })}
@@ -1459,7 +1460,7 @@ import {
 					onOk: () => {
             cancelStar(item.pj_id,this.userInFo).then(res=>{
               if (res.code==200){
-                getTeamProject(this.deptId).then(res=>{
+                getTeamProject(this.deptId,this.userInFo).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })
@@ -1503,7 +1504,7 @@ import {
           onOk:()=>{
             addStar(item.pj_id,this.userInFo).then(res=>{
               if (res.code==200){
-                getTeamProject(this.deptId).then(res=>{
+                getTeamProject(this.deptId,this.userInFo).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })}
@@ -1543,7 +1544,7 @@ import {
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
             this.screeningInfo.teamId = this.dept[this.index].teamId
-            getTeamProject(this.deptId).then(res=>{
+            getTeamProject(this.deptId,this.userInFo).then(res=>{
               this.node=res.data
               this.list=res.data
             })
@@ -1554,7 +1555,7 @@ import {
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
             this.screeningInfo.teamId = this.dept[this.index].teamId
-            getTeamProject(this.deptId).then(res=>{
+            getTeamProject(this.deptId,this.userInFo).then(res=>{
               this.node=res.data
               this.list=res.data
             })

@@ -182,7 +182,7 @@
       </Form>
     </div>
     <div class="grid">
-      <div class="ucard pointer" @click="open" v-for="(item,index) in starPerson" :key="index">
+      <div class="ucard pointer" @click="open(item)" v-for="(item,index) in starPerson" :key="index">
 
         <!--星标人员：判断外出-->
         <div v-if="item.status" class="abs">
@@ -1132,10 +1132,10 @@
       //
 			// },
 			// 星标人员弹窗
-			open(){
+			open(item){
 				this.empModal = true
         //axios获取成员任务
-        getUserTasks().then(res => {
+        getUserTasks(item).then(res => {
           this.userTasks0=res.data[0]
           this.userTasks1=res.data[1]
           this.userTasks2=res.data[2]

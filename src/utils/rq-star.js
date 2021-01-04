@@ -64,16 +64,15 @@ export function getRegion() {
   })
 }
   //星标项目弹窗
-  export function getStarProInfo(pj_id) {
+  export function getStarProInfo(info,user) {
     return request({
       url: '/api/project/findProjectInfoById',
-       params:{
-         user_id: '1',
-          pj_id: pj_id
-       }
+      params:{
+        pj_id:info.pj_id,
+        user_id:user.userId,
+      },
     })
 }
-
 //筛选星标项目请求
 export function screeningStro(stardata){
   return request({
@@ -123,4 +122,15 @@ export function cancelStarUser(id,user){
     },
   })
 }
+//查询项目用户
+export function getProUser(project){
+  return request({
+    method:'get',
+    url:'/api/project/findProjectMemberByProjectId',
+    params:{
+      projectId:project,
+    },
+  })
+}
+
 

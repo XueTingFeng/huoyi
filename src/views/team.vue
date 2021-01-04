@@ -739,7 +739,10 @@
 							</div>
 							<div class="textr">
 								<span class="group" v-if="item.isLeader==1">组长</span>
-								<img class="img" :src="require('@/assets/images/home/Collection.png')">
+                <Tooltip content="星标" placement="bottom">
+                  <img v-show="item.isStar==1" class="img" @click.stop="cancelPersonnel(item)" :src="require('@/assets/images/home/Collection.png')">
+                  <img v-show="!item.isStar==1" class="img" @click.stop="starPersonnel(item)" :src="require('@/assets/images/home/Collection-1(1).png')">
+                </Tooltip>
 							</div>
 						</div>
 						<div class="flex" v-for="(project1) in item.project">
@@ -968,71 +971,6 @@
       </div>
     </Modal>
 
-
-<!--
-    <Modal v-model="addTaskWin" scrollable title="创建新任务">
-      <div class="flex">
-&lt;!&ndash;        <div class="lfbox down">&ndash;&gt;
-&lt;!&ndash;          <Dropdown placement="right-start" >&ndash;&gt;
-&lt;!&ndash;            <Icon type="md-arrow-dropdown" size="24"/>&ndash;&gt;
-&lt;!&ndash;            <DropdownMenu slot="list">&ndash;&gt;
-&lt;!&ndash;              <DropdownItem @click.native="dropdown('未开始')" v-model="addMyTask.status=0">未开始</DropdownItem>&ndash;&gt;
-&lt;!&ndash;              <DropdownItem @click.native="dropdown('进行中')" v-model="addMyTask.status=1">进行中</DropdownItem>&ndash;&gt;
-&lt;!&ndash;              <DropdownItem @click.native="dropdown('待接收')" v-model="addMyTask.status=2">待接收</DropdownItem>&ndash;&gt;
-&lt;!&ndash;              <DropdownItem @click.native="dropdown('已完成')" v-model="addMyTask.status=3">已完成</DropdownItem>&ndash;&gt;
-&lt;!&ndash;            </DropdownMenu>&ndash;&gt;
-&lt;!&ndash;          </Dropdown>&ndash;&gt;
-
-&lt;!&ndash;          <div class="state">{{state}}</div>&ndash;&gt;
-&lt;!&ndash;        </div>&ndash;&gt;
-        <Input v-model="addMyTask.name" type="textarea" :rows="3" placeholder="输入产品需求内容......" />
-      </div>
-      <div class="uflex mtl">
-        <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
-        </div>
-        <div class="flex1">&lt;!&ndash;<Input  class="search" placeholder="所属项目"/>&ndash;&gt;
-          <Select style="width: 150px;">
-            <option value="1" class="search" v-model="addMyTask.pj_id"></option>
-          </Select>
-        </div>
-      </div>
-      <div class="uflex mtl">
-        <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/Plan.png')">设置截止时间
-        </div>
-        <div class="flex1"><DatePicker v-model="addMyTask.end_time" type="datetime" class="search" placeholder="截止时间"></DatePicker></div>
-      </div>
-      <div class="uflex mtl">
-        <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/priority.png')">优先级
-        </div>
-        <div class="flex1"><Rate v-model="addMyTask.priority" custom-icon="iconfont hy-star"></Rate></div>
-      </div>
-      <div class="uflex mtl">
-        <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/Person.png')">执行人
-        </div>
-        <div class="flex1 down">
-          <Dropdown placement="right-start">
-            <span class="cbod">{{addMyTask.member_id}}</span>
-            <DropdownMenu slot="list" style="padding: 6px 10px;">
-              <Button type="default" ghost long @click="search">搜索</Button>
-              <RadioGroup v-model="addMyTask.member_id" vertical>
-                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in teammember" :key="index">
-                  <Radio :label="item.userId">{{item.userName}}</Radio>
-                </DropdownItem>
-              </RadioGroup>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-      </div>
-      <div slot="footer">
-        <Button type="default" ghost @click="save">完成并创建下一个</Button>
-        <Button type="primary" @click="finishTask">完成</Button>
-      </div>
-    </Modal>
--->
 	</div>
 </template>
 
@@ -1053,6 +991,8 @@ import {
   addStar,
   cancelTaskStar,
   addTaskStar,
+  cancelPersonnelStar,
+  addPersonnelStar,
 } from "@/utils/rq-team";
   export default {
 		data() {
@@ -1540,6 +1480,22 @@ import {
           }
         });
       },
+      //取消人员星标
+      cancelPersonnel(item){
+        this.$Modal.confirm({
+          title: '确认取消星标？',
+          onOk: () => {
+            cancelPersonnelStar(item.userId,this.userInFo).then(res=>{
+              if (res.code==200){
+                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                  this.teammember=res.data
+                })
+              }
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
       //添加项目星标
       star(item){
         this.$Modal.confirm({
@@ -1561,6 +1517,21 @@ import {
           title:'确认添加星标？',
           onOk:()=>{
             addTaskStar(item.taskId,this.userInFo).then(res=>{
+            })
+          }
+        })
+      },
+      //添加人员星标
+      starPersonnel(item){
+        this.$Modal.confirm({
+          title:'确认添加星标？',
+          onOk:()=>{
+            addPersonnelStar(item.userId,this.userInFo).then(res=>{
+              if (res.code==200){
+                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                this.teammember=res.data
+              })
+              }
             })
           }
         })

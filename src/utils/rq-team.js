@@ -160,6 +160,18 @@ export function cancelTaskStar(id,user){
         },
     })
 }
+//取消人员星标
+export function cancelPersonnelStar(id,user){
+    return request({
+        method:'get',
+        url:'/api/user/deleteUserStar',
+        params:{
+            type :1,
+            fkId:id,
+            userId:user.userId,
+        },
+    })
+}
 //添加项目星标
 export function addStar(id,user){
     return request({
@@ -180,6 +192,19 @@ export function addTaskStar(id,user){
         url:'/api/user/addUserStar',
         data:{
             type :3,
+            fkId:id,
+            userId:user.userId,
+        },
+        type:"form"
+    })
+}
+//添加人员星标
+export function addPersonnelStar(id,user){
+    return request({
+        method:'post',
+        url:'/api/user/addUserStar',
+        data:{
+            type :1,
             fkId:id,
             userId:user.userId,
         },

@@ -377,7 +377,7 @@
 						</DropdownMenu>
 					</Dropdown>
 					
-					<div class="state">{{state}}</div>
+					<div class="state">待接收</div>
 				</div>
 				<Input v-model="addMyTask.name" type="textarea" :rows="3" placeholder="输入产品需求内容......" />
 			</div>
@@ -423,7 +423,7 @@
 							<Button type="default" ghost long @click="search">搜索</Button>
 							<RadioGroup v-model="addMyTask.member_id" vertical>
 								<DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in team" :key="index">
-									<Radio :label="item.userId">{{item.userName}}</Radio>
+									<Checkbox :label="item.userId">{{item.userName}}</Checkbox>
 								</DropdownItem>
 							</RadioGroup>
 						</DropdownMenu>
@@ -636,10 +636,20 @@
 			},
 			finish(){
 		    postMyTask(this.addMyTask).then(res=>{
-          this.$nextTick(() => {
+		      if (res.code == 10200) {
+		        this.$Modal.confirm({
+              title: '有参数未填',
+              onOk: () =>{
+                this.modal = true
+              }
+            })
+          }else {
+		        this.$nextTick(() => {
             this.getMyTask()
             this.getDistributeTask()
-          })
+          })}
+
+
         })
 				this.modal = false
 				this.resetForm()

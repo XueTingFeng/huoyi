@@ -41,6 +41,9 @@ const routes = [{
 			path: 'admin',
 			name: 'admin',
 			component: (resolve) => require(['@/views/admin/admin'], resolve),
+			// children: [{
+			//
+			// }]
 		}]
 	},
 	{

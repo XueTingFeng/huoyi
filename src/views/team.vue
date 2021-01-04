@@ -1416,13 +1416,79 @@ import {
       },
       //完成添加项目
 			finish(){
-			  addProject(this.addteamdata).then(res => {
-          if (res.code==200){
-            getTeamProject(this.deptId,this.userInFo).then(res=>{
-            this.node=res.data
-            this.list=res.data
-          })}
-        })
+        if (this.addteamdata.projectName==''){
+          this.$Modal.confirm({
+            title: '项目名称未填写',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.nodeId==''){
+          this.$Modal.confirm({
+            title: '节点未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.endTime==''){
+          this.$Modal.confirm({
+            title: '截止时间未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.placeId==''){
+          this.$Modal.confirm({
+            title: '地区未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.initiator==''){
+          this.$Modal.confirm({
+            title: '没有发布者',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.teamId==''){
+          this.$Modal.confirm({
+            title: '团队未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.priority==''){
+          this.$Modal.confirm({
+            title: '优先级未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.principal==''){
+          this.$Modal.confirm({
+            title: '负责人未添加',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else if (this.addteamdata.typeId==''){
+          this.$Modal.confirm({
+            title: '项目类型未选择',
+            onOk: () =>{
+              this.addModal = true
+            }
+          })
+        }else{
+          addProject(this.addteamdata).then(res => {
+            if (res.code==200){
+              getTeamProject(this.deptId,this.userInFo).then(res=>{
+                this.node=res.data
+                this.list=res.data
+              })
+            }
+          })
+        }
 				this.addModal = false
         this.adduser={
           avatar:[],
@@ -1433,8 +1499,38 @@ import {
       finishTask(){
         this.addMyTask.pj_id=this.projectId
         this.addMyTask.user_id=this.userInFo.userId
-        addTask(this.addMyTask).then(res=>{
-        })
+        if (this.addMyTask.name==''){
+          this.$Modal.confirm({
+            title: '产品需求未填写',
+            onOk: () =>{
+              this.addTaskWin = true
+            }
+          })
+        }else if (this.addMyTask.priority==''){
+          this.$Modal.confirm({
+            title: '优先级未选择',
+            onOk: () =>{
+              this.addTaskWin = true
+            }
+          })
+        }else if (this.addMyTask.end_time==''){
+          this.$Modal.confirm({
+            title: '截止时间未确定',
+            onOk: () =>{
+              this.addTaskWin = true
+            }
+          })
+        }else if (this.addMyTask.member_id==''){
+          this.$Modal.confirm({
+            title: '执行人未选择',
+            onOk: () =>{
+              this.addTaskWin = true
+            }
+          })
+        }else{
+          addTask(this.addMyTask).then(res=>{
+          })
+        }
         this.addTaskWin=false
       },
       //完成并创建下一个任务

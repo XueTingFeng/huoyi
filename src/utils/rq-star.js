@@ -98,6 +98,19 @@ export function cancelStarPro(id,user){
     },
   })
 }
+//添加星标任务
+export function addStarTask(id,user){
+  return request({
+    method:'post',
+    url:'/api/user/addUserStar',
+    data:{
+      type :3,
+      fkId:id,
+      userId:user.userId,
+    },
+    type:"form"
+  })
+}
 //取消星标任务
 export function cancelStarTask(id,user){
   return request({

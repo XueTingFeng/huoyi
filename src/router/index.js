@@ -36,14 +36,48 @@ const routes = [{
 		}, {
 			path: 'msg',
 			name: 'msg',
-			component: (resolve) => require(['@/views/msg'], resolve)
+			component: (resolve) => require(['@/views/msg'], resolve),
 		},{
 			path: 'admin',
 			name: 'admin',
-			component: (resolve) => require(['@/views/admin/admin'], resolve),
-			// children: [{
-			//
-			// }]
+			component: (resolve) => require(['@/views/admin'], resolve),
+			children: [{
+				path: 'adminuser',
+				name: 'adminuser',
+				component: resolve => require(['@/components/adminuser'],resolve)
+				},{
+				path: 'adminstar',
+				name: 'adminstar',
+				component: resolve => require(['@/components/adminstar'],resolve)
+			},{
+			     path: 'adminpro',
+				 name: 'adminpro',
+				 component: (resolve) => require(['@/components/adminpro'], resolve),
+			 }, {
+				path: 'admintask',
+				name: 'admintask',
+				component: (resolve) => require(['@/components/admintask'], resolve),
+				},{
+				path: 'adminteam',
+				name: 'adminteam',
+				component: resolve => require(['@/components/adminteam'],resolve)
+			},{
+				path: 'adminProStandard',
+				name: 'adminProStandard',
+				component: resolve => require(['@/components/adminProStandard'],resolve)
+			},{
+				path: 'adminrole',
+				name: 'adminrole',
+				component: resolve => require(['@/components/adminrole'],resolve)
+			},{
+				path: 'adminroleAuthority',
+				name: 'adminroleAuthority',
+				component: resolve => require(['@/components/adminroleAuthority'],resolve)
+			},{
+				path: 'adminAuthority',
+				name: 'adminAuthority',
+				component: resolve => require(['@/components/adminAuthority'],resolve)
+			}]
 		}]
 	},
 	{

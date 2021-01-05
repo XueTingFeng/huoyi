@@ -1,21 +1,31 @@
 <template>
- <div class="probg">
+  <div class="probg">
 
-   <Table border :columns="columns7" :data="data1"></Table>
+    <Tabs value="name1">
+      <TabPane label="标准项目类型" name="name1">
 
-   <Page :total="100" show-elevator style="text-align: center;margin-top: 520px"/>
- </div>
+        <div style="color: white">
+          <icon type="md-add" size="20"></icon>创建新的标准
+        </div>
+
+        <Table border :columns="columns7" :data="data1" :loading="loading"></Table>
+        <Page :total="100" show-elevator style="text-align: center;margin-top: 420px"/>
+      </TabPane>
+
+    </Tabs>
+
+  </div>
 </template>
 
 <script>
 export default {
-  name: "adminpro",
+  name: "adminProStandard",
   data () {
     return {
       columns7: [
         {
-          title: '项目',
-          key: 'pro_name',
+          title: '标准项目类型名称',
+          key: 'standard',
           render: (h, params) => {
             return h('div', [
               h('Icon', {
@@ -23,17 +33,9 @@ export default {
                   type: 'person'
                 }
               }),
-              h('strong', params.row.pro_name)
+              h('strong', params.row.standard)
             ]);
           }
-        },
-        {
-          title: '任务',
-          key: 'task'
-        },
-        {
-          title: '参与人员',
-          key: 'person'
         },
         {
           title: '操作',
@@ -69,43 +71,24 @@ export default {
               }, '删除')
             ]);
           }
-        }
+        },
       ],
       data1: [
         {
-          pro_name: '项目1',
-          task: '任务1',
-          person: '张三'
+          standard: '类型1',
         },
         {
-          pro_name: '项目1',
-          task: '任务1',
-          person: '张三'
+          standard: '类型1',
         },
         {
-          pro_name: '项目1',
-          task: '任务1',
-          person: '张三'
+          standard: '类型1',
         },
         {
-          pro_name: '项目1',
-          task: '任务1',
-          person: '张三'
-        }
+          standard: '类型1',
+        },
       ]
     }
   },
-  methods: {
-    show (index) {
-      this.$Modal.info({
-        title: 'User Info',
-        content: `pro_name：${this.data1[index].pro_name}<br>task：${this.data1[index].task}<br>person：${this.data1[index].person}`
-      })
-    },
-    remove (index) {
-      this.data1.splice(index, 1);
-    }
-  }
 }
 </script>
 
@@ -113,18 +96,6 @@ export default {
 .probg {
   width: 500px;
   height: 800px;
-  background-color: white;
-
+  background-color: #0b1c38;
 }
-
-.tableStyle{
-  border: 1px solid #0c1321;
-  color: #0c1321;
-}
-
-.tdStyle{
-  border: 1px solid  #0c1321;
-}
-
-
 </style>

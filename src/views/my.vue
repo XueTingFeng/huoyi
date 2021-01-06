@@ -5,7 +5,10 @@
 				<Tooltip placement="right-start">
 					<Avatar shape="square" :src="userInfo.avatar" />
 					<div slot="content">
-						<div class="info">{{userInfo.userName}}</div>
+						<div class="info">
+              <div class="label">姓名</div>
+              {{userInfo.userName}}
+            </div>
 						<div class="info">
 							<div class="label">状态</div>
 							<div @click="change(userInfo.userId,status==0?0:1)" class="sbtn pd15 pointer">{{userInfo.status===0?'正常':'外出'}}</div>

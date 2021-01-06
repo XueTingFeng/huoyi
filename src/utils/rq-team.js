@@ -213,3 +213,17 @@ export function addPersonnelStar(id,user){
         type:"form"
     })
 }
+//查询项目任务
+export function getProTask(user,proId,keyword){
+    return request({
+        method:'get',
+        url:'/api/project/findProjectTaskByProjectId',
+        params:{
+            projectId:proId,
+            userId:user.userId,
+            executor:keyword.practitioners,
+            sponsor:'',
+            keyword:keyword.keyword,
+        },
+    })
+}

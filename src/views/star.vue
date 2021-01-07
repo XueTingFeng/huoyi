@@ -3,10 +3,7 @@
     <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
       <div class="rfloat">
 
-        <FormItem label="关键字">
-          <Input clearable class="search" v-model="formItem.title" @keyup.enter.native="handleSubmit()" suffix="ios-search" placeholder="搜索"/>
-        </FormItem>
-        <Button type="primary" @click="handleSubmit()">确定</Button>
+        <Button style="background-color: #0F182A;color: white" @click="handleSubmit()">清空所有筛选</Button>
       </div>
     </Form>
 
@@ -36,7 +33,7 @@
                 <Option value="pro_5">5星</Option>
               </Select>
             </FormItem>
-            <Button type="primary" @click="">清空</Button>
+            <Button type="primary" @click="">确定</Button>
           </div>
         </Form>
       </div>
@@ -110,7 +107,7 @@
               <Option value="task_5">5星</Option>
             </Select>
           </FormItem>
-          <Button type="primary" @click="">清空</Button>
+          <Button type="primary" @click="">确定</Button>
         </div>
       </Form>
     </div>
@@ -177,7 +174,7 @@
               <Option value="5">5</Option>
             </Select>
           </FormItem>
-          <Button type="primary" @click="">清空</Button>
+          <Button type="primary" @click="">确定</Button>
         </div>
       </Form>
     </div>

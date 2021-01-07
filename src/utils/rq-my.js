@@ -63,7 +63,7 @@ export function getProMembers(projectId) {
   })
 }
 //post请求
-export function postMyTask(addMyTask,memberId) {
+export function postMyTask(addMyTask) {
   return request({
     url: '/api/project/addProjectTask',
     method: 'post',
@@ -72,7 +72,7 @@ export function postMyTask(addMyTask,memberId) {
       name: addMyTask.name,
       end_time:new Date(addMyTask.end_time).format("yyyy-MM-dd hh:mm:ss"),
       priority:addMyTask.priority,
-      member_id:memberId,
+      member_id:addMyTask.member_id,
       state: '0'
     },
     type:"form"

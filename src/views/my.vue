@@ -11,7 +11,7 @@
             </div>
 						<div class="info">
 							<div class="label">状态</div>
-							<div @click="change(userInfo.userId,status==0?0:1)" class="sbtn pd15 pointer">{{userInfo.status===0?'正常':'外出'}}</div>
+							<div @click="change(userInfo.userId,status == 0?0:1)" class="sbtn pd15 pointer">{{userInfo.status===0?'正常':'外出'}}</div>
 						</div>
 <!--						<div class="info">-->
 <!--							<div class="label">项目权限</div>-->
@@ -59,6 +59,7 @@
 					<Input class="search" suffix="ios-search" placeholder="搜索" />
 				</FormItem>
 				<Button type="primary" @click="handleSubmit('formInline')">确定</Button>
+        <Button style="margin-left: 10px" @click="handleSubmit('formInline')">清空</Button>
 			</div>
 		</Form>
 		<div class="grid">
@@ -310,6 +311,33 @@
 		
 		<div class="mflex xtitle">
 			<img :src="require('@/assets/images/home/star.png')">我派发的任务视图<span class="ml">{{distributeTask.length}}</span>
+
+<Form ref="formInline" :model="userInfo" inline :label-width="70" class="form">
+      <div>
+        <FormItem label="执行人">
+          <Select v-model="formItem.select" style="width: 150px;">
+            <Option value="李春兰">李春兰</Option>
+            <Option value="shanghai">London</Option>
+            <Option value="shenzhen">Sydney</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="优先级">
+          <Select v-model="formItem.level" style="width: 150px;">
+            <Option value="1">1星</Option>
+            <Option value="2">2星</Option>
+            <Option value="3">3星</Option>
+            <Option value="4">4星</Option>
+            <Option value="5">5星</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="关键字">
+          <Input class="search" suffix="ios-search" placeholder="搜索" />
+        </FormItem>
+        <Button type="primary" @click="handleSubmit('formInline')">确定</Button>
+        <Button style="margin-left: 10px" @click="handleSubmit('formInline')">清空</Button>
+      </div>
+      </Form>
+
 		</div>
 
 
@@ -506,7 +534,7 @@
 
 				valueText:3,
 				state:'未开始',
-				status:0,
+				status:'',
 
         userInfo: {
           userId:'',
@@ -719,14 +747,17 @@
 				this.fromId = e.from.id
 				this.toId = e.to.id
 			},
-			resetForm(){
-				this.vo={
-					content:'',
-					time:'',
-					rate:0,
-					person:''
-				}
-			},
+			resetForm() {
+        this.addMyTask = {
+          user_id: '',
+          pj_id: '',
+          name: '',
+          end_time: '',
+          priority: '0',
+          member_id: '',
+          state: ''
+        }
+      },
 			checkPerson(projectId){
         getProMembers(projectId).then(res => {
           this.promember = res.data

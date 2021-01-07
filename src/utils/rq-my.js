@@ -22,11 +22,11 @@ export function postUserInfo(userId,status){
 }
 
 //请求用户项目
-export function getMyProject(user) {
+export function getMyProject() {
   return request({
     url: '/api/user/findUserJoinProject',
     params: {
-      id: user.userId
+
     }
   })
 }
@@ -53,28 +53,26 @@ export function getDistributeTask(user) {
   })
 }
 
-//请求团队成员
-export function getTeamMembers(teamId,userId) {
+//请求项目成员
+export function getProMembers(projectId) {
   return request({
-    url: '/api/team/findTeamMembersByTeamId',
+    url: '/api/project/findProjectMemberByProjectId',
     params: {
-      teamId: teamId,
-      userId: userId
+      projectId: projectId
     }
   })
 }
 //post请求
-export function postMyTask(addMyTask) {
+export function postMyTask(addMyTask,memberId) {
   return request({
     url: '/api/project/addProjectTask',
     method: 'post',
     data: {
-      user_id:'1',
       pj_id:addMyTask.pj_id,
       name: addMyTask.name,
       end_time:new Date(addMyTask.end_time).format("yyyy-MM-dd hh:mm:ss"),
       priority:addMyTask.priority,
-      member_id:addMyTask.member_id,
+      member_id:memberId,
       state: '0'
     },
     type:"form"

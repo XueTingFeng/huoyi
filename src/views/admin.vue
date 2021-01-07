@@ -1,7 +1,7 @@
 <template>
 <div class="adminBg">
 <!-- <div class="box"></div>-->
-  <Menu   style="background-color: #0F182A">
+  <Menu   style="background-color: #0F182A" active-name="0-1" :open-names="['0']">
 
     <Submenu name="0">
       <template slot="title">

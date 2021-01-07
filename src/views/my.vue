@@ -74,7 +74,7 @@
 			<div class="col5">
 				<div class="uflex mtm">
 					<div class="btxt">待接收<span class="ml">{{list3.length}}</span></div>
-					<div class="addbtn" @click="open(userInfo.userId,userInfo.teamId)">+</div>
+					<div class="addbtn" @click="open()">+</div>
 				</div>
 			</div>
 			<div class="col5">
@@ -391,8 +391,8 @@
             <span class="cbod">{{addMyTask.pj_id}}</span>
             <DropdownMenu slot="list" style="padding: 6px 10px;">
               <RadioGroup v-model="addMyTask.pj_id" vertical>
-                <DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in join_pro" :key="index">
-                  <Radio :label="item.pj_id">{{item.name}}</Radio>
+                <DropdownItem @click.native="checkPerson(item.pj_id)" v-for="(item, index) in join_pro" :key="index">
+                  <Radio :label="item.pj_id" >{{item.name}}</Radio>
                 </DropdownItem>
               </RadioGroup>
             </DropdownMenu>
@@ -422,8 +422,8 @@
 						<DropdownMenu slot="list" style="padding: 6px 10px;">
 							<Button type="default" ghost long @click="search">搜索</Button>
 							<RadioGroup v-model="addMyTask.member_id" vertical>
-								<DropdownItem @click.native="checkPerson(item)" v-for="(item, index) in team" :key="index">
-									<Checkbox :label="item.userId">{{item.userName}}</Checkbox>
+								<DropdownItem v-for="(item, index) in promember" :key="index">
+									<Radio :label="item.pjMemberId">{{item.username}}</Radio>
 								</DropdownItem>
 							</RadioGroup>
 						</DropdownMenu>
@@ -441,7 +441,7 @@
 <script>
 	import draggable from "vuedraggable";
 
-	import {getMyProject,getMyTask,postMyTask,getTeamMembers,postMyTaskStatus,getDistributeTask,postMyTaskState,getUserInfo,postUserInfo,addStar,delStar} from "../utils/rq-my";
+	import {getMyProject,getMyTask,postMyTask,getProMembers,postMyTaskStatus,getDistributeTask,postMyTaskState,getUserInfo,postUserInfo,addStar,delStar} from "../utils/rq-my";
 
   export default {
    // inject: ['reload'],
@@ -454,7 +454,7 @@
         myTaskId:[],
 
 
-			  team:[],
+        promember:[],
 			  addMyTask: {
           user_id:'',
           pj_id:'',
@@ -462,6 +462,7 @@
           end_time:'',
           priority:'',
           member_id:'',
+          memberId:'',
           state: ''
         },
         postStatus: {
@@ -552,7 +553,7 @@
       },
 		  //获取我的项目数据
 		  getMyProject(){
-		    getMyProject(this.userInfo).then(res => {
+		    getMyProject().then(res => {
 		      this.join_pro = res.data
         })
       },
@@ -593,14 +594,10 @@
 		  //
       // },
 			// 添加打开弹窗
-			open(userId,teamId){
+			open(){
 
 				this.modal = true
-          getTeamMembers(userId,teamId).then(res => {
-            this.team = res.data
-            this.userName = res.data.userName
-             this.memberId = res.data.memberId
-          });
+
 			},
 			change(userId,status){
         postUserInfo(userId,status).then(res => {
@@ -635,7 +632,7 @@
 				this.resetForm()
 			},
 			finish(){
-		    postMyTask(this.addMyTask).then(res=>{
+		    postMyTask(this.addMyTask,this.memberId).then(res=>{
 		      if (res.code == 10200) {
 		        this.$Modal.confirm({
               title: '有参数未填',
@@ -727,8 +724,12 @@
 					person:''
 				}
 			},
-			checkPerson(data){
-				this.vo.person = data
+			checkPerson(projectId){
+        getProMembers(projectId).then(res => {
+          this.promember = res.data
+          this.username = res.data.username
+          // this.member_id= res.data.pjMemberId
+        });
 			}
 		}
 	}

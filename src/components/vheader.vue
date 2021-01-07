@@ -84,7 +84,7 @@ export default {
 				onOk: () => {
 					// removeToken()
 
-          this.$router.push({path:'/admin'})
+          this.$router.push({path:'/admin/adminuser'})
 				}
 			});
 		},

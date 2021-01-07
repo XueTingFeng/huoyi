@@ -40,7 +40,8 @@
 		<div class="grid flexNode">
 			<div class="col5" style="" v-for="(item,index) in node">
 				<div class="uflex mtm">
-					<div class="btxt"><!--产品(任务)计划-->{{item.node_name}}<span class="ml">{{item.length}}</span></div>
+					<div class="btxt"><!--产品(任务)计划-->{{item.node_name}}</div>
+          <span class="ml">{{item.project.length}}</span>
 					<div class="addbtn" @click="openAdd(item,index)">
             <Tooltip content="新建项目" placement="bottom">
               +
@@ -399,7 +400,10 @@
 							<div class="label">
 								<img class="uicon" :src="require('@/assets/images/detail/Label.png')">标签
 							</div>
-              <input type="text" value="添加标签" @keyup.enter="addLabel(value)">
+              <div class="flex1">
+                <Input v-model="addteamdata.tags" type="textarea" :rows="2" placeholder="添加标签" @keyup.enter="addLabel"/>
+              </div>
+<!--              <input type="text" value="添加标签" @keyup.enter="addLabel(value)">-->
 <!--							<div class="flex1">添加标签</div>-->
 						</div>
 					</div>
@@ -433,7 +437,7 @@
 								<div class="flex1 uels"><!-- 产品研发 -->{{projectInfo.node}}</div>
 							</div>
 							<div class="flex mb10">
-								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Time.png')">时间</div>
+								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Time.png')">计划截止时间</div>
 								<div class="flex1 uels"><!-- 设置截止时间 -->{{projectInfo.end_time}}</div>
 							</div>
 							<div class="flex mb10">
@@ -465,8 +469,8 @@
 								</div>
 							</div>
 							<div class="flex mb10 ml">
-								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Plan.png')">计划完成时间</div>
-								<div class="flex1 uels"><!--添加-->{{projectInfo.complete_time}}</div>
+								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Plan.png')">项目创建时间</div>
+								<div class="flex1 uels"><!--添加-->{{projectInfo.releaseTime}}</div>
 							</div>
 							<div class="flex mb10 ml">
 								<div class="col2"><img class="micon" :src="require('@/assets/images/detail/Person.png')">负责人</div>
@@ -492,14 +496,14 @@
 						<div class="ucard flex" v-for="(item,index) in taskInfo">
 							<div class="lfbox">
 								<Icon type="md-arrow-dropdown" size="24"/>
-								<div class="state"><!--进行中-->{{(item.status==0)?("未接收"):((item.status==1)?("未开始"):(item.status==2)?("待接收"):("已完成"))}}</div>
+								<div class="state"><!--进行中-->{{(item.status==0)?("未接收"):((item.status==1)?("未开始"):(item.status==2)?("进行中"):("已完成"))}}</div>
 							</div>
 							<div class="flex1 mg30">
 								<div class="uflex">
 									<div><!--设备机台制作二维码，先出设计-->{{item.name}}</div>
 
 								</div>
-								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">
+								<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">
 									<span class="mr8">发起人</span>
 									<span><!--张新城-->{{item.sponsor}}</span>
 								</Rate>
@@ -1318,10 +1322,19 @@ import {
 			},
       //添加项目
 			openAdd(item){
+        this.addteamdata.projectName=''
+        this.addteamdata.priority=''
+        this.addteamdata.endTime=''
+        this.addteamdata.region=this.region[0].placeName
+        this.addteamdata.placeId=this.region[0].placeId
+        this.addteamdata.remarks=''
+        this.addteamdata.tags=''
+
+        this.addteamdata.principal=this.userInFo.userId
 			  this.addProInfo.nodeName=item.node_name
         this.addteamdata.nodeId=item.node_id
         this.addteamdata.initiator=this.userInFo.userId
-        this.addteamdata.region=this.region[0].placeName
+        // this.addteamdata.region=this.region[0].placeName
         this.addteamdata.username=this.userInFo.userName
         this.adduser.avatar=[];
         this.adduser.memberId=[];
@@ -1369,9 +1382,9 @@ import {
         this.addProInfo.nodeName=item.nodeName
         this.addteamdata.nodeId=item.nodeId
       },
-      //回车事件
-      addLabel(value){
-			  this.addteamdata.tags
+      //添加项目标签回车事件
+      addLabel(){
+
       },
       //添加参与者
       addUser(item){

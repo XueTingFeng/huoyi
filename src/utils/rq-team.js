@@ -89,9 +89,9 @@ export function addProject(addData){
             typeId:addData.typeId,
 //非必填
             remarks:addData.remarks,
-            tags:'',
+            tags:addData.tags,
             executors:addData.executors,
-            releaseTime:''
+            // releaseTime:''
         },
         // headers:{
         //   'Content-Type': 'application/x-www-form-urlencoded',

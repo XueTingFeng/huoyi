@@ -25,7 +25,7 @@ export function getTeam() {
     })
 }
 //筛选团队项目请求
-export function screeningTeam(info,user){
+export function screeningTeam(info/*,user*/){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
@@ -33,32 +33,32 @@ export function screeningTeam(info,user){
             place:info.placeId,
             priority:info.priority,
             keyword:info.keyword,
-            userId:user.userId
+            /*userId:user.userId*/
         },
     })
 }
 //查找所有团队成员
-export function getTeamMember(teamId,user){
+export function getTeamMember(teamId/*,user*/){
     return request({
         url:'/api/team/findTeamMembersByTeamId',
         params:{
             teamId:teamId,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
     })
 }
 //查找项目信息
-export function getProjectInfo(info,user){
+export function getProjectInfo(info/*,user*/){
     return request({
         url:'/api/project/findProjectInfoById',
         params:{
             pj_id:info.pj_id,
-            user_id:user.userId,
+            /*user_id:user.userId,*/
         },
     })
 }
 //查询团队所有项目
-export function getTeamProject(id,user){
+export function getTeamProject(id/*,user*/){
     return request({
         url:'api/team/findProjectByTeamId',
         params:{
@@ -66,7 +66,7 @@ export function getTeamProject(id,user){
             place:'',
             priority:'',
             keyword:'',
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
     })
 }
@@ -100,7 +100,7 @@ export function addProject(addData){
     })
 }
 //更新项目
-export function upTeamProjectInfo(item,){
+export function upTeamProjectInfo(item){
     return request({
         method:'post',
         url:'/api/project/updateProject',
@@ -117,7 +117,7 @@ export function addTask(item){
         method:'post',
         url:'/api/project/addProjectTask',
         data:{
-            user_id:item.user_id,
+            /*user_id:item.user_id,*/
             pj_id:item.pj_id,
             name: item.name,
             end_time:new Date(item.end_time).format("yyyy-MM-dd hh:mm:ss"),
@@ -139,88 +139,88 @@ export function getProUser(project){
     })
 }
 //取消项目星标
-export function cancelStar(id,user){
+export function cancelStar(id/*,user*/){
     return request({
         method:'get',
         url:'/api/user/deleteUserStar',
         params:{
             type :2,
             fkId:id,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
     })
 }
 //取消任务星标
-export function cancelTaskStar(id,user){
+export function cancelTaskStar(id/*,user*/){
     return request({
         method:'get',
         url:'/api/user/deleteUserStar',
         params:{
             type :3,
             fkId:id,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
     })
 }
 //取消人员星标
-export function cancelPersonnelStar(id,user){
+export function cancelPersonnelStar(id/*,user*/){
     return request({
         method:'get',
         url:'/api/user/deleteUserStar',
         params:{
             type :1,
             fkId:id,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
     })
 }
 //添加项目星标
-export function addStar(id,user){
+export function addStar(id/*,user*/){
     return request({
         method:'post',
         url:'/api/user/addUserStar',
         data:{
             type :2,
             fkId:id,
-            userId:user.userId,
+           /* userId:user.userId,*/
         },
         type:"form"
     })
 }
 //添加任务星标
-export function addTaskStar(id,user){
+export function addTaskStar(id/*,user*/){
     return request({
         method:'post',
         url:'/api/user/addUserStar',
         data:{
             type :3,
             fkId:id,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
         type:"form"
     })
 }
 //添加人员星标
-export function addPersonnelStar(id,user){
+export function addPersonnelStar(id/*,user*/){
     return request({
         method:'post',
         url:'/api/user/addUserStar',
         data:{
             type :1,
             fkId:id,
-            userId:user.userId,
+            /*userId:user.userId,*/
         },
         type:"form"
     })
 }
 //查询项目任务
-export function getProTask(user,proId,keyword){
+export function getProTask(/*user,*/proId,keyword){
     return request({
         method:'get',
         url:'/api/project/findProjectTaskByProjectId',
         params:{
             projectId:proId,
-            userId:user.userId,
+            /*userId:user.userId,*/
             executor:keyword.practitioners,
             sponsor:'',
             keyword:keyword.keyword,

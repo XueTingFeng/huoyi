@@ -1177,12 +1177,12 @@ import {
           this.types=this.dept[0].types
           this.nodes=this.dept[0].types[0].nodes
           //获取团队所属项目
-          getTeamProject(this.deptId,this.userInFo).then(res=>{
+          getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
             this.node=res.data
             this.list=res.data
           })
           //获取团队成员
-          getTeamMember(this.deptId,this.userInFo).then(res=>{
+          getTeamMember(this.deptId/*,this.userInFo*/).then(res=>{
             this.teammember=res.data
           })
         })
@@ -1230,7 +1230,7 @@ import {
         this.projectId=info.pj_id
         this.projectName=info.name
 				this.proModal = true
-        getProjectInfo(info,this.userInFo).then(res => {
+        getProjectInfo(info/*,this.userInFo*/).then(res => {
           this.projectInfo=res.data[0]
           this.taskInfo=res.data[1]
           this.unfinishedTask=this.taskInfo.length
@@ -1311,7 +1311,7 @@ import {
 
 			// 团队成员弹窗
 			open(){
-			  getTeamMember(this.deptId,this.userInFo).then(res => {
+			  getTeamMember(this.deptId/*,this.userInFo*/).then(res => {
 			    this.teammember = res.data
         }),
 				this.modal = true
@@ -1411,7 +1411,7 @@ import {
       },
 
 			search(){
-        getProTask(this.userInFo,this.projectId,this.proPopWinTask).then(res=>{
+        getProTask(/*this.userInFo,*/this.projectId,this.proPopWinTask).then(res=>{
           this.taskInfo=res.data
           this.unfinishedTask=this.taskInfo.length
           for (this.i=0;this.i<this.taskInfo.length;this.i++){
@@ -1496,7 +1496,7 @@ import {
         }else{
           addProject(this.addteamdata).then(res => {
             if (res.code==200){
-              getTeamProject(this.deptId,this.userInFo).then(res=>{
+              getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })
@@ -1544,7 +1544,7 @@ import {
         }else{
           addTask(this.addMyTask).then(res=>{
             if (res.code==200){
-              getProjectInfo(this.proInfo,this.userInFo).then(res=>{
+              getProjectInfo(this.proInfo/*,this.userInFo*/).then(res=>{
                 if (res.code==200){
                   console.log("123123")
                   this.taskInfo=res.data[1]
@@ -1576,9 +1576,9 @@ import {
 				this.$Modal.confirm({
 					title: '确认取消星标？',
 					onOk: () => {
-            cancelStar(item.pj_id,this.userInFo).then(res=>{
+            cancelStar(item.pj_id/*,this.userInFo*/).then(res=>{
               if (res.code==200){
-                getTeamProject(this.deptId,this.userInFo).then(res=>{
+                getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })
@@ -1593,8 +1593,8 @@ import {
         this.$Modal.confirm({
           title: '确认取消星标？',
           onOk: () => {
-            cancelTaskStar(item.taskId,this.userInFo).then(res=>{
-              getProjectInfo(this.proInfo,this.userInFo).then(res=>{
+            cancelTaskStar(item.taskId/*,this.userInFo*/).then(res=>{
+              getProjectInfo(this.proInfo/*,this.userInFo*/).then(res=>{
                 if (res.code==200){
                   this.taskInfo=res.data[1]
                 }
@@ -1609,9 +1609,9 @@ import {
         this.$Modal.confirm({
           title: '确认取消星标？',
           onOk: () => {
-            cancelPersonnelStar(item.userId,this.userInFo).then(res=>{
+            cancelPersonnelStar(item.userId/*,this.userInFo*/).then(res=>{
               if (res.code==200){
-                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                getTeamMember(this.deptId/*,this.userInFo*/).then(res=>{
                   this.teammember=res.data
                 })
               }
@@ -1625,9 +1625,9 @@ import {
         this.$Modal.confirm({
           title:'确认添加星标？',
           onOk:()=>{
-            addStar(item.pj_id,this.userInFo).then(res=>{
+            addStar(item.pj_id/*,this.userInFo*/).then(res=>{
               if (res.code==200){
-                getTeamProject(this.deptId,this.userInFo).then(res=>{
+                getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
                 this.node=res.data
                 this.list=res.data
               })}
@@ -1640,8 +1640,8 @@ import {
         this.$Modal.confirm({
           title:'确认添加星标？',
           onOk:()=>{
-            addTaskStar(item.taskId,this.userInFo).then(res=>{
-              getProjectInfo(this.proInfo,this.userInFo).then(res=>{
+            addTaskStar(item.taskId/*,this.userInFo*/).then(res=>{
+              getProjectInfo(this.proInfo/*,this.userInFo*/).then(res=>{
                 if (res.code==200){
                   this.taskInfo=res.data[1]
                 }
@@ -1655,9 +1655,9 @@ import {
         this.$Modal.confirm({
           title:'确认添加星标？',
           onOk:()=>{
-            addPersonnelStar(item.userId,this.userInFo).then(res=>{
+            addPersonnelStar(item.userId/*,this.userInFo*/).then(res=>{
               if (res.code==200){
-                getTeamMember(this.deptId,this.userInFo).then(res=>{
+                getTeamMember(this.deptId/*,this.userInFo*/).then(res=>{
                 this.teammember=res.data
               })
               }
@@ -1672,7 +1672,7 @@ import {
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
             this.screeningInfo.teamId = this.dept[this.index].teamId
-            getTeamProject(this.deptId,this.userInFo).then(res=>{
+            getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
               this.node=res.data
               this.list=res.data
             })
@@ -1683,7 +1683,7 @@ import {
 						this.deptName = this.dept[this.index].teamName
             this.deptId = this.dept[this.index].teamId
             this.screeningInfo.teamId = this.dept[this.index].teamId
-            getTeamProject(this.deptId,this.userInFo).then(res=>{
+            getTeamProject(this.deptId/*,this.userInFo*/).then(res=>{
               this.node=res.data
               this.list=res.data
             })

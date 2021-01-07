@@ -696,17 +696,17 @@
 				<div class="grid">
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">进行中<span class="ml">{{userTasks2.length}}</span></div>
+							<div class="btxt">待接收<span class="ml">{{userTasks2.length}}</span></div>
 						</div>
 					</div>
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">未开始<span class="ml">{{userTasks1.length}}</span></div>
+							<div class="btxt">进行中<span class="ml">{{userTasks1.length}}</span></div>
 						</div>
 					</div>
 					<div class="col3">
 						<div class="uflex mtm">
-							<div class="btxt">待接收<span class="ml">{{userTasks0.length}}</span></div>
+							<div class="btxt">未开始<span class="ml">{{userTasks0.length}}</span></div>
 						</div>
 					</div>
 				</div>
@@ -721,7 +721,8 @@
 								<div class="flex1">
 									<div class="uflex">
 										<div><!--项目99-->{{task.name}}</div>
-										<img class="img" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="task.isStar==1" class="img" @click.stop.native="cancelTask(task)" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="!task.isStar==1" class="img" @click.stop.native="addTaskStar(task)" :src="require('@/assets/images/home/Collection-1(1).png')">
 									</div>
 <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
                   <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
@@ -746,7 +747,8 @@
                 <div class="flex1">
                   <div class="uflex">
                     <div><!--项目99-->{{task.name}}</div>
-                    <img class="img" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="task.isStar==1" class="img" @click.stop.native="cancelTask(task)" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="!task.isStar==1" class="img" @click.stop.native="addTaskStar(task)" :src="require('@/assets/images/home/Collection-1(1).png')">
                   </div>
                   <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
                   <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
@@ -771,7 +773,8 @@
                 <div class="flex1">
                   <div class="uflex">
                     <div><!--项目99-->{{task.name}}</div>
-                    <img class="img" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="task.isStar==1" class="img" @click.stop.native="cancelTask(task)" :src="require('@/assets/images/home/Collection.png')">
+                    <img v-show="!task.isStar==1" class="img" @click.stop.native="addTaskStar(task)" :src="require('@/assets/images/home/Collection-1(1).png')">
                   </div>
                   <!--									<Rate disabled v-model="valueText" custom-icon="iconfont hy-star"></Rate>-->
                   <Rate disabled show-text v-model="task.priority"  custom-icon="iconfont hy-star"></Rate>
@@ -807,6 +810,7 @@
     cancelStarPro,
     cancelStarTask,
     cancelStarUser,
+    addStarTask,
   } from "../utils/rq-star";
   import {getProjectInfo, getTeamProject} from "@/utils/rq-team";
   export default {
@@ -1015,6 +1019,18 @@
           }
         });
       },
+      //添加任务星标
+      addTaskStar(item){
+        this.$Modal.confirm({
+          title: '确认添加星标？',
+          onOk: () => {
+            addStarTask(item.taskId,this.userInFo).then(res=>{
+
+            })
+            // this.$Message.info('点击取消!')
+          }
+        });
+      },
       cancelTask(item){
         this.$Modal.confirm({
           title: '确认取消星标？',
@@ -1086,6 +1102,10 @@
           }
           this.upProInfo.projectId=this.dynamic.pj_id
         })
+      },
+      //项目弹窗添加参与者弹窗
+      addproUser(){
+        this.addProjectUser=true
       },
 			// 星标项目弹窗
 			// openPro(pj_id){

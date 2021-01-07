@@ -7,29 +7,29 @@ export function getUserInfo(){
   })
 }
 //请求星标任务接口
-export function getStarTask(user) {
+export function getStarTask(/*user*/) {
   return request({
     url: '/api/user/findUserStarTaskByUserId',
      params: {
-       userId: user.userId
+       /*userId: user.userId*/
      }
   })
 }
 //星标项目
-export function getStarPro(user) {
+export function getStarPro(/*user*/) {
   return request({
     url: '/api/user/findUserStarProjects',
     params:{
-      id:user.userId,
+      /*id:user.userId,*/
      }
   })
 }
 //请求星标人员
-export function getStarPerson(user) {
+export function getStarPerson(/*user*/) {
   return request({
     url: 'api/user/findUserStarPeopleByUserId',
     params:{
-      userId:user.userId,
+      /*userId:user.userId,*/
     }
   })
 }
@@ -45,11 +45,11 @@ export function getTeam() {
 }
 
 //成员任务
-export function getUserTasks(user) {
+export function getUserTasks(/*user*/) {
   return request({
     url: '/api/user/findUserTasksByUserId',
      params:{
-       userId:user.userId,
+       /*userId:user.userId,*/
      }
   })
 }
@@ -64,12 +64,12 @@ export function getRegion() {
   })
 }
   //星标项目弹窗
-  export function getStarProInfo(info,user) {
+  export function getStarProInfo(info/*,user*/) {
     return request({
       url: '/api/project/findProjectInfoById',
       params:{
         pj_id:info.pj_id,
-        user_id:user.userId,
+       /* user_id:user.userId,*/
       },
     })
 }
@@ -87,38 +87,51 @@ export function screeningStro(stardata){
   })
 }
 //取消星标项目
-export function cancelStarPro(id,user){
+export function cancelStarPro(id/*,user*/){
   return request({
     method:'get',
     url:'/api/user/deleteUserStar',
     params:{
       type :'2',
       fkId:id,
-      userId:user.userId,
+      /*userId:user.userId,*/
     },
   })
 }
+//添加星标任务
+export function addStarTask(id/*,user*/){
+  return request({
+    method:'post',
+    url:'/api/user/addUserStar',
+    data:{
+      type :3,
+      fkId:id,
+      /*userId:user.userId,*/
+    },
+    type:"form"
+  })
+}
 //取消星标任务
-export function cancelStarTask(id,user){
+export function cancelStarTask(id/*,user*/){
   return request({
     method:'get',
     url:'/api/user/deleteUserStar',
     params:{
       type :'3',
       fkId:id,
-      userId:user.userId,
+      /*userId:user.userId,*/
     },
   })
 }
 //取消星标人员
-export function cancelStarUser(id,user){
+export function cancelStarUser(id/*,user*/){
   return request({
     method:'get',
     url:'/api/user/deleteUserStar',
     params:{
       type :'1',
       fkId:id,
-      userId:user.userId,
+      /*userId:user.userId,*/
     },
   })
 }

@@ -18,7 +18,7 @@
         <Form v-show="!show" ref="loginForm" :model="loginForm" :rules="loginRules">
           <div class="uflex">
             <span class="bold">登录以继续使用</span>
-            <span class="hand">忘记密码</span>
+            <span class="hand" @click="forgetPassword">忘记密码</span>
           </div>
           <FormItem prop="username">
             <Input v-model="loginForm.account" class="mt30" placeholder="输入账号"></Input>
@@ -65,16 +65,56 @@
           </FormItem>
         </Form>
     </Modal>
+
+    <!--忘记密码弹窗-->
+    <Modal v-model="wjpass" scrollable title="找回密码" @on-ok="backPassword" @on-cancel="cancel">
+      <Form ref="formInline" :model="passInfo" inline>
+        <FormItem prop="account">
+          <Input class="input-call" type="text" v-model="passInfo.account" placeholder="查找的账号">
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+      </Form>
+    </Modal>
+    <!--忘记密码确定手机号-->
+    <Modal v-model="qdphone" scrollable title="找回密码" @on-ok="authorizationCode" @on-cancel="cancel">
+      <div>
+        验证码将发送到
+        <span>{{backUser.phone}}</span>
+      </div>
+      <Form ref="formInline" :model="codeInfo" inline>
+        <FormItem prop="phone">
+          <Input class="input-call" type="text" v-model="codeInfo.code" placeholder="验证码">
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <template>
+          <Button type="success" short @click="sendCode" style="position: relative;top: 12px;">发送验证码</Button>
+        </template>
+      </Form>
+    </Modal>
+    <!--新的密码-->
+    <Modal v-model="password" scrollable title="找回密码" @on-ok="backpassword" @on-cancel="cancel">
+      <Form ref="formInline" :model="passwordInfo" inline>
+        <FormItem prop="phone">
+          <Input class="input-call" type="text" v-model="passwordInfo.password" placeholder="新的密码">
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem prop="phone">
+          <Input class="input-call" type="text" v-model="passwordInfo.qdpassword" placeholder="确定密码">
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+      </Form>
+    </Modal>
 	</div>
 </template>
 
-
-
-
 <script>
-import {setToken} from "@/utils/auth";
-import { login } from "@/api/login";
-import {getcode,getlogInTo,getacclogInTo} from "@/utils/rq-login";
+import {setToken} from "../utils/auth";
+import { login } from "../api/login";
+import {getcode,getlogInTo,getacclogInTo,retrievePassword,accountUser,getAuthorizationCode,getPassword} from "../utils/rq-login";
 import {getToken} from "../utils/auth";
 
 export default {
@@ -82,13 +122,34 @@ export default {
     components: {},
 		data() {
 			return {
+			  //临时授权码
+			  tempCode:'',
+        password:false,
+        passwordInfo:{
+          password:'',
+          qdpassword:'',
+        },
+        qdphone:false,
+        wjpass:false,
+        //找回密码信息
+        passInfo:{
+          account:'',
+        },
         yzmtc:false,
         codeInfo:{
           phone:'',
           code:'',
           userName:'',
         },
-
+        //查找的用户信息
+        backUser:{
+          userId:'',
+          userName:'',
+          avatar:'',
+          saturation:'',
+          status:'',
+          phone:'',
+        },
 				imgSrc:require('@/assets/images/bg.png'),
 				show: true,
         show2: false,
@@ -141,6 +202,46 @@ export default {
           this.yzmtc=true
         }
       }).catch()
+    },
+    //找回密码弹窗
+    forgetPassword(){
+      this.wjpass=true
+    },
+    //通过账户查找用户
+    backPassword(){
+      accountUser(this.passInfo).then(res=>{
+        if (res.code==200){
+          if (res.data.phone==null){
+            alert('该账号未绑定手机号')
+            return false
+          }
+          this.backUser.phone=res.data.phone
+          this.qdphone=true
+        }
+      })
+    },
+    //发送验证码
+    sendCode(){
+      retrievePassword(this.passInfo).then(res=>{
+      })
+    },
+    //获取临时授权码
+    authorizationCode(){
+      getAuthorizationCode(this.passInfo.account,this.codeInfo.code).then(res=>{
+        if (res.code==200){
+          this.tempCode=res.data.authCode
+          this.password=true
+        }else{
+          alert('获取授权码失败')
+        }
+      })
+    },
+    backpassword(){
+      getPassword(this.tempCode,this.passwordInfo).then(res=>{
+        if (res.code==200){
+          alert("密码修改成功")
+        }
+      })
     },
     sendcode() {
       /* if(!this.phone){

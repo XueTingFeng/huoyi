@@ -45,11 +45,11 @@ export function getTeam() {
 }
 
 //成员任务
-export function getUserTasks(/*user*/) {
+export function getUserTasks(user) {
   return request({
     url: '/api/user/findUserTasksByUserId',
      params:{
-       /*userId:user.userId,*/
+       userId:user.userId,
      }
   })
 }

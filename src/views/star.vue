@@ -1,10 +1,7 @@
 <template>
 	<div class="page">
     <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
-      <div class="rfloat">
 
-        <Button style="background-color: #0F182A;color: white" @click="handleSubmit()">清空所有筛选</Button>
-      </div>
     </Form>
 
 

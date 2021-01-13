@@ -922,7 +922,7 @@
       </div>
       <div class="uflex mtl">
         <div class="label">
-          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">所属项目
+          <img class="uicon" :src="require('@/assets/images/detail/Team.png')">当前项目
         </div>
         <div class="flex1"><!--<Input  class="search" placeholder="所属项目"/>-->
 

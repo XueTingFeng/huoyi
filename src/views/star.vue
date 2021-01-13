@@ -1039,11 +1039,11 @@
                     let task = this.starTask[i];
                     //console.log(task);
                     if(task.status===0){
-                      this.starTask[i].status='未开始'
-                    }else if(task.status===1){
-                      this.starTask[i].status='进行中'
-                    }else if(task.status===2){
                       this.starTask[i].status='待接收'
+                    }else if(task.status===1){
+                      this.starTask[i].status='未开始'
+                    }else if(task.status===2){
+                      this.starTask[i].status='进行中'
                     }else if(task.status===3){
                       this.starTask[i].status='已完成'
                     }

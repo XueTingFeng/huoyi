@@ -11,7 +11,7 @@
             </div>
 						<div class="info">
 							<div class="label">状态</div>
-							<div @click="change(userInfo.userId,status == 0?0:1)" class="sbtn pd15 pointer">{{userInfo.status===0?'正常':'外出'}}</div>
+							<div @click="change(userInfo.userId,userInfo.status)" class="sbtn pd15 pointer">{{userInfo.status==0?'外出':'正常'}}</div>
 						</div>
 <!--						<div class="info">-->
 <!--							<div class="label">项目权限</div>-->
@@ -59,7 +59,6 @@
 					<Input class="search" suffix="ios-search" placeholder="搜索" />
 				</FormItem>
 				<Button type="primary" @click="handleSubmit('formInline')">确定</Button>
-        <Button style="margin-left: 10px" @click="handleSubmit('formInline')">清空</Button>
 			</div>
 		</Form>
 		<div class="grid">
@@ -215,9 +214,7 @@
 								<div class="uflex">
 									<div>{{item.name}}</div>
 									<div class="mflex">
-										<div class="mflex opt w30">
-											<Icon @click="pause(item.taskId,1)" type="ios-pause" size="24"/>
-										</div>
+
                     <img class="img" @click="isStar(userInfo.userId,3,item.taskId)" v-show="item.isStar == 0" :src="require('@/assets/images/home/Collection-1(1).png')">
                     <img class="img" @click="delStar(3,userInfo.userId,item.taskId)" v-show="item.isStar == 1" :src="require('@/assets/images/home/Collection.png')">
 									</div>
@@ -334,7 +331,6 @@
           <Input class="search" suffix="ios-search" placeholder="搜索" />
         </FormItem>
         <Button type="primary" @click="handleSubmit('formInline')">确定</Button>
-        <Button style="margin-left: 10px" @click="handleSubmit('formInline')">清空</Button>
       </div>
       </Form>
 
@@ -351,7 +347,7 @@
 
 				<div class="lfbox">
 					<Icon type="md-arrow-dropdown" size="24"/>
-					<div class="state">进行中</div>
+					<div class="state">{{item.status}}</div>
 				</div>
 				<div class="flex1">
 					<div class="uflex">
@@ -419,10 +415,10 @@
 				<div class="flex1"><!--<Input  class="search" placeholder="所属项目"/>-->
 
           <Dropdown placement="right-start">
-            <span class="cbod">{{addMyTask.pj_id}}</span>
+            <span class="cbod">{{addMyTask.pjName}}</span>
             <DropdownMenu slot="list" style="padding: 6px 10px;">
               <RadioGroup v-model="addMyTask.pj_id" vertical>
-                <DropdownItem @click.native="checkPerson(item.pj_id)" v-for="(item, index) in join_pro" :key="index">
+                <DropdownItem @click.native="checkPerson(item.pj_id,item)" v-for="(item, index) in join_pro" :key="index">
                   <Radio :label="item.pj_id" >{{item.name}}</Radio>
                 </DropdownItem>
               </RadioGroup>
@@ -449,11 +445,11 @@
 				</div>
 				<div class="flex1 down">
 					<Dropdown placement="right-start">
-						<span class="cbod">{{addMyTask.member_id}}</span>
+						<span class="cbod">{{addMyTask.username}}</span>
 						<DropdownMenu slot="list" style="padding: 6px 10px;">
 							<Button type="default" ghost long @click="search">搜索</Button>
 							<RadioGroup v-model="addMyTask.member_id" vertical>
-								<DropdownItem v-for="(item, index) in promember" :key="index">
+								<DropdownItem @click.native="checkTaskPerson(item)" v-for="(item, index) in promember" :key="index">
 									<Radio :label="item.pjMemberId">{{item.username}}</Radio>
 								</DropdownItem>
 							</RadioGroup>
@@ -488,7 +484,9 @@
         promember:[],
 			  addMyTask: {
           user_id:'',
+          username: '',
           pj_id:'',
+          pjName: '',
           name: '',
           end_time:'',
           priority:'',
@@ -543,7 +541,7 @@
           saturation:'',
           status:'',
           memberId:'',
-          lastLoginTime:''
+          lastLoginTime:'',
         }
 			}
 		},
@@ -557,6 +555,12 @@
       //获取用户信息
       getUserInfo().then(res => {
         this.userInfo = res.data
+
+        if (this.userInfo.status == 0) {
+          this.userInfo.status = '1'
+        }else {
+          this.userInfo.status = '0'
+        }
 
         this.getMyProject()
         this.getMyTask()
@@ -616,14 +620,42 @@
         getDistributeTask(this.userInfo).then(res => {
           this.distributeTask = res.data
 
+          //获取任务状态，判断状态
+          for(let i=0;i<this.distributeTask.length;i++){
+            let task = this.distributeTask[i];
+            //console.log(task);
+            if(task.status===0){
+              this.distributeTask[i].status='待接收'
+            }else if(task.status===1){
+              this.distributeTask[i].status='未开始'
+            }else if(task.status===2){
+              this.distributeTask[i].status='进行中'
+            }else if(task.status===3){
+              this.distributeTask[i].status='已完成'
+            }
+          }
+
           // this.$nextTick(() => {
           //   this.getDistributeTask()
           // })
         })
       },
+
       // changeStatus() {
 		  //
       // },
+      getUserInfo() {
+        getUserInfo().then(res => {
+          this.userInfo = res.data
+
+          if (this.userInfo.status == 0) {
+            this.userInfo.status = '1'
+          }else {
+            this.userInfo.status = '0'
+          }
+        })
+
+      },
 			// 添加打开弹窗
 			open(){
 
@@ -632,9 +664,9 @@
 			},
 			change(userId,status){
         postUserInfo(userId,status).then(res => {
-         this.$nextTick(() => {
-           this.getUserInfo()
-         })
+          this.$nextTick(() => {
+            this.getUserInfo()
+          })
         })
 			},
 			play(taskId,state){
@@ -645,6 +677,8 @@
               this.$nextTick(() => {
                 this.getMyTask()
                 this.getDistributeTask()
+
+
               })
             })
 					}
@@ -662,6 +696,10 @@
 			save(){
 				this.resetForm()
 			},
+      checkTaskPerson(item){
+        this.addMyTask.username=item.username
+      },
+
 			finish(){
 		    postMyTask(this.addMyTask,this.memberId).then(res=>{
 		      if (res.code == 10200) {
@@ -687,6 +725,14 @@
           title: '确认暂停任务？',
           onOk: () => {
             postMyTaskState(taskId,state).then(res => {
+
+              if (res.code != 200) {
+                this.$Modal.confirm({
+                  title: '待接收任务无法暂停',
+                  onOk: () => {}
+                })
+              }
+
               this.$nextTick(() => {
                 this.getMyTask()
                 this.getDistributeTask()
@@ -758,11 +804,13 @@
           state: ''
         }
       },
-			checkPerson(projectId){
+			checkPerson(projectId,item){
+        this.addMyTask.pjName = item.name
         getProMembers(projectId).then(res => {
           this.promember = res.data
           this.username = res.data.username
-          // this.member_id= res.data.pjMemberId
+
+
         });
 			}
 		}

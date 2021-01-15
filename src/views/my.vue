@@ -41,9 +41,9 @@
 			<div class="rfloat">
 				<FormItem label="创建者">
 					<Select v-model="formItem.select" style="width: 150px;">
-						<Option value="李春兰">李春兰</Option>
-						<Option value="shanghai">London</Option>
-						<Option value="shenzhen">Sydney</Option>
+            <Option>全部</Option>
+						<Option v-for="item in myTask">{{item.sponsor}}</Option>
+
 					</Select>
 				</FormItem>
 				<FormItem label="优先级">
@@ -589,7 +589,7 @@
 		  //获取我的项目数据
 		  getMyProject(){
 		    getMyProject().then(res => {
-		      this.join_pro = res.data
+		      this.join_pro = res.data.list
         })
       },
 			//获取我的数据
@@ -600,10 +600,10 @@
 				getMyTask(this.userInfo).then(res => {
 				 // this.myTask = res.data[4]
 
+          //未开始
+          this.list2=res.data[0]
           //进行中
 					this.list1=res.data[1]
-          //未开始
-					this.list2=res.data[0]
           //待接收
 					this.list3=res.data[2]
           //已完成
@@ -618,7 +618,7 @@
       //我派发的任务视图
       getDistributeTask(){
         getDistributeTask(this.userInfo).then(res => {
-          this.distributeTask = res.data
+          this.distributeTask = res.data.list
 
           //获取任务状态，判断状态
           for(let i=0;i<this.distributeTask.length;i++){

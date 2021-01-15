@@ -48,7 +48,9 @@ export function getDistributeTask(user) {
     url: '/api/user/findUserTasksByUserId',
     params: {
       userId: user.userId,
-      type: '1'
+      type: '1',
+      pageSize: '10',
+
     }
   })
 }

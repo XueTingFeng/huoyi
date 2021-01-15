@@ -12,15 +12,8 @@
 					<Select v-model="formItem.area" style="width: 150px;">
             <Option value="全部" @click.native="Place" style="color: black">全部</Option>
             <Option value="" v-for="(item,index) in region" @click.native="choosePlace(item)" style="color: black">{{item.placeName}}</Option>
-<!--						<Option value="台州 椒江">台州 椒江</Option>-->
-<!--						<Option value="台州 黄岩">台州 黄岩</Option>-->
-<!--						<Option value="台州 路桥">台州 路桥</Option>-->
-<!--						<Option value="台州 临海">台州 临海</Option>-->
-<!--						<Option value="台州 温岭">台州 温岭</Option>-->
-<!--						<Option value="台州 玉环">台州 玉环</Option>-->
-<!--						<Option value="台州 天台">台州 天台</Option>-->
-<!--						<Option value="台州 仙居">台州 仙居</Option>-->
-<!--						<Option value="台州 三门">台州 三门</Option>-->
+
+
 					</Select>
 				</FormItem>
 				<FormItem label="优先级">
@@ -49,30 +42,8 @@
           </div>
 				</div>
 			</div>
-<!--			<div class="col5">-->
-<!--				<div class="uflex mtm">-->
-<!--					<div class="btxt">前期设计<span class="ml">{{list2.length}}</span></div>-->
-<!--					<div class="addbtn" @click="openAdd">+</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<div class="uflex mtm">-->
-<!--					<div class="btxt">正在研发<span class="ml">{{list3.length}}</span></div>-->
-<!--					<div class="addbtn" @click="openAdd">+</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<div class="uflex mtm">-->
-<!--					<div class="btxt">测试<span class="ml">{{list4.length}}</span></div>-->
-<!--					<div class="addbtn" @click="openAdd">+</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<div class="uflex mtm">-->
-<!--					<div class="btxt">准备发布<span class="ml">{{list5.length}}</span></div>-->
-<!--					<div class="addbtn" @click="openAdd">+</div>-->
-<!--				</div>-->
-<!--			</div>-->
+
+
 		</div>
 		<div class="grid flexNode">
 			<div class="col5" v-for="(item1,index1) in list">
@@ -130,142 +101,8 @@
 <!--          </draggable>-->
 				</perfect-scrollbar>
 			</div>
-<!--			<div class="col5">-->
-<!--				<perfect-scrollbar>-->
-<!--					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list2" :key="index">-->
-<!--						<div class="uflex">-->
-<!--							<div class="btxt">{{item.title}}</div>-->
-<!--							<div>-->
-<!--								<img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">-->
-<!--							<span class="mr8">发起人</span>-->
-<!--							<span>{{item.creator}}</span>-->
-<!--						</Rate>-->
-<!--						<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
-<!--								<span>{{item.progress}}</span>-->
-<!--						</Progress>-->
-<!--						<div class="uflex mtb10">-->
-<!--							<div class="col3 obtn uels">{{parseTime(item.date)}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.area}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.optman}}</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key">周杰：</div>-->
-<!--							<div class="flex1 uels">项目中间对接进行中</div>-->
-<!--							<div>09.28 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key uels">张美兰：</div>-->
-<!--							<div class="flex1 uels">项目增加望申请延迟1天</div>-->
-<!--							<div>10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</perfect-scrollbar>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<perfect-scrollbar>-->
-<!--					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list3" :key="index">-->
-<!--						<div class="uflex">-->
-<!--							<div class="btxt">{{item.title}}</div>-->
-<!--							<div>-->
-<!--								<img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">-->
-<!--							<span class="mr8">发起人</span>-->
-<!--							<span>{{item.creator}}</span>-->
-<!--						</Rate>-->
-<!--						<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
-<!--								<span>{{item.progress}}</span>-->
-<!--						</Progress>-->
-<!--						<div class="uflex mtb10">-->
-<!--							<div class="col3 obtn uels">{{parseTime(item.date)}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.area}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.optman}}</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key">周杰：</div>-->
-<!--							<div class="flex1 uels">项目中间对接进行中</div>-->
-<!--							<div>09.28 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key uels">张美兰：</div>-->
-<!--							<div class="flex1 uels">项目增加望申请延迟1天</div>-->
-<!--							<div>10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</perfect-scrollbar>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<perfect-scrollbar>-->
-<!--					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list4" :key="index">-->
-<!--						<div class="uflex">-->
-<!--							<div class="btxt">{{item.title}}</div>-->
-<!--							<div>-->
-<!--								<img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">-->
-<!--							<span class="mr8">发起人</span>-->
-<!--							<span>{{item.creator}}</span>-->
-<!--						</Rate>-->
-<!--						<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
-<!--								<span>{{item.progress}}</span>-->
-<!--						</Progress>-->
-<!--						<div class="uflex mtb10">-->
-<!--							<div class="col3 obtn uels">{{parseTime(item.date)}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.area}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.optman}}</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key">周杰：</div>-->
-<!--							<div class="flex1 uels">项目中间对接进行中</div>-->
-<!--							<div>09.28 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key uels">张美兰：</div>-->
-<!--							<div class="flex1 uels">项目增加望申请延迟1天</div>-->
-<!--							<div>10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</perfect-scrollbar>-->
-<!--			</div>-->
-<!--			<div class="col5">-->
-<!--				<perfect-scrollbar>-->
-<!--					<div class="ucard red-lbd" @click="openPro(item)" :class="['yel-lbd','blu-lbd'][Math.floor(Math.random() * 1)]" v-for="(item,index) in list5" :key="index">-->
-<!--						<div class="uflex">-->
-<!--							<div class="btxt">{{item.title}}</div>-->
-<!--							<div>-->
-<!--								<img class="img" @click.stop="cancel(item.id)" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<Rate disabled show-text v-model="item.star"  custom-icon="iconfont hy-star">-->
-<!--							<span class="mr8">发起人</span>-->
-<!--							<span>{{item.creator}}</span>-->
-<!--						</Rate>-->
-<!--						<Progress :percent="parseInt(item.progress.split('/')[0])/parseInt(item.progress.split('/')[1])*100" :stroke-width="8">-->
-<!--								<span>{{item.progress}}</span>-->
-<!--						</Progress>-->
-<!--						<div class="uflex mtb10">-->
-<!--							<div class="col3 obtn uels">{{parseTime(item.date)}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.area}}</div>-->
-<!--							<div class="col3 sbtn uels">{{item.optman}}</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key">周杰：</div>-->
-<!--							<div class="flex1 uels">项目中间对接进行中</div>-->
-<!--							<div>09.28 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="key uels">张美兰：</div>-->
-<!--							<div class="flex1 uels">项目增加望申请延迟1天</div>-->
-<!--							<div>10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</perfect-scrollbar>-->
-<!--			</div>-->
+
+
 		</div>
 		<!-- 添加弹窗 -->
 		<Modal v-model="addModal" scrollable title="创建新项目">
@@ -456,7 +293,7 @@
 						<div class="col2">
 							<div class="flex mb10 ml">
 								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Initiate.png')">发起者</div>
-								<div class="flex1 uels"><div class="checkbox"></div><span><!--张明成-->{{projectInfo.initiatorName}}</span></div>
+								<div class="flex1 uels"><!--张明成-->{{projectInfo.initiatorName}}</span></div>
 							</div>
 							<div class="flex mb10 ml">
 								<div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Team.png')">团队</div>
@@ -511,7 +348,7 @@
 <!--									<span>6/8</span>-->
 <!--								</Progress>-->
 								<div class="flex mt5">
-									<div class="obtn uels redbtn pd15"><!--10月10号截止-->{{item.endTime.split(" ")[0]}}</div>
+									<div class="obtn uels redbtn pd15"><!--10月10号截止-->{{item.endTime}}</div>
 									<div class="sbtn pd15 uels mlr" v-for="(renwu,index1) in item.executor"><!--周文杰-->{{renwu.username}}</div>
 								</div>
 							</div>
@@ -519,30 +356,7 @@
               <img v-show="!item.isStar==1" class="img" @click.stop="starProTask(item)" :src="require('@/assets/images/home/Collection-1(1).png')">
 						</div>
 
-<!--						<div class="ucard flex">-->
-<!--							<div class="lfbox">-->
-<!--								<Icon type="md-arrow-dropdown" size="24"/>-->
-<!--								<div class="state">进行中</div>-->
-<!--							</div>-->
-<!--							<div class="flex1 mg30">-->
-<!--								<div class="uflex">-->
-<!--									<div>设备机台制作二维码，先出设计</div>-->
-<!--									-->
-<!--								</div>-->
-<!--								<Rate disabled show-text v-model="valueText"  custom-icon="iconfont hy-star">-->
-<!--									<span class="mr8">发起人</span>-->
-<!--									<span>张新城</span>-->
-<!--								</Rate>-->
-<!--&lt;!&ndash;								<Progress :percent="6/8*100" :stroke-width="8">&ndash;&gt;-->
-<!--&lt;!&ndash;									<span>6/8</span>&ndash;&gt;-->
-<!--&lt;!&ndash;								</Progress>&ndash;&gt;-->
-<!--								<div class="flex mt5">-->
-<!--									<div class="obtn uels redbtn pd15">10月10号截止</div>-->
-<!--									<div class="sbtn pd15 uels mlr">周文杰</div>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--							<img class="img mr20" :src="require('@/assets/images/home/Collection.png')">-->
-<!--						</div>-->
+
 
 					</div>
           </perfect-scrollbar>
@@ -552,9 +366,10 @@
 						<img class="micon" :src="require('../assets/images/detail/Milestone.png')">节点里程碑
 					</div>
 					<div class="mflex mstep">
-            <template v-for="(item,index) in milestone">
+            <template v-for="(item,index) in projectPartInfo">
 						<Tooltip placement="top-start">
-							<img class="step-icon" :src="require('../assets/images/detail/Complete.png')">
+							<img v-show="item.st_project_file.status ==1" class="step-icon" :src="require('../assets/images/detail/Complete.png')">
+              <img v-show="item.st_project_file.status ==0" class="step-icon" :src="require('../assets/images/detail/Complete-unactive.png')">
 							<div slot="content">
 <!--								<div class="flex mb10">-->
 <!--									<div class="w70">执行者</div>-->
@@ -566,83 +381,40 @@
 <!--								</div>-->
                 <div class="flex mb10">
                   <div class="w70">时间</div>
-                  <div class="flex1 uels">2020年9月29日</div>
+                  <div class="flex1 uels">{{item.upload_time}}</div>
                 </div>
 								<div class="flex mb10">
 									<div class="w70">所需文件</div>
 									<div class="mflex flex1 uels">
-										<Input class="mr8 wbold" size="small" placeholder="产品计划书">
+										<Input class="mr8 wbold" size="small" :placeholder="item.st_project_file.file_name">
 											<Icon custom="iconfont hy-download" slot="suffix" />
 										</Input>
-										<Icon type="ios-checkmark-circle" size="24" color="#006FFF"/>
+
 									</div>
 								</div>
+
+                <div class="flex mb10">
+                  <div class="w70">上传文件</div>
+<!--                  <Upload action="/api/project/uploadProjectFile?">-->
+<!--                    <Button icon="ios-cloud-upload-outline">选择文件</Button>-->
+<!--                  </Upload>-->
+                  <Upload
+                      multiple
+                      action="/api/project/uploadProjectFile?projectId=info.pj_id">
+                    <Input class="wbold pointer" size="small" placeholder="选择文件">
+                      <Icon type="md-add" slot="prefix" size="20"/>
+                    </Input>
+                  </Upload>
+                </div>
+
 							</div>
 						</Tooltip>
-						<div class="flex1 live" v-if="!(index==(milestone.length-1))"></div>
+						<div class="flex1 live" v-if="!(index==(projectPartInfo.length-1))"></div>
             </template>
-<!--						<Tooltip placement="top-start">-->
-<!--							<img class="step-icon" :src="require('@/assets/images/detail/No.png')">-->
-<!--							<div slot="content">-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">执行者</div>-->
-<!--									<div class="flex1 uels">沈达一</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">状态</div>-->
-<!--									<div class="flex1 uels">产品研发</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">时间</div>-->
-<!--									<div class="flex1 uels">2020年9月29日</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">所需文件</div>-->
-<!--									<div class="flex1 uels"><Icon custom="iconfont hy-no" size="24" /></div>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</Tooltip>-->
-<!--						-->
-<!--						<div class="flex1 live"></div>-->
-<!--						<Tooltip placement="top-start">-->
-<!--							<img class="step-icon" :src="require('@/assets/images/detail/not-unactive.png')">-->
-<!--							<div slot="content">-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">执行者</div>-->
-<!--									<div class="flex1 uels">沈达一</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">状态</div>-->
-<!--									<div class="flex1 uels">产品研发</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10">-->
-<!--									<div class="w70">时间</div>-->
-<!--									<div class="flex1 uels">2020年9月29日</div>-->
-<!--								</div>-->
-<!--								<div class="flex mb10" style="align-items: flex-start;">-->
-<!--									<div class="w70">所需文件</div>-->
-<!--									<div class="flex1 uels">-->
-<!--										<div>测试报告1</div>-->
-<!--										<div>测试报告2</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="mflex" style="margin-left: 45px;">-->
-<!--									<Icon class="mr8" style="margin-top: -8px;" custom="iconfont hy-duowenjianjia" />-->
-<!--									<Upload-->
-<!--											multiple-->
-<!--											action="//jsonplaceholder.typicode.com/posts/">-->
-<!--											<Input class="wbold pointer" size="small" placeholder="上传文件">-->
-<!--												<Icon type="md-add" slot="prefix" size="20"/>-->
-<!--											</Input>-->
-<!--									</Upload>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</Tooltip>-->
-<!--						<div class="flex1 unlive"></div>-->
-<!--						<img class="step-icon" style="cursor: default;" :src="require('@/assets/images/detail/No-unactive.png')">-->
+
 					</div>
 					<div class="uflex mt5">
-            <div v-for="(miles,index) in milestone">{{miles.node_name}}</div>
+            <div v-for="(miles,index) in projectPartInfo">{{miles.node_name}}</div>
 <!--						<div>产品计划</div>-->
 <!--						<div>产品研发</div>-->
 <!--						<div>测试</div>-->
@@ -651,9 +423,9 @@
 				</div>
 				<div class="rbox">
 					<div class="rhead">
-						<div class="btxt">参与者<span class="num">{{projectPartInfo.length}}</span></div>
+						<div class="btxt">参与者<span class="num">{{proUserInfo.length}}</span></div>
 						<div class="mflex mt5">
-              <Avatar shape="square" class="mr8" :src=item.avatar v-for="(item,index) in projectPartInfo"/>
+              <Avatar shape="square" class="mr8" :src=item.avatar v-for="(item,index) in proUserInfo"/>
 <!--							<Avatar shape="square" class="mr8" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />-->
 <!--							<Avatar shape="square" class="mr8" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />-->
 							<span class="plus"><Icon type="md-add" size="24" @click="addproUser"/></span>
@@ -691,10 +463,10 @@
             <perfect-scrollbar>
 						<div class="uflex">
 							<div class="mflex flex1 uels">
-								<img class="micon" :src="require('@/assets/images/detail/Dynamic.png')"><!--沈达一-->{{item.name}}
-								<span class="ml20 ml">在项目</span>
-								<span class="ml"><!--数字化项目-->{{projectInfo.name}}</span>
-								<span class="ml">下创建了任务</span>
+								<img class="micon" :src="require('@/assets/images/detail/Dynamic.png')"><!--沈达一-->{{item.member_name}}
+								<span class="ml20 ml"></span>
+								<span class="ml"><!--数字化项目-->{{item.dynamic_content}}</span>
+								<span class="ml"></span>
 							</div>
 							<div class="uflex"><!--今天10:00-->{{item.release_time}}</div>
 						</div>
@@ -702,21 +474,6 @@
             </perfect-scrollbar>
             </template>
 
-<!--						<div class="uflex mt15">-->
-<!--							<div class="mflex flex1 uels">-->
-<!--								<span class="ml20">沈达一</span>-->
-<!--								<span class="ml">指派给了</span>-->
-<!--								<span class="ml">张明成</span>-->
-<!--							</div>-->
-<!--							<div class="uflex">今天10:01</div>-->
-<!--						</div>-->
-<!--						<div class="uflex mt15">-->
-<!--							<div class="mflex flex1 uels">-->
-<!--								<span class="ml20">沈达一</span>-->
-<!--								<span class="ml">更新任务状态为发布成功</span>-->
-<!--							</div>-->
-<!--							<div class="uflex">今天10:01</div>-->
-<!--						</div>-->
 					</div>
 					<div class="foot">
 						<div class="btxt">@提及他人，按Ctrl+Enter 快速发布</div>
@@ -760,91 +517,6 @@
 <!--							<div>&lt;!&ndash;截至10.11 12:00&ndash;&gt;{{item.project.taskEndTime.split("")[0]}}</div>-->
 <!--						</div>-->
 					</div>
-
-<!--					<div class="ucard boder">-->
-<!--						<div class="uflex baseline">-->
-<!--							<Rate class="rates" v-model="valueText" disabled icon="ios-square" />-->
-<!--							<div class="mt15">-->
-<!--								<Badge>-->
-<!--									<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" size="54" />-->
-<!--									<div class="round" slot="count">-->
-<!--										<div class="ins"></div>-->
-<!--									</div>-->
-<!--								</Badge>-->
-<!--								<div class="text">张美兰</div>-->
-<!--							</div>-->
-<!--							<div class="textr">-->
-<!--								<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目1</div>-->
-<!--							<div class="flex1 uels">调整产能参数结构</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目2</div>-->
-<!--							<div class="flex1 uels">新能企业走访调查</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					-->
-<!--					<div class="ucard boder">-->
-<!--						<div class="uflex baseline">-->
-<!--							<Rate class="rates" v-model="valueText" disabled icon="ios-square" />-->
-<!--							<div class="mt15">-->
-<!--								<Badge>-->
-<!--									<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" size="54" />-->
-<!--									<div class="round" slot="count">-->
-<!--										<div class="ins"></div>-->
-<!--									</div>-->
-<!--								</Badge>-->
-<!--								<div class="text">张美兰</div>-->
-<!--							</div>-->
-<!--							<div class="textr">-->
-<!--								<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目1</div>-->
-<!--							<div class="flex1 uels">调整产能参数结构</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目2</div>-->
-<!--							<div class="flex1 uels">新能企业走访调查</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					-->
-<!--					<div class="ucard boder">-->
-<!--						<div class="uflex baseline">-->
-<!--							<Rate class="rates" v-model="valueText" disabled icon="ios-square" />-->
-<!--							<div class="mt15">-->
-<!--								<Badge>-->
-<!--									<Avatar shape="square" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" size="54" />-->
-<!--									<div class="round" slot="count">-->
-<!--										<div class="ins"></div>-->
-<!--									</div>-->
-<!--								</Badge>-->
-<!--								<div class="text">张美兰</div>-->
-<!--							</div>-->
-<!--							<div class="textr">-->
-<!--								<img class="img" :src="require('@/assets/images/home/Collection.png')">-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目1</div>-->
-<!--							<div class="flex1 uels">调整产能参数结构</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--						<div class="flex">-->
-<!--							<div class="w50 uels">项目2</div>-->
-<!--							<div class="flex1 uels">新能企业走访调查</div>-->
-<!--							<div>截至10.11 12:00</div>-->
-<!--						</div>-->
-<!--					</div>-->
-
 
 				</div>
 
@@ -998,6 +670,7 @@ import {
   cancelPersonnelStar,
   addPersonnelStar,
   getProTask,
+  getProDynamic
 } from "../utils/rq-team";
   export default {
 		data() {
@@ -1154,6 +827,7 @@ import {
           pjMemberId:'',
         },
 
+        proUserInfo: [],
       }
 		},
 		created() {
@@ -1236,25 +910,32 @@ import {
 				this.proModal = true
         getProjectInfo(info/*,this.userInFo*/).then(res => {
           this.projectInfo=res.data[0]
-          this.taskInfo=res.data[1]
-          this.unfinishedTask=this.taskInfo.length
-          for (this.i=0;this.i<this.taskInfo.length;this.i++){
-            if (res.data[1][this.i].status==3){
-              this.unfinishedTask=this.unfinishedTask-1
-            }
-          }
+          this.proUserInfo=res.data[1]
+          // this.unfinishedTask=this.taskInfo.length
+          // for (this.i=0;this.i<this.taskInfo.length;this.i++){
+          //   if (res.data[1][this.i].status==3){
+          //     this.unfinishedTask=this.unfinishedTask-1
+          //   }
+          // }
           this.projectPartInfo=res.data[2]
           this.milestone=res.data[3]
-          this.dynamic=res.data[4]
-          this.folderInfo=res.data[5]
-          for (this.i=0;this.i<this.projectPartInfo.length;this.i++){
-            if (this.i==this.projectPartInfo.length){
-              this.upProInfo.user_id=this.upProInfo.user_id+res.data[2][this.i].user_id
-            }else{
-              this.upProInfo.user_id=this.upProInfo.user_id+','+res.data[2][this.i].user_id
-            }
-          }
-          this.upProInfo.projectId=this.dynamic.pj_id
+          //this.dynamic=res.data[4]
+          // this.folderInfo=res.data[5]
+          // for (this.i=0;this.i<this.projectPartInfo.length;this.i++){
+          //   if (this.i==this.projectPartInfo.length){
+          //     this.upProInfo.user_id=this.upProInfo.user_id+res.data[2][this.i].user_id
+          //   }else{
+          //     this.upProInfo.user_id=this.upProInfo.user_id+','+res.data[2][this.i].user_id
+          //   }
+          // }
+          // this.upProInfo.projectId=this.dynamic.pj_id
+        })
+
+        getProTask(info).then(res => {
+          this.taskInfo = res.data.list
+        })
+        getProDynamic(info).then(res => {
+          this.dynamic = res.data.list
         })
 			},
 			//条件查询确定按钮事件
@@ -1838,7 +1519,7 @@ import {
 	margin-right: 15px;
 	vertical-align: middle;
 }
-.wbox{border: 1px solid #E6E6E9;border-radius: 8px;height: 250px;}
+.wbox{border-radius: 8px;height: 250px;}
 .wbox .ucard{border-bottom: 1px solid #324364;margin-bottom:0}
 .addbox{padding: 10px 20px;cursor: pointer;}
 ::v-deep .wbox .ivu-progress-inner {background-color: #141e33;}

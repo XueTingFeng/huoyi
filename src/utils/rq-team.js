@@ -57,6 +57,15 @@ export function getProjectInfo(info/*,user*/){
         },
     })
 }
+//项目任务
+export function getProTask(info,userinfo) {
+    return request({
+        url: '/api/project/findProjectTaskByProjectId',
+        params:{
+            projectId: info.pj_id,
+        }
+    })
+}
 //查询团队所有项目
 export function getTeamProject(id/*,user*/){
     return request({
@@ -213,17 +222,26 @@ export function addPersonnelStar(id/*,user*/){
         type:"form"
     })
 }
-//查询项目任务
-export function getProTask(/*user,*/proId,keyword){
+//项目动态
+export function getProDynamic(info){
     return request({
-        method:'get',
-        url:'/api/project/findProjectTaskByProjectId',
+        url:'/api/project/findProjectDynamicById',
         params:{
-            projectId:proId,
-            /*userId:user.userId,*/
-            executor:keyword.practitioners,
-            sponsor:'',
-            keyword:keyword.keyword,
+            id:info.pj_id
         },
     })
 }
+//查询项目任务
+// export function getProTask(/*user,*/proId,keyword){
+//     return request({
+//         method:'get',
+//         url:'/api/project/findProjectTaskByProjectId',
+//         params:{
+//             projectId:proId,
+//             /*userId:user.userId,*/
+//             executor:keyword.practitioners,
+//             sponsor:'',
+//             keyword:keyword.keyword,
+//         },
+//     })
+// }

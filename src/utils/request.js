@@ -60,7 +60,7 @@ export function request(config) {
                 }else if(code==20000){
                     Modal.error({
                         title: '错误提示',
-                        content: '服务器出现错误，请联系管理者修复 '
+                        content: '服务器出现错误'
                     });
                     return Promise.reject('error')
                 } else {
@@ -79,7 +79,7 @@ export function request(config) {
             }
             Modal.error({
                 title: '提示',
-                content: 'msg'
+                content: '超时或请求失败'
             });
             return Promise.reject(error)
 

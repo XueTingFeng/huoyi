@@ -24,6 +24,16 @@ export function getStarPro(/*user*/) {
      }
   })
 }
+//项目任务
+export function getStarProTask(info,userinfo) {
+  return request({
+    url: '/api/project/findProjectTaskByProjectId',
+    params:{
+      projectId: info.pj_id,
+    }
+  })
+}
+
 //请求星标人员
 export function getStarPerson(/*user*/) {
   return request({
@@ -72,19 +82,6 @@ export function getRegion() {
        /* user_id:user.userId,*/
       },
     })
-}
-//筛选星标项目请求
-export function screeningStro(stardata){
-  return request({
-    url:'/api/user/findUserStarProjects',
-    params:{
-      id:'1',
-      teamId:stardata.dept,
-      place:'',
-      priority:'',
-      keyword:'',
-    },
-  })
 }
 //取消星标项目
 export function cancelStarPro(id/*,user*/){
@@ -146,4 +143,33 @@ export function getProUser(project){
   })
 }
 
+//筛选星标项目请求
+export function screeningStarPro(info/*,user*/){
+  return request({
+    url:'/api/user/findUserStarProjects',
+    params:{
+      teamId:info.teamId,
+      place:info.placeId,
+      priority:info.priority,
+      keyword:info.keyword,
+    },
+  })
+}
 
+export function screeningStarTask(info){
+  return request({
+    url:'/api/user/findUserStarTaskByUserId',
+    params:{
+      priority:info.priority,
+    },
+  })
+}
+//动态信息
+export function StarProDynamic(info){
+  return request({
+    url:'/api/project/findProjectDynamicById',
+    params:{
+      id:info.pj_id
+    },
+  })
+}

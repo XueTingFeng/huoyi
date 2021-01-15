@@ -1,11 +1,7 @@
 <template>
 	<div class="page">
     <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
-
     </Form>
-
-
-
 
     <div class="mflex xtitle"><img :src="require('@/assets/images/home/star.png')" v-model="modal">星标项目
       <div>
@@ -13,24 +9,27 @@
           <div class="lfloat">
             <FormItem label="团队">
               <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
-                <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
+                <Option value="全部" @click.native="allTeam" style="color: black">全部</Option>
+                <Option :value="item.teamId" v-for="(item) in team" @click.native="chooseTeam(item)">{{item.teamName}}</Option>
               </Select>
             </FormItem>
             <FormItem label="地区">
               <Select v-model="formItem.area" style="width: 150px;">
-                <Option value="reg.placeid" v-for="(reg) in region">{{reg.placeName}}</Option>
+                <Option value="全部" @click.native="allPlace" style="color: black">全部</Option>
+                <Option value="" v-for="(item) in region" @click.native="choosePlace(item)">{{item.placeName}}</Option>
               </Select>
             </FormItem>
             <FormItem label="优先级">
               <Select v-model="formItem.level" style="width: 150px;">
-                <Option value="pro_1">1星</Option>
-                <Option value="pro_2">2星</Option>
-                <Option value="pro_3">3星</Option>
-                <Option value="pro_4">4星</Option>
-                <Option value="pro_5">5星</Option>
+                <Option @click.native="allstarProPriority">全部</Option>
+                <Option @click.native="choosePriority1">1星</Option>
+                <Option @click.native="choosePriority2">2星</Option>
+                <Option @click.native="choosePriority3">3星</Option>
+                <Option @click.native="choosePriority4">4星</Option>
+                <Option @click.native="choosePriority5">5星</Option>
               </Select>
             </FormItem>
-            <Button type="primary" @click="">确定</Button>
+            <Button type="primary" @click="handleSubmit">确定</Button>
           </div>
         </Form>
       </div>
@@ -88,23 +87,23 @@
     <div class="mflex xtitle" style="position: relative;left: -8px; margin-top: 20px"><img :src="require('@/assets/images/home/star.png')">星标任务
       <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
         <div class="rfloat">
-          <Tooltip placement="top-start" content="筛选任务所在项目">
-          <FormItem label="项目">
-            <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
-              <Option :value="pro_1">项目1</Option>
-            </Select>
-          </FormItem>
-          </Tooltip>
+<!--          <Tooltip placement="top-start" content="筛选任务所在项目">-->
+<!--          <FormItem label="执行人">-->
+<!--            <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">-->
+<!--              <Option :value="pro_1"></Option>-->
+<!--            </Select>-->
+<!--          </FormItem>-->
+<!--          </Tooltip>-->
           <FormItem label="优先级">
             <Select v-model="formItem.level" style="width: 150px;">
-              <Option value="task_1">1星</Option>
-              <Option value="task_2">2星</Option>
-              <Option value="task_3">3星</Option>
-              <Option value="task_4">4星</Option>
-              <Option value="task_5">5星</Option>
+              <Option @click.native="chooseStartask1">1星</Option>
+              <Option @click.native="chooseStartask2">2星</Option>
+              <Option @click.native="chooseStartask3">3星</Option>
+              <Option @click.native="chooseStartask4">4星</Option>
+              <Option @click.native="chooseStartask5">5星</Option>
             </Select>
           </FormItem>
-          <Button type="primary" @click="">确定</Button>
+          <Button type="primary" @click="chooseStartask">确定</Button>
         </div>
       </Form>
     </div>
@@ -146,16 +145,6 @@
     <div class="mflex xtitle" style="margin-top: 20px;"><img :src="require('@/assets/images/home/star.png')">星标人员
       <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">
         <div class="rfloat">
-          <FormItem label="团队">
-            <Select v-model="formItem.dept" style="width: 150px;" @change="teamchange">
-              <Option :value="item.teamId" v-for="(item) in team">{{item.teamName}}</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="项目">
-            <Select v-model="formItem.area" style="width: 150px;">
-              <Option value="1"></Option>
-            </Select>
-          </FormItem>
           <FormItem label="状态">
             <Select v-model="formItem.area" style="width: 150px;">
               <Option value="1">正常</Option>
@@ -235,7 +224,7 @@
                 <div class="flex1 uels"><!-- 产品研发 -->{{projectInfo.node}}</div>
               </div>
               <div class="flex mb10">
-                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Time.png')">时间</div>
+                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Time.png')">计划完成时间</div>
                 <div class="flex1 uels"><!-- 设置截止时间 -->{{projectInfo.end_time}}</div>
               </div>
               <div class="flex mb10">
@@ -254,7 +243,7 @@
             <div class="col2">
               <div class="flex mb10 ml">
                 <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Initiate.png')">发起者</div>
-                <div class="flex1 uels"><div class="checkbox"></div><span><!--张明成-->{{projectInfo.initiatorName}}</span></div>
+                <div class="flex1 uels"><span><!--张明成-->{{projectInfo.initiatorName}}</span></div>
               </div>
               <div class="flex mb10 ml">
                 <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Team.png')">团队</div>
@@ -267,8 +256,8 @@
                 </div>
               </div>
               <div class="flex mb10 ml">
-                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Plan.png')">计划完成时间</div>
-                <div class="flex1 uels"><!--添加-->{{projectInfo.complete_time}}</div>
+                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Plan.png')">项目创建时间</div>
+                <div class="flex1 uels"><!--添加-->{{projectInfo.releaseTime}}</div>
               </div>
               <div class="flex mb10 ml">
                 <div class="col2"><img class="micon" :src="require('@/assets/images/detail/Person.png')">负责人</div>
@@ -291,7 +280,7 @@
           </Form>
           <perfect-scrollbar>
             <div class="wbox">
-              <div class="ucard flex" v-for="(item,index) in taskInfo">
+              <div class="ucard flex" v-for="(item,index) in StarProTask">
                 <div class="lfbox">
                   <Icon type="md-arrow-dropdown" size="24"/>
                   <div class="state"><!--进行中-->{{(item.status==0)?("未接收"):((item.status==1)?("未开始"):(item.status==2)?("待接收"):("已完成"))}}</div>
@@ -306,7 +295,7 @@
                     <span><!--张新城-->{{item.sponsor}}</span>
                   </Rate>
                   <div class="flex mt5">
-                    <div class="obtn uels redbtn pd15"><!--10月10号截止-->{{item.endTime.split(" ")[0]}}</div>
+                    <div class="obtn uels redbtn pd15"><!--10月10号截止-->{{item.endTime}}</div>
                     <div class="sbtn pd15 uels mlr" v-for="(renwu,index1) in item.executor"><!--周文杰-->{{renwu.username}}</div>
                   </div>
                 </div>
@@ -323,21 +312,40 @@
           <div class="mflex mstep">
             <template v-for="(item,index) in milestone">
               <Tooltip placement="top-start">
-                <img class="step-icon" :src="require('@/assets/images/detail/Complete.png')">
+                <img v-show="item.st_project_file.status ==1" class="step-icon" :src="require('../assets/images/detail/Complete.png')">
+                <img v-show="item.st_project_file.status ==0" class="step-icon" :src="require('../assets/images/detail/Complete-unactive.png')">
                 <div slot="content">
                   <div class="flex mb10">
                     <div class="w70">时间</div>
-                    <div class="flex1 uels">2020年9月29日</div>
+                    <div class="flex1 uels">{{item.upload_time}}</div>
                   </div>
                   <div class="flex mb10">
                     <div class="w70">所需文件</div>
                     <div class="mflex flex1 uels">
-                      <Input class="mr8 wbold" size="small" placeholder="产品计划书">
+                      <Input class="mr8 wbold" size="small" :placeholder="item.st_project_file.file_name">
                         <Icon custom="iconfont hy-download" slot="suffix" />
                       </Input>
-                      <Icon type="ios-checkmark-circle" size="24" color="#006FFF"/>
+
                     </div>
                   </div>
+
+
+                  <div class="flex mb10">
+                    <div class="w70">上传文件</div>
+                    <!--                  <Upload action="/api/project/uploadProjectFile?">-->
+                    <!--                    <Button icon="ios-cloud-upload-outline">选择文件</Button>-->
+                    <!--                  </Upload>-->
+                    <Upload
+                        multiple
+                        action="http://huoyi.pblog.top/api/project/uploadProjectFile"
+                        :data="fileData"
+                        on-error>
+                      <Input class="wbold pointer" size="small" placeholder="选择文件">
+                        <Icon type="md-add" slot="prefix" size="20"/>
+                      </Input>
+                    </Upload>
+                  </div>
+
                 </div>
               </Tooltip>
               <div class="flex1 live" v-if="!(index==(milestone.length-1))"></div>
@@ -349,9 +357,12 @@
         </div>
         <div class="rbox">
           <div class="rhead">
-            <div class="btxt">参与者<span class="num">2</span></div>
+            <div class="btxt">参与者<span class="num">{{taskInfo.length}}</span></div>
             <div class="mflex mt5">
-              <Avatar shape="square" class="mr8" :src=item.avatar v-for="(item,index) in projectPartInfo"/>
+              <Tooltip v-for="(item,index) in taskInfo" :content="item.username">
+                <Avatar shape="square" class="mr8" :src=item.avatar />
+              </Tooltip>
+
               <span class="plus"><Icon type="md-add" size="24" @click="addproUser"/></span>
             </div>
           </div>
@@ -385,10 +396,10 @@
               <perfect-scrollbar>
                 <div class="uflex">
                   <div class="mflex flex1 uels">
-                    <img class="micon" :src="require('@/assets/images/detail/Dynamic.png')"><!--沈达一-->{{item.name}}
-                    <span class="ml20 ml">在项目</span>
-                    <span class="ml"><!--数字化项目-->{{projectInfo.name}}</span>
-                    <span class="ml">下创建了任务</span>
+                    <img class="micon" :src="require('@/assets/images/detail/Dynamic.png')"><!--沈达一-->{{item.member_name}}
+                    <span class="ml20 ml"></span>
+                    <span class="ml"><!--数字化项目-->{{item.dynamic_content}}</span>
+                    <span class="ml"></span>
                   </div>
                   <div class="uflex"><!--今天10:00-->{{item.release_time}}</div>
                 </div>
@@ -403,287 +414,7 @@
         </div>
       </div>
     </Modal>
-<!--    <Modal v-model="modal" class="modal" scrollable :title="proInfoName" :footer-hide="true" width="1200">-->
-<!--      <div class="mdflex">-->
-<!--        <div class="lbox">-->
-<!--          <div class="grid">-->
-<!--            <div class="col2 rbord">-->
-<!--              <div class="flex mb10">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Node.png')">节点</div>-->
-<!--                <div class="flex1 uels">{{node}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Time.png')">截止时间</div>-->
-<!--                <div class="flex1 uels">{{end_time}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Remarks.png')">备注</div>-->
-<!--                <div class="flex1 uels">{{remarks}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Label.png')">标签</div>-->
-<!--                <div class="flex1 uels">{{tag}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex">-->
-<!--                <div class="col2 mflex"><Icon type="ios-pin-outline" size="24" style="margin-left: -4px;margin-right: 5px;"/>地区</div>-->
-<!--                <div class="flex1 uels">{{place}}</div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="col2">-->
-<!--              <div class="flex mb10 ml">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Initiate.png')">发起者</div>-->
-<!--                <div class="flex1 uels"><div class="checkbox"></div><span>{{proInfoInitiatorName}}</span></div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10 ml">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Team.png')">团队</div>-->
-<!--                <div class="flex1 uels">{{proInfoTeam}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10 ml">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/priority.png')">优先级</div>-->
-<!--                <div class="flex1 uels" style="margin-top: -5px;">-->
 
-<!--                  &lt;!&ndash;弹窗：项目优先级&ndash;&gt;-->
-<!--                  <Rate disabled v-model="proInfoPriority" custom-icon="iconfont hy-star"></Rate>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10 ml">-->
-<!--                <div class="col2 mflex"><img class="micon" :src="require('@/assets/images/detail/Plan.png')">计划完成时间</div>-->
-<!--                <div class="flex1 uels">{{complete_time}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex mb10 ml">-->
-<!--                <div class="col2"><img class="micon" :src="require('@/assets/images/detail/Person.png')">负责人</div>-->
-<!--                <div class="flex1 uels">{{proInfoPrincipal}}</div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-
-<!--          <Form ref="formInline" :model="formItem" inline :label-width="70" class="form mt5">-->
-<!--            <div class="lfloat mflex">-->
-<!--              <img class="img" :src="require('@/assets/images/detail/Task.png')"><span class="mr8">任务</span> 0 / 2-->
-<!--            </div>-->
-<!--            <div class="rfloat">-->
-<!--              <FormItem label="执行者">-->
-<!--                <Input class="mdinput" size="small" placeholder="执行者" style="width: 100px" />-->
-<!--              </FormItem>-->
-
-<!--            </div>-->
-<!--          </Form>-->
-
-
-
-
-
-<!--          <perfect-scrollbar>-->
-
-
-<!--            <div class="wbox">-->
-<!--            <div class="ucard flex" v-for="(item,index) in proInfoTask" :key="index">-->
-<!--              <div class="lfbox">-->
-<!--                <Icon type="md-arrow-dropdown" size="24"/>-->
-<!--                <div class="state">{{item.status}}</div>-->
-<!--              </div>-->
-<!--              <div class="flex1 mg30">-->
-<!--                <div class="uflex">-->
-<!--                  <div>{{item.name}}</div>-->
-
-<!--                </div>-->
-<!--                								<Rate disabled show-text v-model="item.priority"  custom-icon="iconfont hy-star">-->
-<!--                									<span class="mr8">发起人</span>-->
-<!--                									<span>{{item.sponsor}}</span>-->
-<!--                								</Rate>-->
-
-<!--                <div class="flex mt5">-->
-<!--                  <div class="obtn uels redbtn pd15">{{item.endTime}}截止</div>-->
-<!--                  <div class="sbtn pd15 uels mlr" v-for="(item,index) in proExecutor" :key="index">{{item.username}}</div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <img class="img mr20" :src="require('@/assets/images/home/Collection.png')">-->
-<!--            </div>-->
-
-
-<!--          </div>-->
-<!--          </perfect-scrollbar>-->
-
-
-
-
-
-
-
-
-<!--            <div class="addbox mflex"><Icon type="md-add" size="24"/>添加任务</div>-->
-<!--          <div class="mflex mtb10" style="margin-top: 20px;">-->
-<!--            <img class="micon" :src="require('@/assets/images/detail/Milestone.png')">节点里程碑-->
-<!--          </div>-->
-<!--          <div class="mflex mstep">-->
-<!--            <Tooltip placement="top-start">-->
-<!--              <img class="step-icon" :src="require('@/assets/images/detail/Complete.png')">-->
-<!--              <div slot="content">-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">执行者</div>-->
-<!--                  <div class="flex1 uels">沈达一</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">状态</div>-->
-<!--                  <div class="flex1 uels">产品研发</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">所需文件</div>-->
-<!--                  <div class="mflex flex1 uels">-->
-<!--                    <Input class="mr8 wbold" size="small" placeholder="产品计划书">-->
-<!--                      <Icon custom="iconfont hy-download" slot="suffix" />-->
-<!--                    </Input>-->
-<!--                    <Icon type="ios-checkmark-circle" size="24" color="#006FFF"/>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </Tooltip>-->
-<!--            <div class="flex1 live"></div>-->
-<!--            <Tooltip placement="top-start">-->
-<!--              <img class="step-icon" :src="require('@/assets/images/detail/No.png')">-->
-<!--              <div slot="content">-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">执行者</div>-->
-<!--                  <div class="flex1 uels">沈达一</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">状态</div>-->
-<!--                  <div class="flex1 uels">产品研发</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">时间</div>-->
-<!--                  <div class="flex1 uels">2020年9月29日</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">所需文件</div>-->
-<!--                  <div class="flex1 uels"><Icon custom="iconfont hy-no" size="24" /></div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </Tooltip>-->
-
-<!--            <div class="flex1 live"></div>-->
-<!--            <Tooltip placement="top-start">-->
-<!--              <img class="step-icon" :src="require('@/assets/images/detail/not-unactive.png')">-->
-<!--              <div slot="content">-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">执行者</div>-->
-<!--                  <div class="flex1 uels">沈达一</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">状态</div>-->
-<!--                  <div class="flex1 uels">产品研发</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10">-->
-<!--                  <div class="w70">时间</div>-->
-<!--                  <div class="flex1 uels">2020年9月29日</div>-->
-<!--                </div>-->
-<!--                <div class="flex mb10" style="align-items: flex-start;">-->
-<!--                  <div class="w70">所需文件</div>-->
-<!--                  <div class="flex1 uels">-->
-<!--                    <div>测试报告1</div>-->
-<!--                    <div>测试报告2</div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="mflex" style="margin-left: 45px;">-->
-<!--                  <Icon class="mr8" style="margin-top: -8px;" custom="iconfont hy-duowenjianjia" />-->
-<!--                  <Upload-->
-<!--                      multiple-->
-<!--                      action="//jsonplaceholder.typicode.com/posts/">-->
-<!--                    <Input class="wbold pointer" size="small" placeholder="上传文件">-->
-<!--                      <Icon type="md-add" slot="prefix" size="20"/>-->
-<!--                    </Input>-->
-<!--                  </Upload>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </Tooltip>-->
-<!--            <div class="flex1 unlive"></div>-->
-<!--            <img class="step-icon" style="cursor: default;" :src="require('@/assets/images/detail/No-unactive.png')">-->
-<!--          </div>-->
-<!--          <div class="uflex mt5" >-->
-
-<!--            <div v-for="(item,index) in proInfoNode" :key="index">{{item.node_name}}</div>-->
-<!--&lt;!&ndash;            <div>产品研发</div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div>测试</div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div>发布跟踪</div>&ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="rbox">-->
-<!--          <div class="rhead">-->
-<!--            <div class="btxt">参与者<span class="num">2</span></div>-->
-
-<!--            <div class="mflex mt5">-->
-<!--              <Avatar  v-for="(item,index) in proInfoUser" :key="index" shape="square" class="mr8" src="item.avatar" />-->
-<!--&lt;!&ndash;              <Avatar shape="square" class="mr8" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2424617736,2740514216&fm=26&gp=0.jpg" />&ndash;&gt;-->
-<!--              <span class="plus"><Icon type="md-add" size="24"/></span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="rbody">-->
-<!--            <Form ref="formInline" :model="formItem" inline :label-width="70" class="form">-->
-<!--              <div class="lfloat mflex btxt">-->
-<!--                <span class="mr8">所有动态</span>-->
-
-<!--                <Poptip placement="bottom-start" v-model="visible" width="400">-->
-<!--                  <img class="img mt5 pointer" :src="require('@/assets/images/detail/File.png')">-->
-<!--                  <div class=" " slot="content">-->
-<!--                    <div class="theader">-->
-<!--                      <span>保存到文件夹</span>-->
-<!--                      <Icon type="md-close" size="24" class="pointer" @click="visible = false"/>-->
-<!--                    </div>-->
-<!--                    <div class="tbody">-->
-<!--                      <ly-tree></ly-tree>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </Poptip>-->
-<!--              </div>-->
-<!--              <div class="rfloat">-->
-<!--                <FormItem label="执行者">-->
-<!--                  <Input class="mdinput" size="small" placeholder="执行者" style="width: 100px" />-->
-<!--                </FormItem>-->
-<!--                <FormItem label="关键字">-->
-<!--                  <Input class="mdinput" size="small" search @on-search="search" suffix="ios-search" placeholder="搜索" style="width: 100px" />-->
-<!--                </FormItem>-->
-<!--              </div>-->
-<!--            </Form>-->
-<!--            <div class="uflex">-->
-<!--              <div class="mflex flex1 uels">-->
-<!--                <img class="micon" :src="require('@/assets/images/detail/Dynamic.png')">沈达一-->
-<!--                <span class="ml20 ml">在项目</span>-->
-<!--                <span class="ml">数字化项目</span>-->
-<!--                <span class="ml">下创建了任务</span>-->
-<!--              </div>-->
-<!--              <div class="uflex">今天10:00</div>-->
-<!--            </div>-->
-<!--            <div class="uflex blue-txt">设备机台制作二维码，先出设计</div>-->
-
-
-
-
-<!--            <div class="uflex mt15" v-for="(item,index) in proInfoAct" :key="index">-->
-<!--              <div class="mflex flex1 uels">-->
-<!--                <span class="ml20">{{item.member_name}}</span>-->
-<!--                <span class="ml">{{item.dynamic_content}}</span>-->
-<!--&lt;!&ndash;                <span class="ml">张明成</span>&ndash;&gt;-->
-<!--              </div>-->
-<!--              <div class="uflex">{{item.release_time}}</div>-->
-<!--            </div>-->
-
-
-<!--&lt;!&ndash;            <div class="uflex mt15">&ndash;&gt;-->
-<!--&lt;!&ndash;              <div class="mflex flex1 uels">&ndash;&gt;-->
-<!--&lt;!&ndash;                <span class="ml20">沈达一</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                <span class="ml">更新任务状态为发布成功</span>&ndash;&gt;-->
-<!--&lt;!&ndash;              </div>&ndash;&gt;-->
-<!--&lt;!&ndash;              <div class="uflex">今天10:01</div>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--          </div>-->
-<!--          <div class="foot">-->
-<!--            <div class="btxt">@提及他人，按Ctrl+Enter 快速发布</div>-->
-<!--            <Button type="primary" @click="release" class="rfloat">发布</Button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </Modal>-->
 		<!-- 星标人员弹窗 -->
 		<Modal v-model="empModal" scrollable title="成员任务" :footer-hide="true" width="900">
 			<div class="modal">
@@ -794,22 +525,31 @@
   import {
     getStarTask,
     getStarPro,
+    getStarProTask,
     getStarPerson,
     getUserTasks,
     getRegion,
     getTeam,
-    screeningStro,
+    screeningStarPro,
     getStarProInfo,
     getUserInfo,
     cancelStarPro,
     cancelStarTask,
     cancelStarUser,
     addStarTask,
+    screeningStarTask,
+    StarProDynamic,
+    postFile
   } from "../utils/rq-star";
   import {getProjectInfo, getTeamProject} from "@/utils/rq-team";
+  import {screeningTeam} from "../utils/rq-team";
   export default {
 		data() {
 			return {
+        fileData: {
+          projectId: '442bd0c050ae11ebb00300163e1d3071',
+          type: 1
+        },
 				params:{
 					page:0,
 					limit:10
@@ -844,7 +584,7 @@
         //文件夹信息
         folderInfo:[],
 				starTask:[],
-        status: [],
+        //status: [],
         sponsor: [],
         principal: [],
         endTime: [],
@@ -891,6 +631,22 @@
           saturation:0,
           teamMemberId:'',
         },
+
+        //筛选信息
+        screeningInfo:{
+          teamId:'',
+          placeId:'',
+          priority:'',
+          keyword:'',
+        },
+
+        screeningtaskInfo:{
+          teamId:'',
+          placeId:'',
+          priority:'',
+          keyword:'',
+        },
+        StarProTask:[],
 			}
 		},
 		created() {
@@ -923,18 +679,23 @@
 			// },
 			//点击查看更多
 
+      postFile(info) {
+        postFile(info).then(res => {
+
+        })
+      },
       //获取星标项目
       getStarPro() {
         getStarPro(this.userInFo).then(res => {
-          this.starPro = res.data
-          this.name=res.data.name
+          this.starPro = res.data.list
+
         })
       },
       getStarTask() {
         //获取星标任务多个数据
         getStarTask(this.userInFo).then( res => {
           // console.log(res)
-          this.starTask = res.data
+          this.starTask = res.data.list
 
           //获取星标任务状态，判断状态
           for(let i=0;i<this.starTask.length;i++){
@@ -958,7 +719,7 @@
       getStarPerson() {
         //axios获取星标人员
         getStarPerson(this.userInFo).then(res => {
-          this.starPerson=res.data
+          this.starPerson=res.data.list
         })
       },
 
@@ -978,25 +739,11 @@
       },
 			//条件查询确定按钮事件
 			handleSubmit(){
-				this.params.page =1
-				this.starPro = []
-				//this.getStarPro()
-        screeningStro(this.formItem).then(res => {
-					// let newData=res.filter(item=>{
-            let newData=res.data.filter(item=>{
-						if(this.formItem.title&&!this.formItem.area){
-							return item.title.indexOf(this.formItem.title)>-1
-						}else if(!this.formItem.title&&this.formItem.area){
-							return item.area===this.formItem.area
-						}else if(!this.formItem.title&&this.formItem.area){
-							return item.title.indexOf(this.formItem.title)>-1&&item.area===this.formItem.area
-						}else{
-							return item
-						}
-					})
-					this.starPro = newData.slice(0,10)||[]
-				}).catch()
+        screeningStarPro(this.screeningInfo).then(res => {
+          this.starPro=res.data
+        }).catch()
 			},
+
       cancelPro(item){
         this.$Modal.confirm({
           title: '确认取消星标？',
@@ -1004,8 +751,7 @@
             cancelStarPro(item.pj_id,this.userInFo).then(res=>{
               if (res.code==200){
                 getStarPro(this.userInFo).then(res => {
-                this.starPro = res.data
-                this.name=res.data.name
+                this.starPro = res.data.list
               })
               }
             })
@@ -1074,77 +820,40 @@
         this.projectId=info.pj_id
         this.projectName=info.name
         this.proModal = true
-        getProjectInfo(info,this.userInFo).then(res => {
+        getStarProInfo(info,this.userInFo).then(res => {
           this.projectInfo=res.data[0]
           this.taskInfo=res.data[1]
           this.unfinishedTask=this.taskInfo.length
-          for (this.i=0;this.i<=this.taskInfo.length;this.i++){
-            if (res.data[1][this.i].status==3){
-              this.unfinishedTask=this.unfinishedTask-1
-            }
-          }
-          this.projectPartInfo=res.data[2]
-          this.milestone=res.data[3]
-          this.dynamic=res.data[4]
-          this.folderInfo=res.data[5]
-          for (this.i=0;this.i<=this.projectPartInfo.length;this.i++){
-            if (this.i=this.projectPartInfo.length){
-              this.upProInfo.user_id=this.upProInfo.user_id+this.projectPartInfo[this.i].user_id
-            }else{
-              this.upProInfo.user_id=this.upProInfo.user_id+','+this.projectPartInfo[this.i].user_id
-            }
-          }
-          this.upProInfo.projectId=this.dynamic.pj_id
+          // for (this.i=0;this.i<=this.taskInfo.length;this.i++){
+          //   if (res.data[1][this.i].status==3){
+          //     this.unfinishedTask=this.unfinishedTask-1
+          //   }
+          // }
+          //this.projectPartInfo=res.data[2]
+          this.milestone=res.data[2]
+          //this.folderInfo=res.data[5]
+          // for (this.i=0;this.i<=this.projectPartInfo.length;this.i++){
+          //   if (this.i=this.projectPartInfo.length){
+          //     this.upProInfo.user_id=this.upProInfo.user_id+this.projectPartInfo[this.i].user_id
+          //   }else{
+          //     this.upProInfo.user_id=this.upProInfo.user_id+','+this.projectPartInfo[this.i].user_id
+          //   }
+          // }
+          // this.upProInfo.projectId=this.dynamic.pj_id
+          getStarProTask(info,this.userInFo).then(res => {
+               this.StarProTask = res.data.list
+          })
+        })
+
+        StarProDynamic(info).then(res => {
+              this.dynamic = res.data.list
         })
       },
       //项目弹窗添加参与者弹窗
       addproUser(){
         this.addProjectUser=true
       },
-			// 星标项目弹窗
-			// openPro(pj_id){
-			// 	//this.proInfo = info
-			// 	this.modal = true
-      //
-      //   getStarProInfo(pj_id).then(res => {
-      //     this.pj_id = res.data.pj_id
-      //     this.proInfoName = res.data[0].name
-      //     this.node = res.data[0].node
-      //     this.end_time = res.data[0].end_time
-      //     this.remarks = res.data[0].remarks
-      //     this.tag = res.data[0].tag
-      //     this.place = res.data[0].place
-      //
-      //     this.proInfoTask = res.data[1]
-      //     this.proInfoInitiatorName = res.data[0].initiatorName
-      //     this.proInfoTeam = res.data[0].team
-      //     this.proInfoPriority = res.data[0].priority
-      //     this.complete_time = res.data[0].complete_time
-      //     this.proInfoPrincipal = res.data[0].principal
-      //     this.proInfoNode = res.data[3]
-      //     this.proInfoUser = res.data[2]
-      //     this.proInfoAct = res.data[4]
-      //
-      //     this.proExecutor = res.data[1].executor
-      //
-      //     for(let i=0;i<this.proInfoTask.length;i++){
-      //
-      //       let task = this.proInfoTask[i];
-      //       //console.log(task);
-      //       if(task.status===0){
-      //         this.proInfoTask[i].status='未开始'
-      //       }else if(task.status===1){
-      //         this.proInfoTask[i].status='进行中'
-      //       }else if(task.status===2){
-      //         this.proInfoTask[i].status='待接收'
-      //       }else if(task.status===3){
-      //         this.proInfoTask[i].status='已完成'
-      //       }
-      //     }
-      //   })
-      //   this.getStarProInfo()
-      //
-			// },
+
 			// 星标人员弹窗
 			open(item){
 				this.empModal = true
@@ -1223,6 +932,62 @@
 				]);
 
 			},
+
+      allTeam() {
+        this.screeningInfo.teamId = ''
+      },
+      chooseTeam(item) {
+        this.screeningInfo.teamId = item.teamId
+      },
+
+      allPlace() {
+        this.screeningInfo.placeId = ''
+      },
+
+      choosePlace(item) {
+        this.screeningInfo.placeId = item.placeId
+      },
+
+      choosePriority1() {
+        this.screeningInfo.priority = '1'
+      },
+      choosePriority2() {
+        this.screeningInfo.priority = '2'
+      },
+      choosePriority3() {
+        this.screeningInfo.priority = '3'
+      },
+      choosePriority4() {
+        this.screeningInfo.priority = '4'
+      },
+      choosePriority5() {
+        this.screeningInfo.priority = '5'
+      },
+
+      allstarProPriority() {
+        this.screeningInfo.priority = ''
+      },
+      chooseStartask1() {
+        this.screeningtaskInfo.priority = '1'
+      },
+      chooseStartask2() {
+        this.screeningtaskInfo.priority = '2'
+      },
+      chooseStartask3() {
+        this.screeningtaskInfo.priority = '3'
+      },
+      chooseStartask4() {
+        this.screeningtaskInfo.priority = '4'
+      },
+      chooseStartask5() {
+        this.screeningtaskInfo.priority = '5'
+      },
+
+      chooseStartask() {
+        screeningStarTask(this.screeningtaskInfo).then(res => {
+          this.starTask = res.data
+        })
+      },
 		}
 	}
 </script>
@@ -1325,7 +1090,7 @@
 	margin-right: 15px;
 	vertical-align: middle;
 }	
-.wbox{border: 1px solid #E6E6E9;border-radius: 8px;height: 250px}
+.wbox{border-radius: 8px;height: 250px}
 .wbox .ucard{border-bottom: 1px solid #324364;margin-bottom:0}
 .addbox{padding: 10px 20px;cursor: pointer;}
 ::v-deep .wbox .ivu-progress-inner {background-color: #141e33;}
